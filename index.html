@@ -502,6 +502,32 @@ footer {
 .d3 { transition-delay: .3s; }
 .d4 { transition-delay: .4s; }
 
+
+/* ── GOOGLE CALENDAR BOOKING EMBED ── */
+.calendar-card {
+  background: var(--card);
+  border: 1px solid rgba(0,212,255,.15);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0 45px rgba(0,212,255,.08);
+}
+.calendar-card iframe {
+  display: block;
+  width: 100%;
+  min-height: 760px;
+  border-radius: 6px;
+  background: #fff;
+}
+.calendar-note {
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 300;
+  line-height: 1.6;
+  text-align: center;
+  margin-top: .85rem;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 860px) {
   nav { padding: 1rem 4vw; }
@@ -726,65 +752,23 @@ footer {
     </div>
   </div>
 
-  <div class="form-card reveal d1">
-    <h3>Book a Cold Plunge</h3>
-    <div id="form-body">
-      <form id="booking-form" action="https://formspree.io/f/xnjwgvbl" method="POST">
-        <!-- Replace YOUR_FORM_ID above with your Formspree ID -->
-        <input type="hidden" name="_subject" value="New PlungeTX Booking Request">
-        <input type="hidden" name="_replyto" value="">
-
-        <div class="form-row">
-          <div class="field">
-            <label for="name">Name *</label>
-            <input type="text" id="name" name="name" placeholder="Your full name" required>
-          </div>
-          <div class="field">
-            <label for="phone">Phone *</label>
-            <input type="tel" id="phone" name="phone" placeholder="(832) 000-0000" required>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="email">Email *</label>
-          <input type="email" id="email" name="email" placeholder="you@example.com" required>
-        </div>
-
-        <div class="field">
-          <label for="address">Address / City *</label>
-          <input type="text" id="address" name="address" placeholder="123 Main St, Pearland TX" required>
-        </div>
-
-        <div class="field">
-          <label for="package">Preferred Package *</label>
-          <select id="package" name="package" required>
-            <option value="" disabled selected>Select a package…</option>
-            <option value="Weekend ($175)">Weekend Chill – $175</option>
-            <option value="Weekly ($300)">Weekly Reset – $300</option>
-            <option value="Monthly ($800)">Monthly Recovery – $800</option>
-            <option value="Custom">Custom / Other</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="dates">Preferred Dates *</label>
-          <input type="text" id="dates" name="dates" placeholder="e.g. May 23–25" required>
-        </div>
-
-        <div class="field">
-          <label for="notes">Notes (optional)</label>
-          <textarea id="notes" name="notes" placeholder="Event details, questions, custom requests…"></textarea>
-        </div>
-
-        <button type="submit" class="form-submit">Send Booking Request →</button>
-        <p class="form-note">We'll reply within 24 hours to confirm details.</p>
-      </form>
-    </div>
-    <div id="form-success">
-      <div class="check">🧊</div>
-      <h4>Request Sent!</h4>
-      <p>We'll reach out within 24 hours to confirm your booking.</p>
-    </div>
+  <div class="calendar-card reveal d1">
+    <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.06em;margin-bottom:1rem;color:var(--white);">Choose Pickup / Delivery Time</h3>
+    <p class="calendar-note" style="margin-bottom:1rem;">
+      Select your pickup or delivery window below. You will enter your full rental start and end dates during booking. Your rental is confirmed after availability review and payment.
+    </p>
+    <!-- Google Calendar Appointment Scheduling begin -->
+<iframe
+  src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0HCZJdwknWZttmSkQivV6o0wx7rXtoLvycoxz_Ycvo3slVqyu_wINd08Da2GI6OC2YBdtWYhag?gv=true"
+  style="border:0"
+  width="100%"
+  height="760"
+  frameborder="0">
+</iframe>
+<!-- end Google Calendar Appointment Scheduling -->
+    <p class="calendar-note">
+      Having trouble with the calendar? Text us at <strong style="color:var(--white)">(832) 895-1420</strong>.
+    </p>
   </div>
 </section>
 
@@ -792,7 +776,7 @@ footer {
 <footer>
   <a class="footer-logo" href="#"><span>PLUNGE</span>TX</a>
   <div class="footer-copy">
-    © 2026 Prodeca Consulting LLC. All rights reserved.<br>
+    © 2026 BLambInvestments LLC. All rights reserved.<br>
     TEXT: (832) 895-1420
   </div>
   <div class="footer-links">
@@ -853,32 +837,6 @@ const observer = new IntersectionObserver(entries=>{
 },{threshold:.12});
 reveals.forEach(r=>observer.observe(r));
 
-// ── FORM SUBMIT (Formspree async) ──
-const form = document.getElementById('booking-form');
-form.addEventListener('submit', async function(e){
-  e.preventDefault();
-  const btn = form.querySelector('.form-submit');
-  btn.textContent = 'Sending…';
-  btn.disabled = true;
-
-  try {
-    const res = await fetch(form.action, {
-      method: 'POST',
-      body: new FormData(form),
-      headers: { 'Accept': 'application/json' }
-    });
-    if(res.ok){
-      document.getElementById('form-body').style.display='none';
-      document.getElementById('form-success').style.display='block';
-    } else {
-      btn.textContent = 'Error — Try again';
-      btn.disabled = false;
-    }
-  } catch(err){
-    btn.textContent = 'Error — Try again';
-    btn.disabled = false;
-  }
-});
 </script>
 </body>
 </html>
