@@ -301,6 +301,34 @@ h2 .accent { color: var(--cyan); }
   letter-spacing: .12em; padding: .32rem .9rem;
   border-radius: 0 6px 0 4px;
 }
+
+.plan.sale::before {
+  content: 'LIMITED-TIME SALE';
+  position: absolute; top: 0; right: 0;
+  background: var(--cyan); color: var(--deep);
+  font-size: .62rem; font-weight: 700;
+  letter-spacing: .12em; padding: .32rem .9rem;
+  border-radius: 0 6px 0 4px;
+}
+.sale-banner {
+  max-width: 1000px; margin: -1.6rem auto 2rem;
+  padding: .9rem 1.2rem;
+  border: 1px solid rgba(0,212,255,.38);
+  background: rgba(0,212,255,.09);
+  color: var(--white); border-radius: 5px;
+  font-size: .82rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  box-shadow: 0 0 35px rgba(0,212,255,.12);
+}
+.old-price {
+  color: var(--muted); font-size: 1.15rem; font-weight: 500;
+  text-decoration: line-through; margin-bottom: .2rem;
+}
+.sale-note {
+  color: var(--cyan); font-size: .76rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  margin-top: -1.25rem; margin-bottom: 1.4rem;
+}
 .plan-period {
   font-size: .7rem; letter-spacing: .2em;
   text-transform: uppercase; color: var(--cyan); margin-bottom: .5rem;
@@ -650,14 +678,18 @@ footer {
 <section id="pricing">
   <div class="label" style="justify-content:center;">Pricing & Packages</div>
   <h2 class="reveal">SIMPLE <span class="accent">PRICING</span></h2>
-  <p class="pricing-intro reveal d1">Choose a weekend rental, weekly rental, or an event partnership package. Free pickup is available in Pearland, or add delivery, setup, and pickup for a flat $100 within our local service area.</p>
+  <p class="pricing-intro reveal d1">Our limited-time sale makes it easier to bring recovery home. Free pickup is available in Pearland, or add delivery, setup, and pickup for a flat $100 within our local service area.</p>
+
+  <div class="sale-banner reveal d1">⚡ Act Fast — Sale Pricing Is Available for a Limited Time</div>
 
   <div class="pricing-grid">
-    <div class="plan reveal d1">
+    <div class="plan featured sale reveal d1">
       <div class="plan-period">Fri – Sun</div>
       <div class="plan-name">Weekend Chill</div>
       <div class="plan-who">Home use, small events</div>
-      <div class="plan-price"><sup>$</sup>200</div>
+      <div class="old-price">Regularly $200</div>
+      <div class="plan-price"><sup>$</sup>175</div>
+      <div class="sale-note">Save $25 — Act Fast</div>
       <ul class="plan-perks">
         <li>Weekend rental (Fri–Sun)</li>
         <li>Free pickup in Pearland</li>
@@ -666,11 +698,13 @@ footer {
         <li>Optional delivery, setup & pickup: +$100</li>
       </ul>
     </div>
-    <div class="plan featured reveal d2">
+    <div class="plan sale reveal d2">
       <div class="plan-period">7 Days</div>
       <div class="plan-name">Weekly Reset</div>
       <div class="plan-who">Athletes, gyms, longer trials</div>
-      <div class="plan-price"><sup>$</sup>400</div>
+      <div class="old-price">Regularly $400</div>
+      <div class="plan-price"><sup>$</sup>300</div>
+      <div class="sale-note">Save $100 — Limited Time</div>
       <ul class="plan-perks">
         <li>Full 7-day rental</li>
         <li>Free pickup in Pearland</li>
