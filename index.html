@@ -79,6 +79,20 @@ nav {
     radial-gradient(ellipse 35% 45% at 5% 85%, rgba(0,70,120,.22) 0%, transparent 60%),
     linear-gradient(175deg, #061520 0%, #020c13 100%);
 }
+/* real setup photo layered into the hero */
+.hero-photo {
+  position: absolute; inset: 0; z-index: 0;
+  background: url('pic5.png') center 40% / cover no-repeat;
+  opacity: .38;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.9) 0%, rgba(0,0,0,.75) 55%, transparent 96%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.9) 0%, rgba(0,0,0,.75) 55%, transparent 96%);
+  filter: saturate(.85);
+}
+.hero-photo::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(2,12,19,.92) 0%, rgba(2,12,19,.55) 45%, rgba(2,12,19,.25) 100%);
+}
 /* animated frost grid */
 .frost-grid {
   position: absolute; inset: 0; z-index: 0;
@@ -266,6 +280,56 @@ h2 .accent { color: var(--cyan); }
   margin-bottom: .55rem;
 }
 .feat p { font-size: .87rem; color: var(--muted); line-height: 1.75; font-weight: 300; }
+
+/* ── GALLERY ── */
+#gallery { text-align: center; }
+#gallery h2 { margin-bottom: .9rem; }
+.gallery-intro {
+  color: var(--muted); font-weight: 300; font-size: .95rem;
+  max-width: 520px; margin: 0 auto 3rem; line-height: 1.7;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 300px;
+  gap: 12px;
+  max-width: 1100px; margin: 0 auto;
+}
+.g-item {
+  position: relative; border-radius: 6px; overflow: hidden;
+  border: 1px solid rgba(0,212,255,.12);
+}
+.g-item.wide { grid-column: span 2; }
+.g-item img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: saturate(.8) brightness(.9);
+  transition: filter .4s, transform .5s;
+}
+.g-item:hover img { filter: saturate(1) brightness(1); transform: scale(1.04); }
+.g-cap {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 2.2rem 1.3rem 1.1rem;
+  background: linear-gradient(to top, rgba(2,12,19,.92) 0%, rgba(2,12,19,.55) 60%, transparent 100%);
+  text-align: left; pointer-events: none;
+}
+.g-cap-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.15rem; letter-spacing: .08em;
+  color: var(--white); line-height: 1.1;
+}
+.g-cap-label .accent { color: var(--cyan); }
+.g-cap p {
+  font-size: .74rem; color: rgba(198,238,255,.65);
+  font-weight: 300; margin-top: .25rem; line-height: 1.5;
+}
+.g-chip {
+  position: absolute; top: .9rem; right: .9rem;
+  background: var(--cyan); color: var(--deep);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.05rem; letter-spacing: .06em;
+  padding: .3rem .75rem; border-radius: 3px;
+  box-shadow: 0 0 30px rgba(0,212,255,.4);
+}
 
 /* ── PRICING ── */
 #pricing { text-align: center; }
@@ -568,6 +632,10 @@ footer {
   footer { flex-direction: column; text-align: center; }
   .badge { right: 0; }
   .form-row { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: 260px; }
+  .g-item.wide { grid-column: span 1; }
+  .hero-photo { opacity: .28; }
+  .hero-photo::after { background: linear-gradient(to bottom, rgba(2,12,19,.55) 0%, rgba(2,12,19,.85) 100%); }
 }
 </style>
 </head>
@@ -578,6 +646,7 @@ footer {
   <a class="nav-logo" href="#"><span>PLUNGE</span>TX</a>
   <div class="nav-links">
     <a href="#about">About</a>
+    <a href="#gallery">Gallery</a>
     <a href="#pricing">Pricing</a>
     <a href="#area">Service Area</a>
     <a href="#book" class="btn-nav">Book Now</a>
@@ -587,6 +656,7 @@ footer {
 <!-- HERO -->
 <section id="hero">
   <div class="hero-bg"></div>
+  <div class="hero-photo"></div>
   <div class="frost-grid"></div>
   <div class="hero-glow"></div>
   <div class="watermark">COLD</div>
@@ -624,9 +694,9 @@ footer {
   </div>
   <div class="reveal d1" style="position:relative;">
     <div class="photo-stack">
-      <img src="pic1.jpg" alt="Cold plunge tub setup" loading="lazy">
-      <img src="pic2.jpg" alt="Cold plunge water view" loading="lazy">
-      <img src="pic3.jpg" alt="Chiller unit" loading="lazy">
+      <img src="pic4.png" alt="PlungeTX cold plunge station installed at a Houston-area business" loading="lazy">
+      <img src="pic6.JPEG" alt="Cold plunge tub filled with fresh filtered water" loading="lazy">
+      <img src="pic7.png" alt="Pod Company Pro Chiller holding 45.6 degrees" loading="lazy">
     </div>
     <div class="badge">NO ICE<br>NEEDED<small><br>EVER</small></div>
   </div>
@@ -668,6 +738,46 @@ footer {
       <div class="feat-icon">📞</div>
       <h3>Custom Packages</h3>
       <p>Need something that doesn't fit our standard options? Just text us and we'll work it out.</p>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="label" style="justify-content:center;">Real Setups</div>
+  <h2 class="reveal">SEE IT <span class="accent">IN ACTION</span></h2>
+  <p class="gallery-intro reveal d1">From backyard weekends to commercial recovery stations — every rental arrives clean, filtered, and cold.</p>
+  <div class="gallery-grid">
+    <div class="g-item wide reveal d1">
+      <img src="pic4.png" alt="PlungeTX cold plunge recovery station installed at a Houston-area business" loading="lazy">
+      <div class="g-cap">
+        <div class="g-cap-label">COMMERCIAL <span class="accent">INSTALL</span></div>
+        <p>Recovery station live at a Houston-area business — branded, plumbed, and ready for members.</p>
+      </div>
+    </div>
+    <div class="g-item reveal d2">
+      <img src="pic7.png" alt="Pod Company Pro Chiller display reading 45.6 degrees Fahrenheit" loading="lazy">
+      <div class="g-chip">45.6°F</div>
+      <div class="g-cap">
+        <div class="g-cap-label">COLD THAT <span class="accent">HOLDS</span></div>
+        <p>The Pro Chiller holding sub-50° water in Texas summer heat — no ice, ever.</p>
+      </div>
+    </div>
+    <div class="g-item reveal d1">
+      <img src="pic6.JPEG" alt="Cold plunge tub being filled with fresh filtered water" loading="lazy">
+      <div class="g-cap">
+        <div class="g-cap-label">FRESH <span class="accent">FILL</span></div>
+        <p>Clean water, circulating and filtered from the first minute of every rental.</p>
+      </div>
+    </div>
+    <div class="g-item wide reveal d2">
+      <img src="pic5.png" alt="Complete cold plunge setup with tub, chiller, and signage" loading="lazy">
+      <div class="g-cap">
+        <div class="g-cap-label">TURNKEY <span class="accent">SETUP</span></div>
+        <p>Delivered, connected, and running before we leave — you just show up and plunge.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -815,6 +925,7 @@ footer {
   </div>
   <div class="footer-links">
     <a href="#about">About</a>
+    <a href="#gallery">Gallery</a>
     <a href="#pricing">Pricing</a>
     <a href="#book">Book Now</a>
   </div>
