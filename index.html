@@ -586,6 +586,67 @@ footer {
 }
 .footer-links a:hover { color: var(--cyan); }
 
+/* ── BOOKING FORM ── */
+#book {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: start;
+}
+.form-card {
+  background: var(--card);
+  border: 1px solid rgba(0,212,255,.15);
+  border-radius: 8px; padding: 2.5rem;
+}
+.form-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem; letter-spacing: .06em;
+  margin-bottom: 1.8rem; color: var(--white);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.field { margin-bottom: 1.2rem; }
+.field label {
+  display: block; font-size: .72rem;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: .45rem; font-weight: 500;
+}
+.field input, .field select, .field textarea {
+  width: 100%; background: rgba(0,212,255,.05);
+  border: 1px solid rgba(0,212,255,.15);
+  color: var(--white); padding: .8rem 1rem;
+  border-radius: 3px; font-size: .9rem;
+  font-family: 'DM Sans', sans-serif; font-weight: 300;
+  outline: none; transition: border-color .2s, background .2s;
+  appearance: none;
+}
+.field input::placeholder, .field textarea::placeholder { color: rgba(77,122,148,.6); }
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--cyan); background: rgba(0,212,255,.08);
+}
+.field select option { background: var(--card); color: var(--white); }
+.field textarea { resize: vertical; min-height: 90px; }
+.form-submit {
+  width: 100%; padding: 1.05rem;
+  background: var(--cyan); color: var(--deep);
+  border: none; border-radius: 3px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .88rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  transition: opacity .2s, transform .2s;
+  box-shadow: 0 0 35px rgba(0,212,255,.25);
+  margin-top: .5rem;
+}
+.form-submit:hover { opacity: .85; transform: translateY(-2px); }
+.form-note {
+  font-size: .72rem; color: var(--muted); font-weight: 300;
+  text-align: center; margin-top: 1rem; line-height: 1.6;
+}
+#form-success { display: none; text-align: center; padding: 2rem; }
+#form-success .check { font-size: 3rem; margin-bottom: 1rem; }
+#form-success h4 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem; letter-spacing: .06em; color: var(--cyan); margin-bottom: .5rem;
+}
+#form-success p { color: var(--muted); font-size: .9rem; font-weight: 300; }
+
 /* ── SCROLL REVEAL ── */
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.in { opacity: 1; transform: translateY(0); }
@@ -690,7 +751,7 @@ footer {
     <p>Our mobile cold plunge rental includes a <strong>Pod Company Pro Chiller 1/2 HP</strong> with water circulation and 20-micron filtration. Whether you're hosting a backyard gathering in Pearland or Houston, organizing an athletic recovery event, or wanting to unplug at home—we deliver the cold plunge experience directly to you.</p>
     <p><strong>No ice required.</strong> We handle delivery, setup, and pickup. You just show up and plunge.</p>
     <p>Need something custom? We're happy to talk through options that don't fit our standard packages.</p>
-    <a href="sms:8328951420" class="about-link">Text us at 832-895-1420</a>
+    <a href="sms:8327984827" class="about-link">Text us at 832-798-4827</a>
   </div>
   <div class="reveal d1" style="position:relative;">
     <div class="photo-stack">
@@ -841,7 +902,7 @@ footer {
   <div class="pricing-notes reveal">
     <strong>📍 Free pickup</strong> in Pearland<br>
     <strong>🚚 Delivery, setup & pickup</strong> available for a flat $100 within our local service area<br>
-    For extended travel or event installs, <strong>text (832) 895-1420</strong> for a custom quote.
+    For extended travel or event installs, <strong>text (832) 798-4827</strong> for a custom quote.
   </div>
 </section>
 
@@ -864,8 +925,8 @@ footer {
       <span class="tag">Sugar Land</span>
       <span class="tag">& Nearby Areas</span>
     </div>
-    <a href="sms:8328951420" class="area-phone">(832) 895-1420</a>
-    <p class="area-phone-label">Text us or fill out the booking form</p>
+    <a href="sms:8327984827" class="area-phone">(832) 798-4827</a>
+    <p class="area-phone-label">Text us to check availability</p>
   </div>
   <div class="area-visual reveal d1">
     <div class="rings">
@@ -884,35 +945,18 @@ footer {
 
 <div class="hr"></div>
 
-<!-- BOOKING FORM -->
-<section id="book">
-  <div class="book-info reveal">
-    <div class="label">Book Now</div>
+<!-- BOOK CTA -->
+<section id="book" style="text-align:center; display:block;">
+  <div class="reveal">
+    <div class="label" style="justify-content:center;">Book Now</div>
     <h2>READY TO<br><span class="accent">PLUNGE?</span></h2>
-    <p>Fill out the form and we'll reach out within 24 hours to confirm your dates and delivery details.</p>
-    <p>Prefer to text? Reach us directly at <strong style="color:var(--white)">(832) 895-1420</strong>.</p>
-    <div class="book-contact" style="margin-top:1.5rem; display:flex; flex-direction:column; gap:.8rem;">
-      <a href="sms:8328951420">Text (832) 895-1420 or fill out the form</a>
-    </div>
-  </div>
-
-  <div class="calendar-card reveal d1">
-    <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.06em;margin-bottom:1rem;color:var(--white);">Choose Pickup / Delivery Time</h3>
-    <p class="calendar-note" style="margin-bottom:1rem;">
-      Select your pickup or delivery window below. You will enter your full rental start and end dates during booking. Your rental is confirmed after availability review and payment.
+    <p style="color:rgba(198,238,255,.6); font-weight:300; font-size:1rem; max-width:480px; margin:1.5rem auto 2.5rem; line-height:1.8;">
+      Just shoot us a text with your preferred dates, package, and address. We'll confirm availability and get you set up fast.
     </p>
-    <!-- Google Calendar Appointment Scheduling begin -->
-<iframe
-  src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0HCZJdwknWZttmSkQivV6o0wx7rXtoLvycoxz_Ycvo3slVqyu_wINd08Da2GI6OC2YBdtWYhag?gv=true"
-  style="border:0"
-  width="100%"
-  height="760"
-  frameborder="0">
-</iframe>
-<!-- end Google Calendar Appointment Scheduling -->
-    <p class="calendar-note">
-      Having trouble with the calendar? Text us at <strong style="color:var(--white)">(832) 895-1420</strong>.
-    </p>
+    <a href="sms:8327984827" class="btn-primary" style="font-size:1.1rem; padding:1.2rem 3rem;">
+      Text Us to Book — (832) 798-4827
+    </a>
+    <p style="color:var(--muted); font-size:.8rem; font-weight:300; margin-top:1.2rem;">We typically reply within a few hours.</p>
   </div>
 </section>
 
@@ -921,7 +965,7 @@ footer {
   <a class="footer-logo" href="#"><span>PLUNGE</span>TX</a>
   <div class="footer-copy">
     © 2026 BLambInvestments LLC. All rights reserved.<br>
-    TEXT: (832) 895-1420
+    TEXT: (832) 798-4827
   </div>
   <div class="footer-links">
     <a href="#about">About</a>
@@ -981,6 +1025,34 @@ const observer = new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
 },{threshold:.12});
 reveals.forEach(r=>observer.observe(r));
+
+// ── FORM SUBMIT ──
+const form = document.getElementById('booking-form');
+if(form) {
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    const btn = form.querySelector('.form-submit');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if(res.ok){
+        document.getElementById('form-body').style.display='none';
+        document.getElementById('form-success').style.display='block';
+      } else {
+        btn.textContent = 'Error — Try again';
+        btn.disabled = false;
+      }
+    } catch(err){
+      btn.textContent = 'Error — Try again';
+      btn.disabled = false;
+    }
+  });
+}
 
 </script>
 </body>
