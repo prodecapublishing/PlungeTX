@@ -647,6 +647,84 @@ footer {
 }
 #form-success p { color: var(--muted); font-size: .9rem; font-weight: 300; }
 
+/* ── TWO-UP PRICING ── */
+.pricing-grid.two-up { grid-template-columns: repeat(2, 1fr); max-width: 720px; }
+
+/* ── REVIEWS ── */
+#reviews { text-align: center; }
+.reviews-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; max-width: 1000px; margin: 3rem auto 0;
+}
+.review {
+  background: var(--card);
+  border: 1px solid rgba(0,212,255,.12);
+  border-radius: 6px; padding: 2rem;
+  position: relative;
+}
+.review::before {
+  content: '"'; position: absolute; top: .5rem; left: 1.2rem;
+  font-family: 'Bebas Neue', sans-serif; font-size: 4rem;
+  color: rgba(0,212,255,.15); line-height: 1;
+}
+.review p {
+  font-size: .92rem; font-weight: 300; line-height: 1.8;
+  color: rgba(198,238,255,.75); position: relative; z-index: 1;
+  margin-bottom: 1.5rem;
+}
+.review-by {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem; letter-spacing: .08em; color: var(--cyan);
+  display: flex; flex-direction: column;
+}
+.review-by span {
+  font-family: 'DM Sans', sans-serif; font-size: .75rem;
+  letter-spacing: .05em; color: var(--muted); font-weight: 300;
+}
+
+/* ── EVENT PARTNER ── */
+.event-box {
+  max-width: 800px; margin: 0 auto;
+  background: linear-gradient(135deg, var(--card), #0a2f42);
+  border: 1px solid rgba(0,212,255,.3);
+  border-radius: 8px; padding: 3rem;
+  box-shadow: 0 0 60px rgba(0,212,255,.1);
+}
+.event-box h2 { margin-bottom: 1.2rem; }
+.event-box p {
+  color: rgba(198,238,255,.7); font-weight: 300;
+  font-size: 1rem; line-height: 1.85; margin-bottom: 1rem;
+}
+.event-box strong { color: var(--cyan); font-weight: 500; }
+
+/* ── FAQ ── */
+.faq-list { max-width: 760px; margin: 0 auto; }
+.faq-item {
+  border-bottom: 1px solid rgba(0,212,255,.12);
+  padding: 1.3rem 0;
+}
+.faq-item summary {
+  cursor: pointer; list-style: none;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem; letter-spacing: .04em;
+  color: var(--white);
+  display: flex; justify-content: space-between; align-items: center;
+  transition: color .2s;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: '+'; color: var(--cyan);
+  font-size: 1.6rem; font-weight: 300;
+  transition: transform .25s;
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item summary:hover { color: var(--cyan); }
+.faq-item p {
+  color: rgba(198,238,255,.65); font-weight: 300;
+  font-size: .92rem; line-height: 1.85;
+  margin-top: .9rem; padding-right: 2rem;
+}
+
 /* ── SCROLL REVEAL ── */
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.in { opacity: 1; transform: translateY(0); }
@@ -689,6 +767,9 @@ footer {
   #hero { padding: 0 5vw 6rem; }
   #about, #area, #book { grid-template-columns: 1fr; gap: 3rem; }
   .pricing-grid { grid-template-columns: 1fr; max-width: 380px; }
+  .pricing-grid.two-up { grid-template-columns: 1fr; max-width: 380px; }
+  .reviews-grid { grid-template-columns: 1fr; max-width: 420px; }
+  .event-box { padding: 2rem; }
   .features-grid { grid-template-columns: 1fr; }
   footer { flex-direction: column; text-align: center; }
   .badge { right: 0; }
@@ -709,6 +790,7 @@ footer {
     <a href="#about">About</a>
     <a href="#gallery">Gallery</a>
     <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
     <a href="#area">Service Area</a>
     <a href="#book" class="btn-nav">Book Now</a>
   </div>
@@ -845,64 +927,126 @@ footer {
 
 <div class="hr"></div>
 
+<!-- TESTIMONIALS -->
+<section id="reviews">
+  <div class="label" style="justify-content:center;">Customer Experiences</div>
+  <h2 class="reveal">WHAT RENTERS <span class="accent">SAY</span></h2>
+  <div class="reviews-grid">
+    <article class="review reveal d1">
+      <p>The setup was quick, the water stayed cold all weekend, and everything was spotless. Such an easy rental experience!</p>
+      <div class="review-by">Weekend Renter<span>Pearland Area</span></div>
+    </article>
+    <article class="review reveal d2">
+      <p>We rented the cold plunge for our fitness event, and everyone loved it. PlungeTX handled the delivery and setup, so we didn’t have to worry about anything.</p>
+      <div class="review-by">Fitness Event Organizer<span>Houston Area</span></div>
+    </article>
+    <article class="review reveal d3">
+      <p>I’d wanted to try a cold plunge before buying one, and this was the perfect way to do it. Great equipment, simple instructions, and excellent service.</p>
+      <div class="review-by">First-Time Plunger<span>Greater Houston</span></div>
+    </article>
+  </div>
+</section>
+
+<div class="hr"></div>
+
 <!-- PRICING -->
 <section id="pricing">
   <div class="label" style="justify-content:center;">Pricing & Packages</div>
   <h2 class="reveal">SIMPLE <span class="accent">PRICING</span></h2>
   <p class="pricing-intro reveal d1">Our limited-time sale makes it easier to bring recovery home. Free pickup is available in Pearland, or add delivery, setup, and pickup for a flat $100 within our local service area.</p>
 
-  <div class="sale-banner reveal d1">⚡ Act Fast — Sale Pricing Is Available for a Limited Time</div>
+  <div class="sale-banner reveal d1">⚡ Sale pricing through [ADD REAL DATE] — or delete this banner</div>
 
-  <div class="pricing-grid">
-    <div class="plan featured sale reveal d1">
-      <div class="plan-period">Fri – Sun</div>
+  <div class="pricing-grid two-up">
+    <div class="plan sale reveal d1">
+      <div class="plan-period">Fri – Mon/Tue</div>
       <div class="plan-name">Weekend Chill</div>
-      <div class="plan-who">Home use, small events</div>
+      <div class="plan-who">Try it out, or host a backyard session</div>
       <div class="old-price">Regularly $200</div>
       <div class="plan-price"><sup>$</sup>175</div>
-      <div class="sale-note">Save $25 — Act Fast</div>
+      <div class="sale-note">Save $25</div>
       <ul class="plan-perks">
-        <li>Weekend rental (Fri–Sun)</li>
+        <li>Friday morning drop-off, Mon/Tue pickup</li>
         <li>Free pickup in Pearland</li>
         <li>Pod Company Pro Chiller — 1/2 HP</li>
-        <li>Circulation & 20-micron filtration</li>
-        <li>Optional delivery, setup & pickup: +$100</li>
+        <li>Circulation &amp; 20-micron filtration</li>
+        <li>Optional delivery, setup &amp; pickup: +$100</li>
       </ul>
     </div>
-    <div class="plan sale reveal d2">
+    <div class="plan featured sale reveal d2">
       <div class="plan-period">7 Days</div>
       <div class="plan-name">Weekly Reset</div>
-      <div class="plan-who">Athletes, gyms, longer trials</div>
+      <div class="plan-who">Best value — most people want more than one session</div>
       <div class="old-price">Regularly $400</div>
       <div class="plan-price"><sup>$</sup>300</div>
-      <div class="sale-note">Save $100 — Limited Time</div>
+      <div class="sale-note">Save $100 — just $43/day</div>
       <ul class="plan-perks">
         <li>Full 7-day rental</li>
         <li>Free pickup in Pearland</li>
         <li>Pod Company Pro Chiller — 1/2 HP</li>
-        <li>Circulation & 20-micron filtration</li>
-        <li>Optional delivery, setup & pickup: +$100</li>
-      </ul>
-    </div>
-    <div class="plan reveal d3">
-      <div class="plan-period">Events</div>
-      <div class="plan-name">Event Partner</div>
-      <div class="plan-who">Gyms, wellness events, pop-ups</div>
-      <div class="plan-price">50<span style="font-size:2rem;color:var(--cyan);">%</span></div>
-      <ul class="plan-perks">
-        <li>Profit sharing: 50% per paid use</li>
-        <li>Great for paid recovery stations</li>
-        <li>Pod Company Pro Chiller — 1/2 HP</li>
-        <li>Circulation & 20-micron filtration</li>
-        <li>Delivery, setup & pickup quoted by event</li>
+        <li>Circulation &amp; 20-micron filtration</li>
+        <li>Optional delivery, setup &amp; pickup: +$100</li>
       </ul>
     </div>
   </div>
 
   <div class="pricing-notes reveal">
     <strong>📍 Free pickup</strong> in Pearland<br>
-    <strong>🚚 Delivery, setup & pickup</strong> available for a flat $100 within our local service area<br>
+    <strong>🚚 Delivery, setup &amp; pickup</strong> available for a flat $100 within our local service area<br>
     For extended travel or event installs, <strong>text (832) 798-4827</strong> for a custom quote.
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- EVENT PARTNER -->
+<section id="events">
+  <div class="event-box reveal">
+    <div>
+      <div class="label">For Gyms &amp; Event Organizers</div>
+      <h2>EVENT <span class="accent">PARTNER</span></h2>
+      <p>Running a race, a gym open house, or a wellness pop-up? We'll bring the plunge out and set up a paid recovery station — you keep <strong>50% of every paid use</strong>. No rental fee, no equipment to buy.</p>
+      <p style="font-size:.88rem;">Delivery, setup, and pickup quoted per event based on location and duration.</p>
+      <a href="sms:8327984827" class="btn-outline" style="margin-top:1.5rem;">Text About an Event</a>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="label" style="justify-content:center;">Common Questions</div>
+  <h2 class="reveal" style="text-align:center; margin-bottom:3rem;">BEFORE YOU <span class="accent">BOOK</span></h2>
+  <div class="faq-list">
+    <details class="faq-item reveal d1">
+      <summary>What do I need to have ready?</summary>
+      <p>A flat spot (grass or concrete both work), a standard outdoor outlet within reach, and a garden hose spigot for filling. That's it — we bring everything else. The tub is only 40 lbs empty, so if you're doing free pickup in Pearland it fits easily in most vehicles.</p>
+    </details>
+    <details class="faq-item reveal d1">
+      <summary>How cold does it get, and how long does it take?</summary>
+      <p>The Pod Company Pro Chiller pulls the water down about 10°F per hour and holds it in the mid-40s even through Texas summer. Fill it in the morning and it's plunge-ready by afternoon.</p>
+    </details>
+    <details class="faq-item reveal d2">
+      <summary>Do I need to add ice?</summary>
+      <p>Never. The chiller handles it — that's the whole point. No ice runs, no coolers, no melting between sessions.</p>
+    </details>
+    <details class="faq-item reveal d2">
+      <summary>How much power does it use?</summary>
+      <p>Very little. The 1/2 HP chiller runs off a standard household outlet — a regular outdoor extension cord is fine. No dedicated circuit or electrician needed.</p>
+    </details>
+    <details class="faq-item reveal d3">
+      <summary>Is the water clean between users?</summary>
+      <p>Yes — the system runs continuous circulation with 20-micron filtration, and we start every rental with a fresh fill.</p>
+    </details>
+    <details class="faq-item reveal d3">
+      <summary>When do drop-off and pickup happen?</summary>
+      <p>We're flexible, but our usual rhythm is a Friday morning drop-off and pickup after 5PM the following Monday or Tuesday — so a "weekend" rental usually gets you a few extra days. Need different timing? Just ask.</p>
+    </details>
+    <details class="faq-item reveal d3">
+      <summary>What if I need to cancel or reschedule?</summary>
+      <p>Just text us at least 48 hours ahead and we'll reschedule or cancel — no charge, no hassle.</p>
+    </details>
   </div>
 </section>
 
@@ -946,17 +1090,55 @@ footer {
 <div class="hr"></div>
 
 <!-- BOOK CTA -->
-<section id="book" style="text-align:center; display:block;">
-  <div class="reveal">
-    <div class="label" style="justify-content:center;">Book Now</div>
+<section id="book">
+  <div class="book-info reveal">
+    <div class="label">Book Now</div>
     <h2>READY TO<br><span class="accent">PLUNGE?</span></h2>
-    <p style="color:rgba(198,238,255,.6); font-weight:300; font-size:1rem; max-width:480px; margin:1.5rem auto 2.5rem; line-height:1.8;">
-      Just shoot us a text with your preferred dates, package, and address. We'll confirm availability and get you set up fast.
+    <p style="color:rgba(198,238,255,.6); font-weight:300; font-size:1rem; margin:1.5rem 0 2rem; line-height:1.8;">
+      Fastest way is a text — send your dates, package, and address and we'll confirm availability.
     </p>
-    <a href="sms:8327984827" class="btn-primary" style="font-size:1.1rem; padding:1.2rem 3rem;">
-      Text Us to Book — (832) 798-4827
+    <a href="sms:8327984827" class="btn-primary" style="font-size:1rem;">
+      Text (832) 798-4827
     </a>
     <p style="color:var(--muted); font-size:.8rem; font-weight:300; margin-top:1.2rem;">We typically reply within a few hours.</p>
+  </div>
+
+  <div class="form-card reveal d1">
+    <h3>Or Send a Request</h3>
+    <div id="form-body">
+      <form id="booking-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <input type="hidden" name="_subject" value="New PlungeTX Booking Request">
+        <div class="field">
+          <label for="name">Name *</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone *</label>
+          <input type="tel" id="phone" name="phone" placeholder="(832) 000-0000" required>
+        </div>
+        <div class="field">
+          <label for="package">Package *</label>
+          <select id="package" name="package" required>
+            <option value="" disabled selected>Select…</option>
+            <option value="Weekend Chill ($175)">Weekend Chill – $175</option>
+            <option value="Weekly Reset ($300)">Weekly Reset – $300</option>
+            <option value="Event Partner">Event / Gym Partnership</option>
+            <option value="Not sure yet">Not sure yet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="dates">Dates &amp; City *</label>
+          <input type="text" id="dates" name="dates" placeholder="e.g. Jun 12–14, Friendswood" required>
+        </div>
+        <button type="submit" class="form-submit">Send Request →</button>
+        <p class="form-note">No spam — we only use this to confirm your booking.</p>
+      </form>
+    </div>
+    <div id="form-success">
+      <div class="check">🧊</div>
+      <h4>Request Sent!</h4>
+      <p>We'll text you shortly to confirm your booking.</p>
+    </div>
   </div>
 </section>
 
@@ -971,6 +1153,7 @@ footer {
     <a href="#about">About</a>
     <a href="#gallery">Gallery</a>
     <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
     <a href="#book">Book Now</a>
   </div>
 </footer>
