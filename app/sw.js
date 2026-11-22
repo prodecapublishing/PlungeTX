@@ -1,6 +1,6 @@
 // PlungeTX offline support: always try the network first so updates show up
 // right away, and fall back to the saved copy when there's no signal.
-const CACHE = 'plungetx-v1';
+const CACHE = 'plungetx-v2';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-180.png', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', (e) => {

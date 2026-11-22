@@ -225,6 +225,10 @@ button.bdg{width:100%;color:inherit}
 .logform label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--mist)}
 .logform input{background:var(--abyss);color:var(--frost);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:inherit;font-size:16px;width:100%;min-width:0}
 .feelt{color:var(--glacier)}
+.toast{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:40;max-width:528px;margin:0 auto;
+  display:flex;align-items:center;gap:12px;padding:12px 12px 12px 16px;border-radius:16px;background:var(--panel);border:1px solid var(--glacier);box-shadow:0 12px 40px rgba(0,0,0,.45);font-size:14px;font-weight:500}
+.toast span{flex:1;min-width:0}
+.toast button{padding:9px 14px;border-radius:11px;background:var(--glacier);color:var(--glacier-ink);font-weight:600;flex:none}
 .newaw .it{color:inherit;width:100%}
 .share-go{background:transparent;color:var(--frost);border:1px solid var(--line)}
 .sheet{position:fixed;inset:0;z-index:30;background:rgba(3,10,14,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;overflow-y:auto;
@@ -288,7 +292,7 @@ button.bdg{width:100%;color:inherit}
     <div class="seg" data-key="g.coach"><button data-v="calm">Calm</button><button data-v="hard">Hard mode</button></div>
     <span class="hint" id="gCoachHint" style="text-align:left;margin:0"></span></div>
   <div class="row"><span>Voice setup</span><button class="btn2" id="gVoiceHelp">Get a natural voice</button></div>
-  <div class="row"><label for="gVoice">Voice</label><select id="gVoice" data-key="g.voiceName"><option value="">Auto</option></select></div>
+  <div class="row"><label for="gVoice">Voice</label><select id="gVoice" data-key="g.voiceURI"><option value="">Best available</option></select></div>
   <div class="row stack"><div class="between"><label for="gRate">Speaking speed</label><span class="val" id="gRateV"></span></div><input type="range" id="gRate" min="0.7" max="1.1" step="0.05" data-key="g.rate"></div>
   <div class="row stack"><div class="between"><label for="gMusicVol">Music volume</label><span class="val" id="gMusicVolV"></span></div><input type="range" id="gMusicVol" min="0.1" max="1" step="0.05" data-key="g.musicVol"></div>
   <div class="row"><span>Test sound</span><button class="btn2" id="gTest">Play sample</button></div>
@@ -425,6 +429,8 @@ button.bdg{width:100%;color:inherit}
   <div class="dock"><div class="inner" style="display:flex;gap:10px"><button class="go share-go" id="dShare">Share</button><button class="go" data-go="home">Done</button></div></div>
 </section>
 
+<div class="toast" id="toast" hidden role="status"><span id="toastTxt"></span><button id="toastBtn"></button></div>
+
 <!-- NATURAL VOICE SETUP -->
 <div class="sheet" id="vSheet" hidden>
   <div class="vcard">
@@ -475,7 +481,7 @@ const DEF={b:{pace:'standard',rounds:3,breaths:30,voice:true,whoosh:true,music:t
   i:{preset:'intermediate',custom:3,prep:2,voice:true,tempOn:true,tempF:50,music:true,track:'drift'},
   s:{preset:'classic',custom:15,voice:true,tempF:175,music:true,track:'cedar'},
   c:{rounds:3,hot:12,cold:2,trans:1,order:'hc',hotF:175,coldF:50,voice:true,music:true,trackHot:'cedar',trackCold:'drift'},
-  g:{voiceName:'',rate:0.85,musicVol:0.7,coach:'calm'}};
+  g:{voiceURI:'',voiceName:'',rate:0.85,musicVol:0.7,coach:'calm'}};
 const hard=()=>S.g.coach==='hard',pick=(calm,tough)=>hard()?tough:calm;
 const HARD_COLD=['You chose this. Own every second.','The cold is talking. You do not have to listen.','Your mind quits long before your body does.','Nobody is coming to pull you out. Stay in.','Slow breath. You are tougher than this water.','This is where most people get out. Not you.','Comfort is the enemy. Sit in it.','Every second in here counts. Keep stacking them.'];
 const HARD_HEAT=['Heat is just pressure. Breathe through it.','Stay still. Stay calm. Stay in.','This is where you get harder.','Quiet the mind. The body follows.','You are not here to be comfortable.','Steady breath. Nothing gets to you.','Lock in. One minute at a time.','If you feel dizzy, get out. Tough is smart, not reckless.'];
@@ -560,18 +566,36 @@ const TTS='speechSynthesis' in window;let voices=[],speakOn=true;
 /* Rank voices so natural-sounding ones come first: Premium/Enhanced/Neural/Natural beat the default compact voices. */
 const GOOD=/Ava|Zoe|Evan|Nathan|Noelle|Joelle|Samantha|Allison|Susan|Tom|Serena|Jamie|Siri|Aria|Jenny|Guy|Libby|Sonia|Ryan/i;
 const BAD=/Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Fred|Junior|Ralph|Kathy|Grandma|Grandpa|Eddy|Flo|Reed|Rocko|Sandy|Shelley/i;
-function vScore(v){let s=0;const n=v.name;if(/premium/i.test(n))s+=60;if(/^Google/i.test(n))s+=40;if(/enhanced|neural|natural|online/i.test(n))s+=45;if(/siri/i.test(n))s+=40;if(GOOD.test(n))s+=15;if(/en[-_]US/i.test(v.lang))s+=5;if(BAD.test(n))s-=100;if(v.localService===false)s+=8;return s}
-function vLabel(v){const sc=vScore(v);return v.name.replace(/</g,'')+(sc>=45?' ★':'')}
-function loadVoices(){if(!TTS)return;voices=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang)&&vScore(v)>-50).sort((a,b)=>vScore(b)-vScore(a));const sel=$('gVoice'),cur=S.g.voiceName;
-  sel.innerHTML='<option value="">Best available</option>'+voices.map(v=>`<option value="${v.name.replace(/"/g,'&quot;')}">${vLabel(v)}</option>`).join('');sel.value=voices.some(v=>v.name===cur)?cur:'';
-  setTimeout(voiceCheck,1200)}
-if(TTS){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
-function pickVoice(){return voices.find(v=>v.name===S.g.voiceName)||voices[0]}
-/* Speak one sentence per utterance: the short natural gap between them reads as calm pacing instead of one flat run-on. */
-function say(text,interrupt){if(!speakOn||!TTS)return;if(interrupt)speechSynthesis.cancel();const v=pickVoice();
+/* iPhones often report a Premium voice as just "Jamie"; the quality shows up only in its voiceURI (…voice.premium.en-GB.Jamie). */
+const vTier=v=>{const u=(v.name+' '+(v.voiceURI||'')).toLowerCase();return /premium/.test(u)?'Premium':/enhanced/.test(u)?'Enhanced':''};
+const ACC={'en-US':'US','en-GB':'UK','en-AU':'Australia','en-IE':'Ireland','en-IN':'India','en-ZA':'South Africa','en-CA':'Canada','en-NZ':'New Zealand'};
+function vScore(v){let s=0;const n=v.name,t=vTier(v);if(t==='Premium')s+=60;else if(t==='Enhanced')s+=45;else if(/neural|natural|online/i.test(n))s+=45;if(/^Google/i.test(n))s+=40;if(/siri/i.test(n))s+=40;if(GOOD.test(n))s+=15;if(/en[-_]US/i.test(v.lang))s+=5;if(BAD.test(n))s-=100;if(v.localService===false)s+=8;return s}
+function vLabel(v){const sc=vScore(v),t=vTier(v),acc=ACC[(v.lang||'').replace('_','-')];let n=v.name.replace(/</g,'');if(t&&!new RegExp(t,'i').test(n))n+=` (${t})`;return n+(acc?` · ${acc}`:'')+(sc>=45?' ★':'')}
+/* iPhones load the voice list late and don't always announce changes, so the app re-reads it for a few seconds after opening
+   and again whenever you come back to it (for example from Settings after downloading a voice).
+   Voices are remembered by voiceURI, because "Jamie" and "Jamie (Premium)" can share the same name. */
+const vKey=v=>v.voiceURI||v.name;let vSig='';
+function loadVoices(){if(!TTS)return;const seen=new Set();
+  voices=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang)&&vScore(v)>-50&&!seen.has(vKey(v))&&seen.add(vKey(v))).sort((a,b)=>vScore(b)-vScore(a));
+  const sig=voices.map(vKey).join('|');if(sig===vSig)return;vSig=sig;
+  const sel=$('gVoice');sel.innerHTML='<option value="">Best available</option>'+voices.map(v=>`<option value="${vKey(v).replace(/"/g,'&quot;')}">${vLabel(v)}</option>`).join('');
+  sel.value=voices.some(v=>vKey(v)===S.g.voiceURI)?S.g.voiceURI:'';
+  if(!$('vSheet').hidden)renderVList();
+  if(voices.length)setTimeout(()=>{noticeVoices();voiceCheck()},600)}
+let vPoll=0;function pollVoices(n=20){const fresh=vPoll<=0;vPoll=n;if(fresh)(function tick(){loadVoices();if(--vPoll>0)setTimeout(tick,250)})()}
+if(TTS){pollVoices();speechSynthesis.onvoiceschanged=loadVoices;
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')pollVoices()});window.addEventListener('pageshow',()=>pollVoices())}
+function pickVoice(){return voices.find(v=>S.g.voiceURI&&vKey(v)===S.g.voiceURI)||(S.g.voiceName&&voices.find(v=>v.name===S.g.voiceName))||voices[0]}
+/* Premium voices take a moment to load the first time they speak; a silent warm-up on your first tap keeps the first cue on time. */
+let warmed='';function warmVoice(v=pickVoice()){if(!TTS||!v||warmed===vKey(v))return;warmed=vKey(v);try{const u=new SpeechSynthesisUtterance(' ');u.voice=v;u.lang=v.lang;u.volume=0;speechSynthesis.speak(u)}catch(e){}}
+document.addEventListener('pointerdown',()=>warmVoice(),{passive:true});
+/* Speak one sentence per utterance: the short natural gap between them reads as calm pacing instead of one flat run-on.
+   Utterances are held in a set until they finish, because iOS can drop the end event of one that was garbage-collected. */
+const liveU=new Set();
+function say(text,interrupt){if(!speakOn||!TTS)return;if(interrupt)speechSynthesis.cancel();if(speechSynthesis.paused)speechSynthesis.resume();const v=pickVoice();
   const parts=text.match(/[^.!?]+[.!?]*/g)||[text];
   parts.map(p=>p.trim()).filter(Boolean).forEach(p=>{const u=new SpeechSynthesisUtterance(p);if(v){u.voice=v;u.lang=v.lang}u.rate=hard()?Math.min(1.25,S.g.rate+.15):S.g.rate;u.pitch=hard()?.9:1;u.volume=1;
-    u.onstart=()=>duck(true);u.onend=u.onerror=()=>duck(false);speechSynthesis.speak(u)})}
+    u.onstart=()=>duck(true);u.onend=u.onerror=()=>{liveU.delete(u);duck(false)};liveU.add(u);speechSynthesis.speak(u)})}
 function duck(on){if(!musicGain)return;const now=ctx.currentTime;musicGain.gain.cancelScheduledValues(now);musicGain.gain.setTargetAtTime(S.g.musicVol*(on?.35:1),now,.25)}
 
 /* ---------- wake lock ---------- */
@@ -581,7 +605,7 @@ document.addEventListener('visibilitychange',()=>{if(sess&&!sess.over&&document.
 
 /* ---------- settings binding ---------- */
 const getK=k=>{const[a,b]=k.split('.');return S[a][b]};
-function setK(k,v){const[a,b]=k.split('.');S[a][b]=v;store.set('settings',S);if(k==='g.musicVol'&&musicGain)musicGain.gain.value=v;refresh()}
+function setK(k,v){const[a,b]=k.split('.');S[a][b]=v;if(k==='g.voiceURI'){S.g.voiceName='';warmVoice()}store.set('settings',S);if(k==='g.musicVol'&&musicGain)musicGain.gain.value=v;refresh()}
 document.querySelectorAll('select.trk').forEach(s=>s.innerHTML=Object.entries(TRACKS).map(([k,t])=>`<option value="${k}">${t.name}</option>`).join(''));
 document.querySelectorAll('[data-key]').forEach(el=>{const k=el.dataset.key;
   if(el.classList.contains('stepper')){const[m,,p]=el.children,min=+el.dataset.min,max=+el.dataset.max,st=+el.dataset.step;
@@ -915,17 +939,27 @@ function voiceCheck(){if(!TTS||!voices.length)return;const good=hasGood(),off=st
   if(!good&&!off&&!vPrompted&&!$('v-home').hidden&&$('share').hidden){vPrompted=true;openVoice()}}
 function openVoice(){
   $('vSteps').innerHTML=isAndroid?'<ol><li>Open <b>Settings</b> › <b>Accessibility</b> (or <b>General management</b>) › <b>Text-to-speech</b>.</li><li>Choose <b>Speech Services by Google</b>, tap the gear, then <b>Install voice data</b> › <b>English (US)</b> and download a voice.</li><li>Come back here and tap <b>I downloaded one</b>.</li></ol>'
-    :isIOS?'<ol><li>Open <b>Settings</b> › <b>Accessibility</b> › <b>Spoken Content</b> › <b>Voices</b> › <b>English</b>.</li><li>Tap <b>Ava</b>, <b>Zoe</b> or <b>Evan</b> and download the <b>Enhanced</b> or <b>Premium</b> version.</li><li>Fully close this app, reopen it, then tap <b>I downloaded one</b>.</li></ol>'
+    :isIOS?'<ol><li>Open <b>Settings</b> › <b>Accessibility</b> › <b>Spoken Content</b> › <b>Voices</b> › <b>English</b>.</li><li>Tap a voice such as <b>Ava</b>, <b>Zoe</b>, <b>Evan</b> or <b>Jamie</b> and download its <b>Premium</b> version, or <b>Enhanced</b> if there is no Premium.</li><li>Wait for the download to finish, then come back here. PlungeTX checks for the new voice by itself; if it doesn\'t appear, swipe the app closed, reopen it, and tap <b>I downloaded one</b>.</li></ol>'
     :'<p class="small">On a computer, pick a voice marked ★ below. On your iPhone, open this app and follow the steps it shows there.</p>';
   renderVList();$('vMsg').textContent='';$('vSheet').hidden=false}
-function renderVList(){const top=voices.slice(0,6),cur=pickVoice();
+function renderVList(){const top=voices.slice(0,20),cur=pickVoice();
   $('vList').innerHTML=top.length?'<p class="small">Voices on this device, best first:</p>'+top.map((v,i)=>`<div class="vrow"><span>${vLabel(v)}</span><button data-vplay="${i}">Play</button><button data-vuse="${i}" class="${cur===v?'on':''}">${cur===v?'In use':'Use'}</button></div>`).join(''):''}
 function previewVoice(v){if(!TTS||!v)return;audio();speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('Breathe in slowly. And let it go.');u.voice=v;u.lang=v.lang;u.rate=S.g.rate;speechSynthesis.speak(u)}
 $('vList').onclick=e=>{const p=e.target.closest('[data-vplay]'),u=e.target.closest('[data-vuse]');if(p)previewVoice(voices[+p.dataset.vplay]);
-  if(u){const v=voices[+u.dataset.vuse];setK('g.voiceName',v.name);$('gVoice').value=v.name;renderVList();previewVoice(v)}};
-$('vRecheck').onclick=()=>{if(TTS)loadVoices();setTimeout(()=>{if(TTS)loadVoices();const g=bestGood();
-  if(g){setK('g.voiceName',g.name);$('gVoice').value=g.name;$('vMsg').textContent=`Found ${g.name}. PlungeTX will use it from now on.`;previewVoice(g);$('vBanner').hidden=true}
-  else $('vMsg').textContent='No high-quality voice yet. Once the download finishes, fully close this app, open it again, and tap this button.';renderVList()},500)};
+  if(u){const v=voices[+u.dataset.vuse];setVoice(v);previewVoice(v)}};
+$('vRecheck').onclick=()=>{if(!TTS)return;vSig='';pollVoices();$('vMsg').textContent='Checking…';setTimeout(()=>{const g=bestGood();
+  if(g){setVoice(g);$('vMsg').textContent=`Found ${vName(g)}. PlungeTX will use it from now on.`;previewVoice(g);$('vBanner').hidden=true}
+  else $('vMsg').textContent=isIOS?'Not showing yet. Make sure the download finished, then swipe this app closed and open it again. If a Premium voice never appears, download the Enhanced version instead; some iPhone versions only share Enhanced voices with web apps.':'No high-quality voice yet. Once the download finishes, close this app fully and open it again.';renderVList()},1500)};
+const vName=v=>vLabel(v).replace(' ★','');
+function setVoice(v){S.g.voiceURI=vKey(v);S.g.voiceName=v.name;store.set('settings',S);$('gVoice').value=vKey(v);warmVoice(v);if(!$('vSheet').hidden)renderVList()}
+/* When a high-quality voice shows up that wasn't on the phone last time, say so, and switch to it if the current voice is a basic one. */
+function noticeVoices(){if(!voices.length)return;const known=store.get('knownVoices',null);store.set('knownVoices',[...new Set([...(known||[]),...voices.map(vKey)])]);
+  const nv=voices.find(v=>vScore(v)>=45&&!(known||[]).includes(vKey(v)));if(!nv||!known)return;const cur=pickVoice();$('vBanner').hidden=true;
+  if(cur===nv)toast(`Now using ${vName(nv)}`,'Play',()=>previewVoice(nv));
+  else if(vScore(cur)<45){setVoice(nv);toast(`Switched to ${vName(nv)}`,'Play',()=>previewVoice(nv))}
+  else toast(`New voice: ${vName(nv)}`,'Use it',()=>{setVoice(nv);previewVoice(nv)})}
+let toastT=0;function toast(msg,label,fn){const t=$('toast');$('toastTxt').textContent=msg;const b=$('toastBtn');b.hidden=!label;b.textContent=label||'';b.onclick=()=>{fn&&fn();t.hidden=true};
+  t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{t.hidden=true},9000)}
 $('vLater').onclick=()=>{$('vSheet').hidden=true};
 $('vNever').onclick=()=>{store.set('voiceOff',true);$('vSheet').hidden=true;$('vBanner').hidden=true};
 $('vBanner').onclick=openVoice;$('gVoiceHelp').onclick=openVoice;
