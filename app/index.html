@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PlungeTX">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#06161f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}</style>
+</head>
+<body>
+<title>PlungeTX</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#06161f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one-screen phone app; stacked views, fixed bottom dock for the primary action. Deliberately single dark "deep water" look. */
+:root{
+  --abyss:#06161f; --deep:#0b2431; --panel:#0f2d3c; --line:#1c4456;
+  --frost:#e7f5f7; --mist:#93b3bd; --glacier:#6dd3e0; --glacier-ink:#04262e;
+  --ember:#f3a25e; --warn:#ffd08a;
+  --display:"Sora",ui-sans-serif,system-ui,sans-serif;
+  --body:"Inter",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%}
+[hidden]{display:none!important}
+body{background:var(--abyss);color:var(--frost);font-family:var(--body);font-size:16px;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--glacier);outline-offset:2px}
+.view{min-height:100%;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px;max-width:560px;margin:0 auto}
+.session{padding-bottom:0;height:100%}
+h1,h2,.display{font-family:var(--display);text-wrap:balance;margin:0}
+.num{font-variant-numeric:tabular-nums}
+
+/* top bar */
+.bar{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding-block:14px 8px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--abyss);z-index:5}
+.bar h1{font-size:19px;font-weight:600;text-align:center}
+.back{width:44px;height:44px;border-radius:50%;display:grid;place-items:center}
+.back svg{width:22px;height:22px}
+
+/* home */
+.brand{display:flex;align-items:center;gap:12px;padding-block:28px 6px}
+.brand svg{width:44px;height:44px;flex:none}
+.brand h1{font-size:30px;font-weight:700;letter-spacing:-.02em}
+.brand h1 span{color:var(--glacier)}
+.tag{color:var(--mist);margin:0 0 22px;font-size:15px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:22px}
+.stat{padding:12px 10px;border-top:1px solid var(--line)}
+.stat b{display:block;font-family:var(--display);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.stat small{color:var(--mist);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.mode{display:flex;align-items:center;gap:16px;text-align:left;width:100%;padding:20px 18px;border-radius:22px;margin-bottom:12px;background:linear-gradient(135deg,#12394a,#0c2735);border:1px solid var(--line)}
+.mode.ice{background:linear-gradient(135deg,#0f4552,#0a2a36)}
+.mode .ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:rgba(109,211,224,.12);flex:none}
+.mode .ic svg{width:28px;height:28px}
+.mode h2{font-size:19px;font-weight:600}
+.mode p{margin:4px 0 0;color:var(--mist);font-size:14px;line-height:1.4}
+.mode .arrow{margin-left:auto;color:var(--mist)}
+.linkrow{display:flex;justify-content:space-between;align-items:center;width:100%;padding:16px 4px;border-bottom:1px solid var(--line);font-weight:500}
+.section-h{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mist);margin:26px 0 4px}
+
+/* rows & controls */
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);min-height:58px}
+.row>label,.row>span{font-weight:500}
+.row.stack{flex-direction:column;align-items:stretch}
+.row .between{display:flex;justify-content:space-between;align-items:baseline}
+.sub{padding-left:14px;border-left:2px solid var(--line);margin:4px 0 0}
+.sub .row{border-bottom-color:transparent;min-height:50px;padding:8px 0}
+.val{font-family:var(--display);font-weight:600;font-variant-numeric:tabular-nums}
+.hint{color:var(--mist);font-size:14px;margin:8px 0 0;text-align:center}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--deep);border:1px solid var(--line);border-radius:16px;padding:4px;gap:4px}
+.seg button{padding:12px 4px;border-radius:12px;font-weight:500;color:var(--mist);display:flex;flex-direction:column;align-items:center;gap:4px;font-size:15px}
+.seg button[aria-pressed="true"]{background:var(--glacier);color:var(--glacier-ink)}
+.seg .lvl{display:flex;gap:3px;height:12px;align-items:flex-end}
+.seg .lvl i{width:4px;border-radius:2px;background:currentColor;opacity:.35}
+.seg .lvl i.on{opacity:1}
+.stepper{display:flex;align-items:center;gap:4px;background:var(--deep);border:1px solid var(--line);border-radius:14px;padding:3px}
+.stepper button{width:40px;height:40px;border-radius:11px;font-size:22px;line-height:1}
+.stepper button:active{background:var(--panel)}
+.stepper output{min-width:56px;text-align:center;font-family:var(--display);font-weight:600;font-size:18px;font-variant-numeric:tabular-nums}
+input.sw{appearance:none;-webkit-appearance:none;width:54px;height:32px;border-radius:16px;background:var(--line);position:relative;flex:none;transition:background .2s;margin:0}
+input.sw::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:var(--frost);transition:transform .2s}
+input.sw:checked{background:var(--glacier)}
+input.sw:checked::after{transform:translateX(22px)}
+input[type=range]{width:100%;accent-color:var(--glacier);height:32px;margin:6px 0 0}
+.ends{display:flex;justify-content:space-between;color:var(--mist);font-size:13px}
+.pick{display:flex;gap:8px;align-items:center;min-width:0}
+select{background:var(--deep);color:var(--frost);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:inherit;font-size:15px;max-width:190px}
+.prev{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);display:grid;place-items:center;flex:none}
+.prev svg{width:16px;height:16px}
+.prev.on{background:var(--glacier);color:var(--glacier-ink);border-color:var(--glacier)}
+.warn{display:flex;gap:10px;align-items:flex-start;margin:22px 0 0;padding:14px;border-radius:14px;background:rgba(255,208,138,.08);color:var(--warn);font-size:14px;line-height:1.45}
+.warn svg{flex:none;width:18px;height:18px;margin-top:1px}
+.bigdur{text-align:center;font-family:var(--display);font-size:64px;font-weight:700;letter-spacing:-.03em;margin:22px 0 4px;font-variant-numeric:tabular-nums}
+.badge{width:118px;height:118px;margin:14px auto 18px;border-radius:50%;display:grid;place-items:center;text-align:center;background:radial-gradient(circle at 35% 30%,#2a8fa0,#0d3a48 70%);box-shadow:0 0 0 10px rgba(109,211,224,.06),0 0 0 22px rgba(109,211,224,.03)}
+.badge b{font-family:var(--display);font-size:40px;font-weight:700;line-height:1;display:block}
+.badge small{color:var(--frost);opacity:.75;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.dock{position:fixed;left:0;right:0;bottom:0;padding:14px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:linear-gradient(transparent,var(--abyss) 30%);z-index:6}
+.dock .inner{max-width:528px;margin:0 auto}
+.go{width:100%;padding:18px;border-radius:18px;background:var(--glacier);color:var(--glacier-ink);font-family:var(--display);font-weight:600;font-size:19px}
+.go:active{transform:scale(.99)}
+.btn2{padding:12px 16px;border-radius:12px;border:1px solid var(--line);font-weight:500}
+
+/* sessions */
+.session{background:radial-gradient(120% 80% at 50% 40%,#0e3443 0%,var(--abyss) 70%)}
+.s-top{display:flex;justify-content:space-between;align-items:center;padding-block:18px 0;color:var(--mist);font-size:14px;letter-spacing:.06em;text-transform:uppercase}
+.chip{padding:6px 10px;border-radius:999px;border:1px solid var(--line);text-transform:none;letter-spacing:0;color:var(--frost)}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;min-height:0;user-select:none;-webkit-user-select:none}
+.orbwrap{width:min(78vw,320px);aspect-ratio:1;display:grid;place-items:center;position:relative;max-width:100%}
+.orb{width:100%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 38% 32%,#bdf1f6 0%,#5cc6d5 28%,#1b7f92 62%,#0d4757 100%);box-shadow:0 0 60px rgba(109,211,224,.35),inset 0 -14px 40px rgba(0,0,0,.25);transform:scale(.55);transition:transform 1.5s cubic-bezier(.45,.05,.35,1),background .8s,box-shadow .8s;display:grid;place-items:center}
+.orb.hold{background:radial-gradient(circle at 38% 32%,#e7f5f7 0%,#7db8c4 35%,#2a5d6b 75%,#173d49 100%);box-shadow:0 0 30px rgba(231,245,247,.18)}
+.orb.recover{background:radial-gradient(circle at 38% 32%,#ffe1c2 0%,#f3a25e 38%,#b5612a 75%,#6e3517 100%);box-shadow:0 0 70px rgba(243,162,94,.35)}
+.ripple{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(231,245,247,.25);opacity:0;pointer-events:none}
+.holding .ripple{animation:rip 4s ease-out infinite}
+.holding .ripple.b{animation-delay:2s}
+@keyframes rip{0%{transform:scale(.45);opacity:.7}100%{transform:scale(1.05);opacity:0}}
+.big{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:clamp(48px,16vw,76px);color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.35);font-variant-numeric:tabular-nums;pointer-events:none}
+.s-label{font-family:var(--display);font-size:26px;font-weight:600;text-align:center;min-height:34px}
+.s-sub{color:var(--mist);font-size:15px;text-align:center;min-height:22px;max-width:30ch;line-height:1.4}
+.tapb{padding:16px 30px;border-radius:999px;background:var(--frost);color:var(--abyss);font-family:var(--display);font-weight:600;font-size:18px}
+.s-dock{display:flex;gap:10px;padding-block:12px calc(18px + env(safe-area-inset-bottom,0px))}
+.s-dock button{flex:1;padding:16px;border-radius:16px;border:1px solid var(--line);font-weight:600;background:rgba(15,45,60,.6)}
+.s-dock button.armed{background:#5a2a24;border-color:#a14b3e}
+.ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:6}
+.ring .trk{stroke:rgba(109,211,224,.12)}
+.ring .prog{stroke:var(--glacier);stroke-linecap:round;transition:stroke-dashoffset .3s linear}
+.ice .orb{width:72%}
+.ringtext{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.ringtext b{font-family:var(--display);font-size:clamp(46px,15vw,68px);font-weight:700;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.4);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.ringtext small{color:var(--frost);opacity:.8;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+
+/* results / history */
+.done-hero{text-align:center;padding-block:44px 8px}
+.done-hero h1{font-size:28px}
+.done-hero p{color:var(--mist);margin:8px 0 0}
+.bars{display:flex;flex-direction:column;gap:12px;margin:26px 0}
+.barrow{display:grid;grid-template-columns:72px 1fr 56px;align-items:center;gap:10px;font-variant-numeric:tabular-nums}
+.barrow .t{height:12px;border-radius:6px;background:var(--deep);overflow:hidden}
+.barrow .t i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#2b8fa0,var(--glacier))}
+.barrow span{color:var(--mist);font-size:14px}
+.barrow b{text-align:right;font-family:var(--display);font-weight:600}
+.hist{list-style:none;margin:0;padding:0}
+.hist li{display:flex;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.hist .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--deep);flex:none}
+.hist .ic svg{width:20px;height:20px}
+.hist .m{flex:1;min-width:0}
+.hist .m b{display:block;font-weight:600}
+.hist .m small{color:var(--mist);font-size:13px}
+.hist .r{font-family:var(--display);font-weight:600;font-variant-numeric:tabular-nums}
+.empty{color:var(--mist);text-align:center;padding:40px 10px;line-height:1.5}
+.fine{color:var(--mist);font-size:13px;line-height:1.5;margin:18px 0 0}
+/* sauna + month + awards */
+.mode.heat{background:linear-gradient(135deg,#4a2a1c,#26170f);border-color:#5a3524}
+.mode.heat .ic{background:rgba(243,162,94,.14)}
+.month{margin:0 0 18px;padding:16px;border-radius:20px;background:var(--deep);border:1px solid var(--line)}
+.month h3{margin:0 0 12px;font-family:var(--display);font-size:15px;font-weight:600}
+.mtot{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.mtot div{display:flex;flex-direction:column;gap:2px}
+.mtot b{font-family:var(--display);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.mtot b.c{color:var(--glacier)}.mtot b.h{color:var(--ember)}
+.mtot small{color:var(--mist);font-size:13px}
+.cal{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px}
+.cal i{aspect-ratio:1;border-radius:5px;background:var(--panel)}
+.cal i.c{background:var(--glacier)}.cal i.h{background:var(--ember)}
+.cal i.b{background:linear-gradient(135deg,var(--ember) 50%,var(--glacier) 50%)}
+.cal i.today{outline:1.5px solid var(--frost);outline-offset:1px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;color:var(--mist);font-size:12px}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;background:var(--k)}
+.badges{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:6px}
+.bdg{padding:16px 12px;border-radius:18px;background:var(--deep);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.bdg svg{width:60px;height:60px}
+.bdg b{font-family:var(--display);font-size:15px;font-weight:600}
+.bdg small{color:var(--mist);font-size:12.5px;line-height:1.35}
+.bdg em{font-style:normal;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--glacier)}
+.bdg.locked svg{filter:grayscale(1);opacity:.3}
+.bdg.locked b{color:var(--mist)}
+.newaw{margin:10px 0 18px;padding:16px;border-radius:18px;border:1px solid rgba(243,162,94,.45);background:rgba(243,162,94,.08);display:flex;flex-direction:column;gap:12px}
+.newaw h3{margin:0;font-family:var(--display);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
+.newaw .it{display:flex;gap:12px;align-items:center}
+.newaw svg{width:46px;height:46px;flex:none}
+.newaw small{color:var(--mist)}
+.session.sauna{background:radial-gradient(120% 80% at 50% 40%,#3a2216 0%,#120a07 72%)}
+.sauna .ring .prog{stroke:var(--ember)}.sauna .ring .trk{stroke:rgba(243,162,94,.14)}
+.sauna .orb{background:radial-gradient(circle at 38% 32%,#ffe1c2 0%,#f3a25e 38%,#b5612a 75%,#6e3517 100%);box-shadow:0 0 70px rgba(243,162,94,.3)}
+.sauna .s-dock button{background:rgba(58,34,22,.6);border-color:#5a3524}
+#v-ssetup .seg button[aria-pressed="true"],#v-ssetup .go{background:var(--ember);color:#2a1207}
+#v-ssetup input.sw:checked{background:var(--ember)}
+#v-ssetup input[type=range]{accent-color:var(--ember)}
+button.bdg{width:100%;color:inherit}
+.stepper output{min-width:66px}
+.mode.cx{background:linear-gradient(120deg,#4a2a1c 0%,#26170f 46%,#0f4552 54%,#0a2a36 100%);border-color:#3a4a50}
+.mode.cx .ic{background:rgba(231,245,247,.08)}
+.vbanner{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:14px 16px;border-radius:16px;background:rgba(109,211,224,.1);border:1px solid rgba(109,211,224,.35);margin-bottom:16px}
+.vbanner b{display:block;font-weight:600}.vbanner small{color:var(--mist)}.vbanner .arrow{margin-left:auto}
+.vcard{width:100%;max-width:440px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:22px 18px;display:flex;flex-direction:column;gap:12px;max-height:100%;overflow-y:auto}
+.vcard h2{font-size:21px}
+.vcard p,.vcard li{font-size:15px;line-height:1.5;margin:0}
+.vcard ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.vcard .small{color:var(--mist);font-size:13px}
+.vcard .acts{display:flex;gap:8px}.vcard .acts>*{flex:1;padding:14px;border-radius:14px;border:1px solid var(--line);font-weight:600;background:var(--deep)}
+.vcard .acts .pri{background:var(--glacier);color:var(--glacier-ink);border-color:var(--glacier)}
+.vrow{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line)}
+.vrow span{flex:1;min-width:0;font-size:14px;overflow-wrap:anywhere}
+.vrow button{padding:8px 12px;border-radius:10px;border:1px solid var(--line);font-size:13px;font-weight:600}
+.vrow button.on{background:var(--glacier);color:var(--glacier-ink);border-color:var(--glacier)}
+.vmsg{color:var(--glacier)}.vmsg:empty{display:none}
+.textbtn{color:var(--mist);font-size:14px;text-decoration:underline;align-self:center;padding:6px}
+.feel{margin:6px 0 18px;text-align:center}
+.feel p{color:var(--mist);margin:0 0 10px;font-size:14px}
+.feel .seg button{font-size:12.5px;padding:11px 2px}
+.hist .del{width:34px;height:34px;border-radius:10px;color:var(--mist);flex:none;font-size:20px}
+.hist .del.armed{background:#5a2a24;color:#fff;width:auto;padding:0 10px;font-size:13px}
+.logform{padding:16px;border-radius:18px;background:var(--deep);border:1px solid var(--line);margin:0 0 14px;display:flex;flex-direction:column;gap:12px}
+.logform .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.logform label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--mist)}
+.logform input{background:var(--abyss);color:var(--frost);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:inherit;font-size:16px;width:100%;min-width:0}
+.feelt{color:var(--glacier)}
+.newaw .it{color:inherit;width:100%}
+.share-go{background:transparent;color:var(--frost);border:1px solid var(--line)}
+.sheet{position:fixed;inset:0;z-index:30;background:rgba(3,10,14,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;overflow-y:auto;
+  padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.sheet img{width:auto;max-width:min(78vw,340px);max-height:52vh;aspect-ratio:4/5;border-radius:18px;background:var(--deep);box-shadow:0 20px 60px rgba(0,0,0,.5);-webkit-touch-callout:default;-webkit-user-select:auto}
+.shhint{color:var(--mist);font-size:13px;text-align:center;margin:0}
+.shtxt{margin:0;max-width:40ch;font-size:14px;line-height:1.45;text-align:center;user-select:text;-webkit-user-select:text;padding:10px 12px;border-radius:12px;background:var(--deep)}
+.sheet .acts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%;max-width:420px}
+.sheet .acts>*{flex:1 1 40%;padding:14px;border-radius:14px;border:1px solid var(--line);font-weight:600;text-align:center;text-decoration:none;color:var(--frost);background:var(--deep)}
+.sheet .acts .pri{background:var(--glacier);color:var(--glacier-ink);border-color:var(--glacier)}
+@media (prefers-reduced-motion:reduce){.holding .ripple{animation:none}.orb{transition-duration:.01s!important}}
+</style>
+
+<!-- HOME -->
+<section class="view" id="v-home">
+  <header class="brand">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="#0f3a49" stroke="#6dd3e0" stroke-width="2"/><path d="M9 27c4 0 4-3 8-3s4 3 8 3 4-3 8-3 4 3 7 3" fill="none" stroke="#6dd3e0" stroke-width="2.4" stroke-linecap="round"/><path d="M11 33c4 0 4-3 8-3s4 3 8 3 4-3 8-3 3 2 4 2.6" fill="none" stroke="#6dd3e0" stroke-opacity=".5" stroke-width="2.4" stroke-linecap="round"/><path d="M24 10v10M20 13l4 3 4-3" fill="none" stroke="#e7f5f7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <h1>Plunge<span>TX</span></h1>
+  </header>
+  <p class="tag">Breathe. Plunge. Recover.</p>
+  <button class="vbanner" id="vBanner" hidden><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#6dd3e0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9zM16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><span><b>Make the voice sound natural</b><small>Free, takes about a minute. Tap to see how.</small></span><span class="arrow">›</span></button>
+  <div class="stats">
+    <div class="stat"><b id="stStreak">0</b><small>Day streak</small></div>
+    <div class="stat"><b id="stBest">–</b><small>Best hold</small></div>
+    <div class="stat"><b id="stAw">0</b><small>Awards</small></div>
+  </div>
+  <div class="month">
+    <h3 style="display:flex;justify-content:space-between;align-items:center">Last 30 days <button class="btn2" id="mShare" style="padding:6px 14px;font-size:13px">Share</button></h3>
+    <div class="mtot">
+      <div><b class="c num" id="mPl">0</b><small id="mPlMin">plunges · 0 min</small></div>
+      <div><b class="h num" id="mSa">0</b><small id="mSaMin">saunas · 0 min</small></div>
+    </div>
+    <div class="cal" id="mCal"></div>
+    <div class="legend"><span style="--k:var(--glacier)">Plunge</span><span style="--k:var(--ember)">Sauna</span><span style="--k:linear-gradient(135deg,var(--ember) 50%,var(--glacier) 50%)">Both</span></div>
+  </div>
+  <button class="mode" data-go="bsetup">
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#6dd3e0" stroke-width="1.8" stroke-linecap="round"><path d="M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h8"/></svg></span>
+    <span><h2>Guided Breathing</h2><p>Power-breathing rounds with breath holds</p></span>
+    <span class="arrow">›</span>
+  </button>
+  <button class="mode ice" data-go="isetup">
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#6dd3e0" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v20M4.5 6.5l15 11M19.5 6.5l-15 11M9 4l3 2 3-2M9 20l3-2 3 2"/></svg></span>
+    <span><h2>Guided Ice Bath</h2><p>Prep breathing, plunge timer, calm voice cues</p></span>
+    <span class="arrow">›</span>
+  </button>
+  <button class="mode heat" data-go="ssetup">
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#f3a25e" stroke-width="1.8" stroke-linecap="round"><path d="M7 20c-2-3 2-5 0-9s1-6 1-6M12 20c-2-3 2-5 0-9s1-6 1-6M17 20c-2-3 2-5 0-9s1-6 1-6"/></svg></span>
+    <span><h2>Guided Sauna</h2><p>Heat timer, relaxing body scan, temperature log</p></span>
+    <span class="arrow">›</span>
+  </button>
+  <button class="mode cx" data-go="csetup">
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M5 20c-2-3 2-5 0-9s1-6 1-6M10 20c-2-3 2-5 0-9s1-6 1-6" stroke="#f3a25e"/><path d="M17 4v16M13 8l8 8M21 8l-8 8" stroke="#6dd3e0"/></svg></span>
+    <span><h2>Hot &amp; Cold Contrast</h2><p>Alternate sauna and plunge rounds, all logged</p></span>
+    <span class="arrow">›</span>
+  </button>
+  <button class="linkrow" data-go="awards"><span>Awards</span><span class="arrow">›</span></button>
+  <button class="linkrow" data-go="history"><span>History</span><span class="arrow">›</span></button>
+
+  <p class="section-h">Voice &amp; sound</p>
+  <div class="row stack"><span>Coaching style</span>
+    <div class="seg" data-key="g.coach"><button data-v="calm">Calm</button><button data-v="hard">Hard mode</button></div>
+    <span class="hint" id="gCoachHint" style="text-align:left;margin:0"></span></div>
+  <div class="row"><span>Voice setup</span><button class="btn2" id="gVoiceHelp">Get a natural voice</button></div>
+  <div class="row"><label for="gVoice">Voice</label><select id="gVoice" data-key="g.voiceName"><option value="">Auto</option></select></div>
+  <div class="row stack"><div class="between"><label for="gRate">Speaking speed</label><span class="val" id="gRateV"></span></div><input type="range" id="gRate" min="0.7" max="1.1" step="0.05" data-key="g.rate"></div>
+  <div class="row stack"><div class="between"><label for="gMusicVol">Music volume</label><span class="val" id="gMusicVolV"></span></div><input type="range" id="gMusicVol" min="0.1" max="1" step="0.05" data-key="g.musicVol"></div>
+  <div class="row"><span>Test sound</span><button class="btn2" id="gTest">Play sample</button></div>
+  <p class="fine">No sound on iPhone? Flip the silent switch off and turn the volume up. History is saved on this phone.</p>
+  <p class="fine"><a href="https://plungetx.com/#pricing" target="_blank" rel="noopener" style="color:var(--glacier);font-weight:600;text-decoration:none">Rent a cold plunge delivered in the Houston area ›</a></p>
+</section>
+
+<!-- BREATHING SETUP -->
+<section class="view" id="v-bsetup" hidden>
+  <div class="bar"><button class="back" data-go="home" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button><h1>Guided Breathing</h1><span></span></div>
+  <div class="badge"><div><b id="bBadge">3</b><small>rounds</small></div></div>
+  <div class="seg" data-key="b.pace" id="bPace">
+    <button data-v="slow">Slow</button><button data-v="standard">Standard</button><button data-v="fast">Fast</button>
+  </div>
+  <p class="hint" id="bHint"></p>
+  <div class="row"><span>Rounds</span><div class="stepper" data-key="b.rounds" data-min="1" data-max="6" data-step="1"><button aria-label="Fewer rounds">−</button><output></output><button aria-label="More rounds">+</button></div></div>
+  <div class="row"><span>Breaths before hold</span><div class="stepper" data-key="b.breaths" data-min="20" data-max="50" data-step="5"><button aria-label="Fewer breaths">−</button><output></output><button aria-label="More breaths">+</button></div></div>
+  <div class="row"><label for="bVoice">Voice guidance</label><input type="checkbox" class="sw" id="bVoice" data-key="b.voice"></div>
+  <div class="row"><label for="bWhoosh">Breath pacing sound</label><input type="checkbox" class="sw" id="bWhoosh" data-key="b.whoosh"></div>
+  <div class="row"><label for="bMusic">Background music</label><input type="checkbox" class="sw" id="bMusic" data-key="b.music"></div>
+  <div class="sub" id="bMusicOpts">
+    <div class="row"><label for="bTrackA">Breathing</label><div class="pick"><select id="bTrackA" data-key="b.trackA" class="trk"></select><button class="prev" data-prev="bTrackA" aria-label="Preview"></button></div></div>
+    <div class="row"><label for="bTrackB">Breath hold</label><div class="pick"><select id="bTrackB" data-key="b.trackB" class="trk"></select><button class="prev" data-prev="bTrackB" aria-label="Preview"></button></div></div>
+  </div>
+  <p class="warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l10 18H2zM12 10v5M12 18v.5"/></svg>Sit or lie down. Never do breathing rounds in or near water, while driving, or while standing. Stop if you feel unwell.</p>
+  <div class="dock"><div class="inner"><button class="go" id="bStart">Start</button></div></div>
+</section>
+
+<!-- ICE BATH SETUP -->
+<section class="view" id="v-isetup" hidden>
+  <div class="bar"><button class="back" data-go="home" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button><h1>Guided Ice Bath</h1><span></span></div>
+  <p class="section-h">Duration</p>
+  <div class="seg" data-key="i.preset">
+    <button data-v="beginner"><span class="lvl"><i class="on" style="height:5px"></i><i style="height:8px"></i><i style="height:12px"></i></span>Beginner</button>
+    <button data-v="intermediate"><span class="lvl"><i class="on" style="height:5px"></i><i class="on" style="height:8px"></i><i style="height:12px"></i></span>Steady</button>
+    <button data-v="advanced"><span class="lvl"><i class="on" style="height:5px"></i><i class="on" style="height:8px"></i><i class="on" style="height:12px"></i></span>Polar</button>
+    <button data-v="custom"><span class="lvl"><i class="on" style="height:12px;width:12px;border-radius:50%;opacity:.6"></i></span>Custom</button>
+  </div>
+  <div class="bigdur" id="iDur">2:00</div>
+  <div class="row" id="iCustomRow" hidden><span>Custom length</span><div class="stepper" data-fmt="mmss" data-key="i.custom" data-min="0.5" data-max="15" data-step="0.5"><button aria-label="Shorter">−</button><output></output><button aria-label="Longer">+</button></div></div>
+  <div class="row"><label for="iVoice">Voice guidance</label><input type="checkbox" class="sw" id="iVoice" data-key="i.voice"></div>
+  <div class="row stack"><div class="between"><label for="iPrep">Time to prepare</label><span class="val" id="iPrepV"></span></div><input type="range" id="iPrep" min="0.5" max="5" step="0.5" data-key="i.prep"><div class="ends"><span>30s</span><span>5m</span></div></div>
+  <div class="row"><label for="iTempOn">Water temperature</label><input type="checkbox" class="sw" id="iTempOn" data-key="i.tempOn"></div>
+  <div class="row stack" id="iTempRow"><div class="between"><span></span><span class="val" id="iTempV"></span></div><input type="range" id="iTemp" min="28" max="68" step="1" data-key="i.tempF" aria-label="Water temperature"><div class="ends"><span>28°F</span><span>68°F</span></div></div>
+  <div class="row"><label for="iMusic">Background music</label><input type="checkbox" class="sw" id="iMusic" data-key="i.music"></div>
+  <div class="sub" id="iMusicOpts">
+    <div class="row"><label for="iTrack">Track</label><div class="pick"><select id="iTrack" data-key="i.track" class="trk"></select><button class="prev" data-prev="iTrack" aria-label="Preview"></button></div></div>
+  </div>
+  <p class="warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l10 18H2zM12 10v5M12 18v.5"/></svg>Prep breathing here is slow and calm. Never hold your breath or do power breathing in the water, and have someone nearby.</p>
+  <div class="dock"><div class="inner"><button class="go" id="iStart">Start</button></div></div>
+</section>
+
+<!-- SAUNA SETUP -->
+<section class="view" id="v-ssetup" hidden>
+  <div class="bar"><button class="back" data-go="home" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button><h1>Guided Sauna</h1><span></span></div>
+  <p class="section-h">Duration</p>
+  <div class="seg" data-key="s.preset">
+    <button data-v="short"><span class="lvl"><i class="on" style="height:5px"></i><i style="height:8px"></i><i style="height:12px"></i></span>Warm-up</button>
+    <button data-v="classic"><span class="lvl"><i class="on" style="height:5px"></i><i class="on" style="height:8px"></i><i style="height:12px"></i></span>Classic</button>
+    <button data-v="deep"><span class="lvl"><i class="on" style="height:5px"></i><i class="on" style="height:8px"></i><i class="on" style="height:12px"></i></span>Deep</button>
+    <button data-v="custom"><span class="lvl"><i class="on" style="height:12px;width:12px;border-radius:50%;opacity:.6"></i></span>Custom</button>
+  </div>
+  <div class="bigdur" id="sDur">15:00</div>
+  <div class="row" id="sCustomRow" hidden><span>Custom length</span><div class="stepper" data-key="s.custom" data-min="3" data-max="30" data-step="1"><button aria-label="Shorter">−</button><output></output><button aria-label="Longer">+</button></div></div>
+  <div class="row"><label for="sVoice">Voice guidance</label><input type="checkbox" class="sw" id="sVoice" data-key="s.voice"></div>
+  <div class="row stack"><div class="between"><label for="sTemp">Sauna temperature</label><span class="val" id="sTempV"></span></div><input type="range" id="sTemp" min="120" max="220" step="1" data-key="s.tempF"><div class="ends"><span>120°F</span><span>220°F</span></div></div>
+  <div class="row"><label for="sMusic">Background music</label><input type="checkbox" class="sw" id="sMusic" data-key="s.music"></div>
+  <div class="sub" id="sMusicOpts">
+    <div class="row"><label for="sTrack">Track</label><div class="pick"><select id="sTrack" data-key="s.track" class="trk"></select><button class="prev" data-prev="sTrack" aria-label="Preview"></button></div></div>
+  </div>
+  <p class="warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l10 18H2zM12 10v5M12 18v.5"/></svg>Most sessions run 10 to 20 minutes. Drink water before and after, skip alcohol, and step out right away if you feel dizzy or unwell.</p>
+  <div class="dock"><div class="inner"><button class="go" id="sStart">Start</button></div></div>
+</section>
+
+<!-- CONTRAST SETUP -->
+<section class="view" id="v-csetup" hidden>
+  <div class="bar"><button class="back" data-go="home" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button><h1>Hot &amp; Cold</h1><span></span></div>
+  <div class="bigdur" id="cDur">0:00</div>
+  <p class="hint" id="cHint" style="margin-top:0"></p>
+  <p class="section-h">Order</p>
+  <div class="seg" data-key="c.order"><button data-v="hc">Hot, then cold</button><button data-v="ch">Cold, then hot</button></div>
+  <div class="row"><span>Rounds</span><div class="stepper" data-key="c.rounds" data-min="1" data-max="6" data-step="1"><button aria-label="Fewer rounds">−</button><output></output><button aria-label="More rounds">+</button></div></div>
+  <div class="row"><span>Heat per round</span><div class="stepper" data-fmt="min" data-key="c.hot" data-min="3" data-max="25" data-step="1"><button aria-label="Less heat">−</button><output></output><button aria-label="More heat">+</button></div></div>
+  <div class="row"><span>Cold per round</span><div class="stepper" data-fmt="mmss" data-key="c.cold" data-min="0.5" data-max="8" data-step="0.5"><button aria-label="Less cold">−</button><output></output><button aria-label="More cold">+</button></div></div>
+  <div class="row"><span>Time to switch</span><div class="stepper" data-fmt="mmss" data-key="c.trans" data-min="0.5" data-max="3" data-step="0.5"><button aria-label="Shorter switch">−</button><output></output><button aria-label="Longer switch">+</button></div></div>
+  <div class="row stack"><div class="between"><label for="cHot">Sauna temperature</label><span class="val" id="cHotV"></span></div><input type="range" id="cHot" min="120" max="220" step="1" data-key="c.hotF"></div>
+  <div class="row stack"><div class="between"><label for="cCold">Plunge temperature</label><span class="val" id="cColdV"></span></div><input type="range" id="cCold" min="28" max="68" step="1" data-key="c.coldF"></div>
+  <div class="row"><label for="cVoice">Voice guidance</label><input type="checkbox" class="sw" id="cVoice" data-key="c.voice"></div>
+  <div class="row"><label for="cMusic">Background music</label><input type="checkbox" class="sw" id="cMusic" data-key="c.music"></div>
+  <div class="sub" id="cMusicOpts">
+    <div class="row"><label for="cTrackH">In the heat</label><div class="pick"><select id="cTrackH" data-key="c.trackHot" class="trk"></select><button class="prev" data-prev="cTrackH" aria-label="Preview"></button></div></div>
+    <div class="row"><label for="cTrackC">In the cold</label><div class="pick"><select id="cTrackC" data-key="c.trackCold" class="trk"></select><button class="prev" data-prev="cTrackC" aria-label="Preview"></button></div></div>
+  </div>
+  <p class="warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l10 18H2zM12 10v5M12 18v.5"/></svg>Move carefully between the sauna and the plunge and keep floors dry. Drink water between rounds, and stop if you feel dizzy or unwell.</p>
+  <div class="dock"><div class="inner"><button class="go" id="cStart">Start</button></div></div>
+</section>
+
+<!-- AWARDS -->
+<section class="view" id="v-awards" hidden>
+  <div class="bar"><button class="back" data-go="home" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button><h1>Awards</h1><span></span></div>
+  <p class="hint" id="awCount" style="margin-bottom:12px"></p>
+  <div class="badges" id="awGrid"></div>
+</section>
+
+<!-- BREATHING SESSION -->
+<section class="view session" id="v-breath" hidden>
+  <div class="s-top"><span id="brRound">Round 1 of 3</span><span id="brPace" class="chip">Standard</span></div>
+  <div class="stage" id="brStage">
+    <div class="orbwrap" id="brWrap"><span class="ripple"></span><span class="ripple b"></span><div class="orb" id="brOrb"></div><div class="big" id="brBig"></div></div>
+    <div class="s-label" id="brLabel">Get ready</div>
+    <div class="s-sub" id="brSub"></div>
+    <button class="tapb" id="brTap" hidden>Tap to breathe</button>
+  </div>
+  <div class="s-dock"><button id="brStop">Stop</button><button id="brPause">Pause</button></div>
+</section>
+
+<!-- ICE BATH SESSION -->
+<section class="view session ice" id="v-bath" hidden>
+  <div class="s-top"><span id="baPhase">Prepare</span><span id="baTemp" class="chip" hidden></span></div>
+  <div class="stage">
+    <div class="orbwrap"><svg class="ring" viewBox="0 0 260 260"><circle class="trk" cx="130" cy="130" r="124"/><circle class="prog" id="baProg" cx="130" cy="130" r="124"/></svg><div class="orb" id="baOrb"></div><div class="ringtext"><b id="baTime">0:00</b><small id="baSmall">until plunge</small></div></div>
+    <div class="s-label" id="baLabel">Breathe in</div>
+    <div class="s-sub" id="baSub"></div>
+  </div>
+  <div class="s-dock"><button id="baStop">End</button><button id="baPause">Pause</button><button id="baPlus">+30s</button></div>
+</section>
+
+<!-- RESULTS -->
+<section class="view" id="v-done" hidden>
+  <div class="done-hero"><h1 id="dTitle">Session complete</h1><p id="dSub"></p></div>
+  <div class="feel"><p>How do you feel?</p>
+    <div class="seg" id="feelSeg"><button data-f="1">Drained</button><button data-f="2">Flat</button><button data-f="3">Good</button><button data-f="4">Great</button><button data-f="5">Electric</button></div></div>
+  <div id="dBody"></div>
+  <div class="dock"><div class="inner" style="display:flex;gap:10px"><button class="go share-go" id="dShare">Share</button><button class="go" data-go="home">Done</button></div></div>
+</section>
+
+<!-- NATURAL VOICE SETUP -->
+<div class="sheet" id="vSheet" hidden>
+  <div class="vcard">
+    <h2>Give PlungeTX a natural voice</h2>
+    <p>Your phone's default voice sounds robotic. A free high-quality voice makes the guidance sound calm and human.</p>
+    <div id="vSteps"></div>
+    <div id="vList"></div>
+    <p class="vmsg" id="vMsg"></p>
+    <div class="acts"><button class="pri" id="vRecheck">I downloaded one</button><button id="vLater">Not now</button></div>
+    <button class="textbtn" id="vNever">Don't ask again</button>
+  </div>
+</div>
+
+<!-- SHARE SHEET -->
+<div class="sheet" id="share" hidden>
+  <img id="shImg" alt="Your PlungeTX brag card">
+  <p class="shhint">Press and hold the card to save it or send it in Messages.</p>
+  <p class="shtxt" id="shTxt"></p>
+  <div class="acts">
+    <button class="pri" id="shSend" hidden>Send…</button>
+    <button class="pri" id="shCopy">Copy brag text</button>
+    <a id="shSms" href="sms:" target="_blank" rel="noopener">Open Messages</a>
+    <button id="shSave" hidden>Save image</button>
+    <button id="shClose">Close</button>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<section class="view" id="v-history" hidden>
+  <div class="bar"><button class="back" data-go="home" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button><h1>History</h1><span></span></div>
+  <button class="btn2" id="hAdd" style="width:100%;margin:6px 0 10px">+ Log a session by hand</button>
+  <form class="logform" id="hForm" hidden>
+    <div class="seg" id="lType"><button type="button" data-v="bath" aria-pressed="true">Cold plunge</button><button type="button" data-v="sauna" aria-pressed="false">Sauna</button></div>
+    <div class="two"><label for="lMin">Minutes<input id="lMin" type="number" inputmode="decimal" min="0.5" max="60" step="0.5" value="3"></label><label for="lTemp">Temp °F<input id="lTemp" type="number" inputmode="numeric" value="50"></label></div>
+    <label for="lDate">Date<input id="lDate" type="date"></label>
+    <button class="go" type="submit">Save to log</button>
+  </form>
+  <div id="hMsg"></div>
+  <ul class="hist" id="hList"></ul>
+  <div style="text-align:center;margin-top:24px"><button class="btn2" id="hClear">Clear history</button></div>
+</section>
+
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem('ptx_'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('ptx_'+k,JSON.stringify(v))}catch(e){}}};
+const DEF={b:{pace:'standard',rounds:3,breaths:30,voice:true,whoosh:true,music:true,trackA:'tidal',trackB:'still'},
+  i:{preset:'intermediate',custom:3,prep:2,voice:true,tempOn:true,tempF:50,music:true,track:'drift'},
+  s:{preset:'classic',custom:15,voice:true,tempF:175,music:true,track:'cedar'},
+  c:{rounds:3,hot:12,cold:2,trans:1,order:'hc',hotF:175,coldF:50,voice:true,music:true,trackHot:'cedar',trackCold:'drift'},
+  g:{voiceName:'',rate:0.85,musicVol:0.7,coach:'calm'}};
+const hard=()=>S.g.coach==='hard',pick=(calm,tough)=>hard()?tough:calm;
+const HARD_COLD=['You chose this. Own every second.','The cold is talking. You do not have to listen.','Your mind quits long before your body does.','Nobody is coming to pull you out. Stay in.','Slow breath. You are tougher than this water.','This is where most people get out. Not you.','Comfort is the enemy. Sit in it.','Every second in here counts. Keep stacking them.'];
+const HARD_HEAT=['Heat is just pressure. Breathe through it.','Stay still. Stay calm. Stay in.','This is where you get harder.','Quiet the mind. The body follows.','You are not here to be comfortable.','Steady breath. Nothing gets to you.','Lock in. One minute at a time.','If you feel dizzy, get out. Tough is smart, not reckless.'];
+const SAUNA_PRESETS={short:600,classic:900,deep:1200};
+const saved=store.get('settings',{});
+const S={};for(const k in DEF)S[k]=Object.assign({},DEF[k],saved[k]||{});
+const PACE={slow:4.6,standard:3.4,fast:2.4};
+const PRESETS={beginner:60,intermediate:120,advanced:240};
+const fmt=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const fToC=f=>Math.round((f-32)*5/9);
+
+/* ---------- views ---------- */
+function show(id){document.querySelectorAll('.view').forEach(v=>v.hidden=v.id!=='v-'+id);window.scrollTo(0,0);if(id==='home')renderStats();if(id==='history')renderHistory();if(id==='awards')renderAwards();if(id==='done')resetFeel();stopPreview();}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)show(g.dataset.go)});
+
+/* ---------- audio engine ---------- */
+let ctx,master,musicGain,fxGain,reverb,silentEl,noiseBuf;
+function audio(){
+  if(!ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;ctx=new AC();
+    master=ctx.createGain();master.gain.value=0.9;master.connect(ctx.destination);
+    reverb=ctx.createConvolver();reverb.buffer=impulse(4.5,2.4);const rg=ctx.createGain();rg.gain.value=0.5;reverb.connect(rg);rg.connect(master);
+    musicGain=ctx.createGain();musicGain.gain.value=S.g.musicVol;musicGain.connect(master);
+    fxGain=ctx.createGain();fxGain.gain.value=1;fxGain.connect(master);}
+  if(ctx.state!=='running')ctx.resume();
+  unlockIOS();return ctx;
+}
+function impulse(sec,decay){const r=ctx.sampleRate,len=Math.floor(r*sec),b=ctx.createBuffer(2,len,r);for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay)}return b}
+function noise(){if(!noiseBuf){const len=ctx.sampleRate*3;noiseBuf=ctx.createBuffer(1,len,ctx.sampleRate);const d=noiseBuf.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1}return noiseBuf}
+function silentWav(){const n=4000,buf=new Uint8Array(44+n),dv=new DataView(buf.buffer),w=(o,s)=>{for(let i=0;i<s.length;i++)buf[o+i]=s.charCodeAt(i)};
+  w(0,'RIFF');dv.setUint32(4,36+n,true);w(8,'WAVE');w(12,'fmt ');dv.setUint32(16,16,true);dv.setUint16(20,1,true);dv.setUint16(22,1,true);dv.setUint32(24,8000,true);dv.setUint32(28,8000,true);dv.setUint16(32,1,true);dv.setUint16(34,8,true);w(36,'data');dv.setUint32(40,n,true);buf.fill(128,44);
+  let s='';for(let i=0;i<buf.length;i++)s+=String.fromCharCode(buf[i]);return 'data:audio/wav;base64,'+btoa(s)}
+function unlockIOS(){if(silentEl)return;try{silentEl=new Audio(silentWav());silentEl.loop=true;silentEl.play().catch(()=>{})}catch(e){}}
+const mtof=m=>440*Math.pow(2,(m-69)/12);
+
+const TRACKS={
+  tidal:{name:'Tidal Pulse',chords:[[45,52,60,67],[41,48,57,64],[48,55,64,71],[43,50,59,67]],len:8,wave:['triangle','sine'],cut:1500,water:.035,bells:.3,pulse:62},
+  drift:{name:'Gulf Drift',chords:[[50,57,66,73],[47,54,62,69],[43,50,59,66],[45,52,61,64]],len:9,wave:['sine','triangle'],cut:1900,water:.05,bells:.35},
+  freeze:{name:'Deep Freeze',chords:[[38,45,53,64],[34,41,50,57],[36,43,52,62]],len:11,wave:['sawtooth','sine'],cut:650,wind:.08,bells:.15},
+  aurora:{name:'Aurora',chords:[[52,59,64,71,76],[48,55,64,67,74],[55,62,67,71,78],[50,57,62,69,73]],len:7,wave:['sine','triangle'],cut:2800,bells:.5},
+  cedar:{name:'Cedar Room',chords:[[41,48,57,64],[46,53,62,69],[43,50,58,65],[48,55,64,67]],len:10,wave:['triangle','sine'],cut:1200,bells:.25},
+  still:{name:'Still Water',chords:[[38,45,57],[38,45,55]],len:14,wave:['sine','sine'],cut:900,water:.03,bells:.12}
+};
+class Ambient{
+  constructor(key){this.t=TRACKS[key]||TRACKS.drift;this.timers=[];this.nodes=[];this.i=0}
+  start(fade=3){const t=this.t,now=ctx.currentTime;
+    this.out=ctx.createGain();this.out.gain.setValueAtTime(0.0001,now);this.out.gain.exponentialRampToValueAtTime(0.9,now+fade);this.out.connect(musicGain);
+    const send=ctx.createGain();send.gain.value=0.7;this.out.connect(send);send.connect(reverb);this.nodes.push(send);
+    this.filt=ctx.createBiquadFilter();this.filt.type='lowpass';this.filt.frequency.value=t.cut;this.filt.Q.value=.5;this.filt.connect(this.out);
+    if(t.water||t.wind)this.texture();
+    this.chord();this.timers.push(setInterval(()=>this.chord(),t.len*1000));
+    if(t.bells)this.timers.push(setInterval(()=>{if(Math.random()<t.bells)this.bell()},2300));
+    if(t.pulse)this.timers.push(setInterval(()=>this.thump(),60000/t.pulse));
+    return this}
+  live(){return ctx&&ctx.state==='running'}
+  chord(){if(!this.live())return;const t=this.t,c=t.chords[this.i++%t.chords.length],now=ctx.currentTime,L=t.len,att=L*.35,rel=L*.6;
+    c.forEach(m=>t.wave.forEach((w,j)=>{const o=ctx.createOscillator();o.type=w;o.frequency.value=mtof(m);o.detune.value=(j?7:-5)+Math.random()*4-2;
+      const g=ctx.createGain(),pk=(w==='sawtooth'?.03:.07)/(c.length*.6);g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(pk,now+att);g.gain.setValueAtTime(pk,now+L);g.gain.exponentialRampToValueAtTime(.0001,now+L+rel);
+      o.connect(g);g.connect(this.filt);o.start(now);o.stop(now+L+rel+.1)}))}
+  bell(){if(!this.live())return;const cs=this.t.chords,c=cs[(this.i+cs.length-1)%cs.length],m=c[Math.floor(Math.random()*c.length)]+12*(1+Math.floor(Math.random()*2)),now=ctx.currentTime;
+    const o=ctx.createOscillator();o.type='sine';o.frequency.value=mtof(m);const g=ctx.createGain();g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.035,now+.02);g.gain.exponentialRampToValueAtTime(.0001,now+3.5);o.connect(g);g.connect(this.out);o.start(now);o.stop(now+3.6)}
+  thump(){if(!this.live())return;const now=ctx.currentTime,o=ctx.createOscillator();o.type='sine';o.frequency.setValueAtTime(95,now);o.frequency.exponentialRampToValueAtTime(42,now+.25);
+    const g=ctx.createGain();g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.2,now+.01);g.gain.exponentialRampToValueAtTime(.0001,now+.5);o.connect(g);g.connect(this.out);o.start(now);o.stop(now+.55)}
+  texture(){const t=this.t,amt=t.water||t.wind,src=ctx.createBufferSource();src.buffer=noise();src.loop=true;
+    const f=ctx.createBiquadFilter();f.type=t.wind?'bandpass':'lowpass';f.frequency.value=t.wind?520:850;f.Q.value=t.wind?.8:.3;
+    const g=ctx.createGain();g.gain.value=amt;const lfo=ctx.createOscillator();lfo.frequency.value=.07;const lg=ctx.createGain();lg.gain.value=amt*.8;lfo.connect(lg);lg.connect(g.gain);
+    src.connect(f);f.connect(g);g.connect(this.out);src.start();lfo.start();this.nodes.push(src,lfo)}
+  stop(fade=2){this.timers.forEach(clearInterval);this.timers=[];if(!this.out)return;const now=ctx.currentTime,o=this.out,n=this.nodes;
+    try{o.gain.cancelScheduledValues(now);o.gain.setValueAtTime(Math.max(o.gain.value,.0001),now);o.gain.exponentialRampToValueAtTime(.0001,now+fade)}catch(e){}
+    setTimeout(()=>{n.forEach(x=>{try{x.stop&&x.stop()}catch(e){}});try{o.disconnect()}catch(e){}},fade*1000+300)}
+}
+let amb=null;
+function playTrack(key,fade=4){if(amb){amb.stop(fade);amb=null}if(key&&ctx)amb=new Ambient(key).start(fade)}
+function whoosh(dur,up){if(!ctx)return;const now=ctx.currentTime,src=ctx.createBufferSource();src.buffer=noise();const f=ctx.createBiquadFilter();f.type='bandpass';f.Q.value=1.1;
+  f.frequency.setValueAtTime(up?380:1300,now);f.frequency.exponentialRampToValueAtTime(up?1400:340,now+dur);const g=ctx.createGain();g.gain.setValueAtTime(.0001,now);
+  g.gain.exponentialRampToValueAtTime(up?.22:.16,now+dur*(up?.7:.2));g.gain.exponentialRampToValueAtTime(.0001,now+dur);src.connect(f);f.connect(g);g.connect(fxGain);src.start(now,Math.random()*1.5);src.stop(now+dur+.05)}
+function gong(base=55,vol=.12){if(!ctx)return;const now=ctx.currentTime;[1,2.76,5.4].forEach((r,i)=>{const o=ctx.createOscillator();o.type='sine';o.frequency.value=mtof(base)*r;const g=ctx.createGain();
+  g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(vol/(i+1),now+.02);g.gain.exponentialRampToValueAtTime(.0001,now+4-i);o.connect(g);g.connect(fxGain);g.connect(reverb);o.start(now);o.stop(now+4.1)})}
+function buzz(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
+
+/* ---------- voice ---------- */
+const TTS='speechSynthesis' in window;let voices=[],speakOn=true;
+/* Rank voices so natural-sounding ones come first: Premium/Enhanced/Neural/Natural beat the default compact voices. */
+const GOOD=/Ava|Zoe|Evan|Nathan|Noelle|Joelle|Samantha|Allison|Susan|Tom|Serena|Jamie|Siri|Aria|Jenny|Guy|Libby|Sonia|Ryan/i;
+const BAD=/Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Fred|Junior|Ralph|Kathy|Grandma|Grandpa|Eddy|Flo|Reed|Rocko|Sandy|Shelley/i;
+function vScore(v){let s=0;const n=v.name;if(/premium/i.test(n))s+=60;if(/^Google/i.test(n))s+=40;if(/enhanced|neural|natural|online/i.test(n))s+=45;if(/siri/i.test(n))s+=40;if(GOOD.test(n))s+=15;if(/en[-_]US/i.test(v.lang))s+=5;if(BAD.test(n))s-=100;if(v.localService===false)s+=8;return s}
+function vLabel(v){const sc=vScore(v);return v.name.replace(/</g,'')+(sc>=45?' ★':'')}
+function loadVoices(){if(!TTS)return;voices=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang)&&vScore(v)>-50).sort((a,b)=>vScore(b)-vScore(a));const sel=$('gVoice'),cur=S.g.voiceName;
+  sel.innerHTML='<option value="">Best available</option>'+voices.map(v=>`<option value="${v.name.replace(/"/g,'&quot;')}">${vLabel(v)}</option>`).join('');sel.value=voices.some(v=>v.name===cur)?cur:'';
+  setTimeout(voiceCheck,1200)}
+if(TTS){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+function pickVoice(){return voices.find(v=>v.name===S.g.voiceName)||voices[0]}
+/* Speak one sentence per utterance: the short natural gap between them reads as calm pacing instead of one flat run-on. */
+function say(text,interrupt){if(!speakOn||!TTS)return;if(interrupt)speechSynthesis.cancel();const v=pickVoice();
+  const parts=text.match(/[^.!?]+[.!?]*/g)||[text];
+  parts.map(p=>p.trim()).filter(Boolean).forEach(p=>{const u=new SpeechSynthesisUtterance(p);if(v){u.voice=v;u.lang=v.lang}u.rate=hard()?Math.min(1.25,S.g.rate+.15):S.g.rate;u.pitch=hard()?.9:1;u.volume=1;
+    u.onstart=()=>duck(true);u.onend=u.onerror=()=>duck(false);speechSynthesis.speak(u)})}
+function duck(on){if(!musicGain)return;const now=ctx.currentTime;musicGain.gain.cancelScheduledValues(now);musicGain.gain.setTargetAtTime(S.g.musicVol*(on?.35:1),now,.25)}
+
+/* ---------- wake lock ---------- */
+let wl=null;async function wake(){try{wl=await navigator.wakeLock.request('screen')}catch(e){}}
+function unwake(){try{wl&&wl.release()}catch(e){}wl=null}
+document.addEventListener('visibilitychange',()=>{if(sess&&!sess.over&&document.visibilityState==='visible')wake()});
+
+/* ---------- settings binding ---------- */
+const getK=k=>{const[a,b]=k.split('.');return S[a][b]};
+function setK(k,v){const[a,b]=k.split('.');S[a][b]=v;store.set('settings',S);if(k==='g.musicVol'&&musicGain)musicGain.gain.value=v;refresh()}
+document.querySelectorAll('select.trk').forEach(s=>s.innerHTML=Object.entries(TRACKS).map(([k,t])=>`<option value="${k}">${t.name}</option>`).join(''));
+document.querySelectorAll('[data-key]').forEach(el=>{const k=el.dataset.key;
+  if(el.classList.contains('stepper')){const[m,,p]=el.children,min=+el.dataset.min,max=+el.dataset.max,st=+el.dataset.step;
+    m.onclick=()=>setK(k,Math.max(min,+(getK(k)-st).toFixed(2)));p.onclick=()=>setK(k,Math.min(max,+(getK(k)+st).toFixed(2)))}
+  else if(el.classList.contains('seg'))el.querySelectorAll('button').forEach(b=>b.onclick=()=>setK(k,b.dataset.v));
+  else if(el.type==='checkbox'){el.checked=getK(k);el.onchange=()=>setK(k,el.checked)}
+  else{el.value=getK(k);el.addEventListener(el.tagName==='SELECT'?'change':'input',()=>setK(k,el.type==='range'?+el.value:el.value))}});
+function iDuration(){return S.i.preset==='custom'?Math.round(S.i.custom*60):PRESETS[S.i.preset]}
+function sDuration(){return S.s.preset==='custom'?Math.round(S.s.custom*60):SAUNA_PRESETS[S.s.preset]}
+function refresh(){
+  document.querySelectorAll('.seg[data-key]').forEach(sg=>{const v=getK(sg.dataset.key);sg.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v))});
+  document.querySelectorAll('.stepper').forEach(st=>{const v=getK(st.dataset.key),f=st.dataset.fmt;st.querySelector('output').textContent=f==='mmss'?fmt(v*60):f==='min'?v+' min':v});
+  const c=S.c;$('cDur').textContent=fmt(cxTotal());$('cHint').textContent=`${c.rounds} round${c.rounds>1?'s':''} · ${c.hot} min hot · ${fmt(c.cold*60)} cold · ${fmt(c.trans*60)} to switch`;
+  $('cHotV').textContent=`${c.hotF}°F / ${fToC(c.hotF)}°C`;$('cColdV').textContent=`${c.coldF}°F / ${fToC(c.coldF)}°C`;$('cMusicOpts').hidden=!c.music;
+  const b=S.b,P=PACE[b.pace],est=Math.round((b.rounds*(b.breaths*P+95+22)+12)/60);
+  $('bBadge').textContent=b.rounds;$('bHint').textContent=`${P.toFixed(1)} s per breath · about ${est} min total`;
+  $('bMusicOpts').hidden=!b.music;
+  $('iDur').textContent=fmt(iDuration());$('iCustomRow').hidden=S.i.preset!=='custom';
+  $('iPrepV').textContent=S.i.prep<1?'30s':(S.i.prep%1?fmt(S.i.prep*60):S.i.prep+'m');
+  $('iTempRow').hidden=!S.i.tempOn;$('iTempV').textContent=`${S.i.tempF}°F / ${fToC(S.i.tempF)}°C`;
+  $('iMusicOpts').hidden=!S.i.music;
+  $('sDur').textContent=fmt(sDuration());$('sCustomRow').hidden=S.s.preset!=='custom';
+  $('sTempV').textContent=`${S.s.tempF}°F / ${fToC(S.s.tempF)}°C`;$('sMusicOpts').hidden=!S.s.music;
+  $('gCoachHint').textContent=hard()?'Tough-love coaching: blunter lines, faster delivery. Safety cues stay on.':'Calm, steady guidance.';
+  $('gRateV').textContent=S.g.rate.toFixed(2)+'×';$('gMusicVolV').textContent=Math.round(S.g.musicVol*100)+'%';
+}
+refresh();
+
+/* previews */
+const PLAY='<svg viewBox="0 0 16 16"><path d="M4 2l10 6-10 6z" fill="currentColor"/></svg>',STOP='<svg viewBox="0 0 16 16"><rect x="3" y="3" width="10" height="10" rx="1.5" fill="currentColor"/></svg>';
+let prevAmb=null,prevBtn=null,prevTimer=null;
+document.querySelectorAll('.prev').forEach(b=>{b.innerHTML=PLAY;b.onclick=()=>{const was=prevBtn===b;stopPreview();if(was)return;
+  if(!audio())return;prevAmb=new Ambient($(b.dataset.prev).value).start(1.5);prevBtn=b;b.classList.add('on');b.innerHTML=STOP;prevTimer=setTimeout(stopPreview,15000)}});
+function stopPreview(){clearTimeout(prevTimer);if(prevAmb){prevAmb.stop(1);prevAmb=null}if(prevBtn){prevBtn.classList.remove('on');prevBtn.innerHTML=PLAY;prevBtn=null}}
+$('gTest').onclick=()=>{audio();speakOn=true;gong();say('Welcome to PlungeTX. Breathe in slowly, and let it go.',true)};
+
+/* ---------- session clock ---------- */
+let sess=null,loopId=null;
+function now(){return sess.paused?sess.pauseStart:performance.now()}
+function active(){return(now()-sess.t0-sess.pausedTotal)/1000}
+function phaseT(){return active()-sess.ps}
+function setPhase(p){sess.phase=p;sess.ps=active();sess.cues={};sess.sub=null;(sess.enter[p]||(()=>{}))()}
+function cue(k,cond,text){if(cond&&!sess.cues[k]){sess.cues[k]=1;say(text);return true}return false}
+function pauseToggle(btn){if(!sess||sess.over)return;if(!sess.paused){sess.paused=true;sess.pauseStart=performance.now();if(TTS)speechSynthesis.cancel();if(ctx)ctx.suspend();btn.textContent='Resume'}
+  else{sess.pausedTotal+=performance.now()-sess.pauseStart;sess.paused=false;if(ctx)ctx.resume();btn.textContent='Pause'}}
+function armStop(btn,fn){if(btn.classList.contains('armed')){btn.classList.remove('armed');fn();return}const label=btn.textContent;btn.classList.add('armed');btn.textContent='Tap again to end';
+  setTimeout(()=>{btn.classList.remove('armed');btn.textContent=label},3000)}
+function endSession(){sess.over=true;clearInterval(loopId);unwake();if(ctx&&ctx.state!=='running')ctx.resume()}
+function abort(){if(!sess)return;const s=sess;
+  if(s.type==='bath'&&s.phase==='cold'&&phaseT()>5){finishBath(true);return}
+  if(s.type==='sauna'&&phaseT()>30){finishSauna(true);return}
+  if(s.type==='contrast'){const st=cxStep(),part=st.k!=='s'?Math.round(phaseT()):0;if(part>0)s.done.push({k:st.k,s:part,r:st.r});
+    if(s.done.reduce((a,x)=>a+x.s,0)>30){finishContrast(true);return}}
+  endSession();if(TTS)speechSynthesis.cancel();playTrack(null,1.5);
+  if(s.type==='breath'&&s.holds.length){save({type:'breath',holds:s.holds,pace:S.b.pace,breaths:S.b.breaths});}
+  show('home')}
+
+/* ---------- guided breathing ---------- */
+const br={orb:$('brOrb'),big:$('brBig'),label:$('brLabel'),sub:$('brSub'),wrap:$('brWrap'),tap:$('brTap')};
+function orb(el,scale,dur,cls){el.style.transitionDuration=dur+'s';el.style.transform=`scale(${scale})`;el.classList.toggle('hold',cls==='hold');el.classList.toggle('recover',cls==='recover')}
+const HOLD_CUES={8:'Relax every muscle. Tap the screen when you need to breathe.',30:'Thirty seconds.',45:'Stay soft. Nothing to do but wait.',60:'One minute.',75:'Let the body be still.',90:'One minute, thirty.',105:'Calm and quiet.',120:'Two minutes.'};
+const ORD=['zero','one','two','three','four','five','six'];
+function startBreath(){
+  if(!audio())return;speakOn=S.b.voice;wake();const b=S.b;
+  sess={type:'breath',t0:performance.now(),pausedTotal:0,paused:false,round:1,holds:[],P:PACE[b.pace],N:b.breaths,R:b.rounds,enter:{
+    intro(){br.label.textContent='Get ready';br.sub.textContent='Breathe in fully through the belly, then let it go';br.big.textContent='';orb(br.orb,.55,1.5);
+      say(`Sit or lie down somewhere safe, and get comfortable. We'll do ${b.rounds} round${b.rounds>1?'s':''} of ${b.breaths} breaths. Breathe in fully, and let it go.`,true)},
+    breathing(){br.sub.textContent='';br.wrap.classList.remove('holding')},
+    hold(){br.wrap.classList.add('holding');orb(br.orb,.42,2.2,'hold');br.label.textContent='Hold';br.sub.textContent='Breath out, lungs relaxed. Tap when you need to breathe.';br.tap.hidden=false;
+      gong(50,.08);buzz(60);say('And let it go. Hold your breath.',true);if(S.b.music)playTrack(S.b.trackB,5)},
+    recover(){br.tap.hidden=true;br.wrap.classList.remove('holding');orb(br.orb,1.05,2.6,'recover');br.label.textContent='Breathe all the way in';br.sub.textContent='Recovery breath, hold for 15 seconds';br.big.textContent='';
+      if(S.b.whoosh)whoosh(2.6,true);buzz(60);say('Breathe all the way in, and hold.',true)},
+    release(){orb(br.orb,.55,2.5);br.label.textContent='Let go';gong(57,.1);if(S.b.whoosh)whoosh(2.5,false);buzz([40,60,40]);
+      if(sess.round<sess.R){br.sub.textContent=`Round ${sess.round+1} is next`;say(`Let it go. Round ${ORD[sess.round+1]||sess.round+1}.`,true);if(S.b.music)playTrack(S.b.trackA,5)}
+      else{br.sub.textContent='';say('Let it go.',true)}},
+    done(){finishBreath()}}};
+  $('brPause').textContent='Pause';$('brPace').textContent=b.pace[0].toUpperCase()+b.pace.slice(1);br.tap.hidden=true;updRound();
+  show('breath');sess.introLen=11;setPhase('intro');if(b.music)playTrack(b.trackA,5);
+  loopId=setInterval(tickBreath,80);
+}
+function updRound(){$('brRound').textContent=`Round ${sess.round} of ${sess.R}`}
+function breathStep(i,inPart){const s=sess,half=s.P*.5;br.big.textContent=i+1;orb(br.orb,inPart?1:.5,half*.95);br.label.textContent=inPart?'Breathe in':'Let go';
+  if(S.b.whoosh)whoosh(half*.95,inPart);
+  if(inPart){if(i===1&&s.round===1)say('Belly, chest, and let it go.');else if(i===s.N-1)say('Last one. All the way in.');else if(i===s.N-5&&s.N>=20)say('Five more.');else if(i===Math.floor(s.N/2))say('Halfway.')}}
+function tickBreath(){const s=sess;if(!s||s.paused||s.over)return;const t=phaseT();
+  switch(s.phase){
+    case 'intro':if(t>=s.introLen)setPhase('breathing');break;
+    case 'breathing':{const i=Math.floor(t/s.P);if(i>=s.N){setPhase('hold');return}const inPart=(t-i*s.P)<s.P*.5,sub=i+(inPart?'i':'o');if(sub!==s.sub){s.sub=sub;breathStep(i,inPart)}break}
+    case 'hold':{const sec=Math.floor(t);br.big.textContent=fmt(t);if(HOLD_CUES[sec])cue('h'+sec,true,HOLD_CUES[sec]);
+      else if(sec>120&&sec%30===0){const m=Math.floor(sec/60);cue('h'+sec,true,`${m} minutes${sec%60?', thirty':''}.`)}break}
+    case 'recover':if(t>=2.8){br.big.textContent=Math.max(0,Math.ceil(17.8-t));if(!s.cues.l){s.cues.l=1;br.label.textContent='Hold'}}
+      cue('c',t>=14.6,'Three. Two. One.');if(t>=17.8)setPhase('release');break;
+    case 'release':if(t>=4){if(s.round<s.R){s.round++;updRound();setPhase('breathing')}else setPhase('done')}break;
+  }}
+function endHold(){if(sess&&sess.phase==='hold'&&!sess.paused){sess.holds.push(Math.round(phaseT()));setPhase('recover')}}
+$('brStage').addEventListener('click',endHold);
+$('brPause').onclick=e=>pauseToggle(e.currentTarget);
+$('brStop').onclick=e=>armStop(e.currentTarget,abort);
+$('bStart').onclick=startBreath;
+function finishBreath(){const s=sess;endSession();playTrack(null,8);gong(50,.1);say('That was the final round. Breathe normally, and notice how your body feels.');
+  const fresh=save({type:'breath',holds:s.holds,pace:S.b.pace,breaths:S.b.breaths});announce(fresh);
+  const best=Math.max(...s.holds),avg=s.holds.reduce((a,b)=>a+b,0)/s.holds.length,nr=s.holds.length,pace=S.b.pace[0].toUpperCase()+S.b.pace.slice(1);
+  lastShare={kind:'breath',eyebrow:'Breathwork',big:fmt(best),unit:'best breath hold',title:`${nr} round${nr===1?'':'s'} · ${pace} pace`,lines:['Holds  '+s.holds.map(fmt).join('  ·  ')],
+    text:`Held my breath for ${humanDur(best)} after ${nr} round${nr===1?'':'s'} of breathwork 🫁`};
+  $('dTitle').textContent='Breathing complete';$('dSub').textContent=`Best hold ${fmt(best)} · Average ${fmt(avg)}`;
+  $('dBody').innerHTML=awardsHTML(fresh)+'<div class="bars">'+s.holds.map((h,i)=>`<div class="barrow"><span>Round ${i+1}</span><div class="t"><i style="width:${Math.max(4,h/best*100)}%"></i></div><b>${fmt(h)}</b></div>`).join('')+'</div>';
+  show('done')}
+
+/* ---------- guided ice bath ---------- */
+const ba={orb:$('baOrb'),time:$('baTime'),small:$('baSmall'),label:$('baLabel'),sub:$('baSub'),prog:$('baProg'),phase:$('baPhase')};
+const CIRC=2*Math.PI*124;ba.prog.style.strokeDasharray=CIRC;
+function ring(f){ba.prog.style.strokeDashoffset=CIRC*(1-Math.min(1,Math.max(0,f)))}
+const CALM=['Breathe out slowly. Let the exhale be longer than the inhale.','Unclench your hands. Let them float.','Stay with your breath. In, and a long way out.','Notice the urge to rush. Let it pass.','Relax your face and jaw.','Steady breathing. You are in control.','Let your shoulders sink.','The cold is strong. So are you.'];
+function startBath(){
+  if(!audio())return;speakOn=S.i.voice;wake();const dur=iDuration(),prep=Math.round(S.i.prep*60);
+  sess={type:'bath',t0:performance.now(),pausedTotal:0,paused:false,dur,prep,planned:dur,enter:{
+    prep(){ba.phase.textContent='Prepare';ba.small.textContent='until plunge';ring(0);
+      say('Time to prepare. Breathe in slowly through the nose, and out through the mouth, longer than you breathed in.',true)},
+    enter(){ba.phase.textContent='Step in';ba.label.textContent='Step in slowly';ba.sub.textContent='Long exhale as the cold reaches you';ba.small.textContent='timer starts';ring(1);gong(55,.1);buzz(80);
+      say('Step in now, slowly. Breathe out long as the cold reaches you.',true)},
+    cold(){ba.phase.textContent='Plunge';ba.small.textContent='remaining';ba.sub.textContent='';gong(50,.12);buzz([60,80,60]);say(pick('Timer started. Long, slow exhales.','Clock is running. No hesitating. Long, slow exhales.'),true)},
+    done(){finishBath(false)}}};
+  $('v-bath').classList.remove('sauna');const tc=$('baTemp');tc.hidden=!S.i.tempOn;tc.textContent=`${S.i.tempF}°F · ${fToC(S.i.tempF)}°C`;
+  $('baPause').textContent='Pause';show('bath');setPhase('prep');if(S.i.music)playTrack(S.i.track,5);
+  loopId=setInterval(tickBath,100);
+}
+function slowBreath(t){const c=t%10,inP=c<4,sub=Math.floor(t/10)+(inP?'i':'o');
+  if(sub!==sess.sub){sess.sub=sub;orb(ba.orb,inP?1:.62,inP?3.8:5.8);ba.label.textContent=(sess.phase==='cold'||(sess.steps&&sess.steps[sess.idx].k==='c'))?(inP?'Breathe in':'Long exhale'):(inP?'Breathe in':'Breathe out');return inP}return null}
+function milestones(d){const m=[];for(let k=1;k*60<d-12;k++)m.push(k*60);if(d>=120)m.push(d/2);if(d>=60)m.push(d-30);m.push(d-10);return m}
+function tickBath(){const s=sess;if(!s||s.paused||s.over)return;const t=phaseT();
+  if(s.phase==='prep'){const rem=s.prep-t;ba.time.textContent=fmt(Math.ceil(rem));ring(t/s.prep);const inP=slowBreath(t);
+    if(inP!==null&&t>8&&t<32)say(inP?'Breathe in.':'And out, slowly.');
+    if(s.prep>=120){cue('half',t>=s.prep/2,'Relax your jaw and shoulders. Keep the breath slow.');cue('r60',rem<=60,'One minute left. Stay slow and steady.')}
+    cue('r30',rem<=30&&s.prep>40,'Thirty seconds. Head to the tub when you are ready.');cue('r10',rem<=10,'Ten seconds.');
+    if(rem<=0)setPhase('enter')}
+  else if(s.phase==='enter'){const rem=12-t;ba.time.textContent=Math.max(0,Math.ceil(rem));orb(ba.orb,.8,2);if(rem<=0)setPhase('cold')}
+  else if(s.phase==='cold'){const d=s.dur,rem=d-t;ba.time.textContent=fmt(Math.ceil(rem));ring(1-t/d);slowBreath(t);
+    const ms=milestones(d),r30=d-30,r10=d-10;
+    for(let k=1;k*60<d-12;k++){const at=k*60;if(Math.abs(at-r30)<6||Math.abs(at-r10)<6)continue;
+      cue('m'+k,t>=at&&t<at+3,(k===1?'One minute in.':`${k} minutes in.`)+(at===d/2?' Halfway there.':''))}
+    if(d>=120&&(d/2)%60!==0)cue('half'+d,t>=d/2&&t<d/2+3,'Halfway there.');
+    if(d>=60)cue('r30_'+d,t>=r30&&t<r30+3,'Thirty seconds left.');
+    cue('r10_'+d,t>=r10&&t<r10+3,'Ten seconds.');
+    cue('go',t>=12&&t<15,'Let your shoulders drop.');
+    if(t>=20){const k=Math.floor((t-20)/25),ts=20+25*k;if(t<ts+2&&ts<d-14&&!ms.some(m=>Math.abs(m-ts)<8))cue('c'+k,true,pick(CALM,HARD_COLD)[k%8])}
+    if(rem<=0)setPhase('done')}}
+function finishBath(early){const s=sess,actual=s.phase==='cold'?Math.round(Math.min(phaseT(),s.dur)):0;endSession();playTrack(null,6);
+  if(!early){gong(50,.12);setTimeout(()=>gong(57,.1),900);buzz([100,80,100]);say(pick('Time. Step out slowly, and let your body warm up on its own.','Time. You did what most people will not. Step out slowly, and warm up on your own.'),true)}else if(TTS)speechSynthesis.cancel();
+  const fresh=save({type:'bath',planned:s.dur,actual,tempF:S.i.tempOn?S.i.tempF:null});announce(fresh);
+  const n=last30().pl.length;
+  lastShare={kind:'ice',eyebrow:'Cold plunge',big:fmt(actual),unit:S.i.tempOn?`in ${S.i.tempF}°F water`:'in the cold',title:`${n} plunge${n===1?'':'s'} in the last 30 days`,lines:[],
+    text:`Just did ${humanDur(actual)} in a ${S.i.tempOn?S.i.tempF+'°F ':''}cold plunge 🥶 That's ${n} plunge${n===1?'':'s'} in the last 30 days.`};
+  $('dTitle').textContent=early?'Plunge logged':'Plunge complete';
+  $('dSub').textContent=`${fmt(actual)} in the water`+(S.i.tempOn?` at ${S.i.tempF}°F`:'');
+  $('dBody').innerHTML=awardsHTML(fresh)+'<p class="fine" style="text-align:center">Warm up naturally: move around, get dressed, and skip the hot shower for a few minutes.</p>';
+  show('done')}
+$('baPause').onclick=e=>pauseToggle(e.currentTarget);
+$('baStop').onclick=e=>armStop(e.currentTarget,abort);
+$('baPlus').onclick=()=>{if(!sess||sess.over)return;if(sess.type==='contrast'){const st=cxStep();if(st.k==='s')return;st.d+=30;say('Thirty seconds added.');return}if(sess.phase==='cold'||sess.phase==='heat'){sess.dur+=30}else if(sess.phase==='prep'){sess.prep+=30}else return;say('Thirty seconds added.')};
+$('iStart').onclick=startBath;
+
+/* ---------- guided sauna ---------- */
+const SCAN=['Let your forehead soften.','Drop your shoulders away from your ears.','Let your hands rest open and heavy.','Feel the warmth settle into your back.','Unclench your jaw. Let your tongue rest.','Let your legs grow heavy on the bench.','Notice your heartbeat. There is nothing to change.','With each breath out, let go of a little more.','Let your thoughts drift past like steam.','If you feel lightheaded, step out and cool down. That is always fine.'];
+function stopSpeech(){if(TTS)speechSynthesis.cancel()}
+function startSauna(){if(!audio())return;speakOn=S.s.voice;wake();const dur=sDuration();
+  sess={type:'sauna',t0:performance.now(),pausedTotal:0,paused:false,dur,enter:{
+    heat(){ba.phase.textContent='Sauna';ba.small.textContent='remaining';ba.sub.textContent='';ring(1);gong(52,.1);buzz(80);
+      say(pick('Welcome to the heat. Find a comfortable seat, and close your eyes if you like. Let your breathing slow down.','Into the heat. Sit tall. Slow breath. You are not leaving early.'),true)},
+    done(){finishSauna(false)}}};
+  $('v-bath').classList.add('sauna');const tc=$('baTemp');tc.hidden=false;tc.textContent=`${S.s.tempF}°F · ${fToC(S.s.tempF)}°C`;
+  $('baPause').textContent='Pause';show('bath');setPhase('heat');if(S.s.music)playTrack(S.s.track,6);loopId=setInterval(tickSauna,100)}
+function tickSauna(){const s=sess;if(!s||s.paused||s.over)return;const t=phaseT(),d=s.dur,rem=d-t;ba.time.textContent=fmt(Math.ceil(rem));ring(1-t/d);slowBreath(t);
+  cue('pace',t>=16&&t<20,'Breathe in through the nose for four. And out slowly, for six.');
+  const ms=[d-60,d-10];for(let k=5;k*60<d-30;k+=5)ms.push(k*60);if(d>=600)ms.push(d/2);
+  for(let k=5;k*60<d-30;k+=5){const at=k*60;cue('m'+k,t>=at&&t<at+3,`${k} minutes in.`+(at===d/2?' Halfway. Check in with your body.':''))}
+  if(d>=600&&(d/2)%300!==0)cue('half'+d,t>=d/2&&t<d/2+3,'Halfway. Check in with your body. Step out anytime you need to.');
+  if(d>=180)cue('r60_'+d,t>=d-60&&t<d-57,'One minute left. Enjoy the last of the heat.');
+  cue('r10_'+d,t>=d-10&&t<d-7,'Ten seconds.');
+  if(t>=50){const k=Math.floor((t-50)/50),ts=50+50*k;if(t<ts+2&&ts<d-20&&!ms.some(m=>Math.abs(m-ts)<10))cue('s'+k,true,hard()?HARD_HEAT[k%8]:SCAN[k%SCAN.length])}
+  if(rem<=0)setPhase('done')}
+function finishSauna(early){const s=sess,actual=Math.round(Math.min(phaseT(),s.dur));endSession();playTrack(null,8);
+  if(!early){gong(52,.12);setTimeout(()=>gong(57,.1),900);buzz([100,80,100]);say(pick('Time. Sit up slowly, and take a moment before you stand. Drink some water.','Time. You earned that. Sit up slowly before you stand, and drink some water.'),true)}else stopSpeech();
+  const fresh=save({type:'sauna',planned:s.dur,actual,tempF:S.s.tempF});announce(fresh);
+  const n=last30().sa.length;
+  lastShare={kind:'heat',eyebrow:'Sauna',big:fmt(actual),unit:`at ${S.s.tempF}°F`,title:`${n} sauna${n===1?'':'s'} in the last 30 days`,lines:[],
+    text:`${humanDur(actual)} in a ${S.s.tempF}°F sauna 🔥 That's ${n} sauna session${n===1?'':'s'} in the last 30 days.`};
+  $('dTitle').textContent=early?'Sauna logged':'Sauna complete';$('dSub').textContent=`${fmt(actual)} at ${S.s.tempF}°F`;
+  $('dBody').innerHTML=awardsHTML(fresh)+'<p class="fine" style="text-align:center">Drink water and cool down gradually. Doing contrast? Head to the plunge once your breathing has settled.</p>';show('done')}
+$('sStart').onclick=startSauna;
+
+/* ---------- tallies & awards ---------- */
+const dayNum=ts=>Math.floor((ts-new Date(ts).getTimezoneOffset()*6e4)/864e5);
+/* A contrast session counts as one plunge and one sauna, with its own cold and heat minutes. */
+const coldS=e=>e.type==='bath'?e.actual:e.type==='contrast'?e.cold:0,heatS=e=>e.type==='sauna'?e.actual:e.type==='contrast'?e.heat:0;
+const coldT=e=>e.type==='contrast'?e.coldF:e.tempF,heatT=e=>e.type==='contrast'?e.hotF:e.tempF;
+const isPl=e=>coldS(e)>0,isSa=e=>heatS(e)>0;
+const mins=(a,f)=>Math.round(a.reduce((s,e)=>s+f(e),0)/60);
+const holdsOf=h=>h.filter(e=>e.type==='breath').flatMap(e=>e.holds);
+const humanDur=s=>{s=Math.round(s);const m=Math.floor(s/60),r=s%60;return m?`${m} min${r?` ${r} sec`:''}`:`${r} sec`};
+function last30(h=store.get('history',[])){const since=dayNum(Date.now())-29,r=h.filter(e=>dayNum(e.t)>=since);return{since,pl:r.filter(isPl),sa:r.filter(isSa)}}
+function contrastDays(h){const c=new Set(h.filter(isPl).map(e=>dayNum(e.t)));return new Set(h.filter(isSa).map(e=>dayNum(e.t)).filter(d=>c.has(d))).size}
+function bestStreak(h){const d=[...new Set(h.map(e=>dayNum(e.t)))].sort((a,b)=>a-b);let best=0,run=0,p=null;for(const x of d){run=p!==null&&x===p+1?run+1:1;best=Math.max(best,run);p=x}return best}
+function curStreak(h){const s=new Set(h.map(e=>dayNum(e.t)));let d=dayNum(Date.now());if(!s.has(d))d--;let n=0;while(s.has(d)){n++;d--}return n}
+const BADGES=[
+  ['first_plunge','First Dip','Finish your first cold plunge','ice',h=>h.some(isPl)],
+  ['first_sauna','First Sweat','Finish your first sauna session','heat',h=>h.some(isSa)],
+  ['first_breath','First Breath','Complete a breathing session','breath',h=>h.some(e=>e.type==='breath')],
+  ['contrast','Contrast','Sauna and plunge on the same day','both',h=>contrastDays(h)>=1],
+  ['contrast10','Hot & Cold','10 contrast days','both',h=>contrastDays(h)>=10],
+  ['cx_session','Fire & Ice','Finish a guided contrast session','both',h=>h.some(e=>e.type==='contrast'&&e.rounds>=1)],
+  ['cx3','Triple Contrast','3 rounds of hot and cold in one session','both',h=>h.some(e=>e.type==='contrast'&&e.rounds>=3)],
+  ['hard','Hard Mode','Finish a session with the Hard mode coach','streak',h=>h.some(e=>e.coach==='hard')],
+  ['streak3','Three Straight','A 3-day streak','streak',h=>bestStreak(h)>=3],
+  ['streak7','Full Week','A 7-day streak','streak',h=>bestStreak(h)>=7],
+  ['streak30','Iron Month','A 30-day streak','streak',h=>bestStreak(h)>=30],
+  ['plunge10','Regular','10 cold plunges','ice',h=>h.filter(isPl).length>=10],
+  ['plunge50','Ice Veteran','50 cold plunges','ice',h=>h.filter(isPl).length>=50],
+  ['polar','Polar','One plunge of 4 minutes or more','ice',h=>h.some(e=>(e.type==='bath'?e.actual:e.coldMax||0)>=240)],
+  ['ice40','Ice Water','Plunge in water 40°F or colder','ice',h=>h.some(e=>isPl(e)&&coldT(e)!=null&&coldT(e)<=40)],
+  ['cold60','Cold Hour','60 cold minutes in 30 days','ice',h=>mins(last30(h).pl,coldS)>=60],
+  ['sauna10','Bench Warmer','10 sauna sessions','heat',h=>h.filter(isSa).length>=10],
+  ['sauna50','Steam Veteran','50 sauna sessions','heat',h=>h.filter(isSa).length>=50],
+  ['hot190','Hot Box','Sauna at 190°F or hotter','heat',h=>h.some(e=>isSa(e)&&heatT(e)>=190)],
+  ['long20','Long Sit','A 20-minute sauna session','heat',h=>h.some(e=>(e.type==='sauna'?e.actual:e.hotMax||0)>=1200)],
+  ['hold2','Two-Minute Hold','Hold your breath for 2:00','breath',h=>holdsOf(h).some(x=>x>=120)],
+  ['hold3','Deep Diver','Hold your breath for 3:00','breath',h=>holdsOf(h).some(x=>x>=180)],
+  ['early','Early Riser','Finish a session before 7 a.m.','clock',h=>h.some(e=>new Date(e.t).getHours()<7)]
+].map(([id,name,desc,ic,test])=>({id,name,desc,ic,test}));
+function checkBadges(h){const got=store.get('badges',{}),fresh=[];BADGES.forEach(b=>{if(!got[b.id]&&b.test(h)){got[b.id]=Date.now();fresh.push(b)}});if(fresh.length)store.set('badges',got);return fresh}
+const MED={ice:['#6dd3e0','#0f3a49'],heat:['#f3a25e','#4a2414'],breath:['#e7f5f7','#1d4556'],both:['#f3a25e','#0f3a49'],streak:['#ffd08a','#4a3410'],clock:['#ffd08a','#1d4556']};
+const GLY={ice:'<path d="M32 18v28M20 25l24 14M44 25L20 39M27 20l5 4 5-4M27 44l5-4 5 4"/>',heat:'<path d="M24 44c-4-5 4-8 0-14s2-8 2-8M32 44c-4-5 4-8 0-14s2-8 2-8M40 44c-4-5 4-8 0-14s2-8 2-8"/>',
+  breath:'<path d="M18 28h17a5 5 0 1 0-5-5M18 34h23a5 5 0 1 1-5 5M18 40h10"/>',both:'<circle cx="32" cy="32" r="11"/><path d="M32 21a11 11 0 0 0 0 22z" fill="#6dd3e0" stroke="none"/>',
+  streak:'<path d="M32 45c-7 0-10-5-10-10 0-6 6-8 6-14 4 3 9 7 9 13 1-2 2-4 2-6 3 3 3 6 3 8 0 5-4 9-10 9z"/>',clock:'<circle cx="32" cy="32" r="12"/><path d="M32 25v7l5 3"/>'};
+function medal(ic){const[c,bg]=MED[ic];return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M32 4l24 14v28L32 60 8 46V18z" fill="${bg}" stroke="${c}" stroke-width="3" stroke-linejoin="round"/><g fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${GLY[ic]}</g></svg>`}
+function awardsHTML(f){if(!f.length)return '';return `<div class="newaw"><h3>New award${f.length>1?'s':''}</h3>${f.map(b=>`<button class="it" data-award="${b.id}" style="text-align:left">${medal(b.ic)}<span><b>${b.name}</b><br><small>${b.desc} · tap to share</small></span></button>`).join('')}</div>`}
+function announce(f){if(f.length)say(`New award. ${f.map(b=>b.name).join('. ')}.`)}
+function renderAwards(){const got=store.get('badges',{});$('awCount').textContent=`${Object.keys(got).length} of ${BADGES.length} earned · tap an earned award to share it`;
+  $('awGrid').innerHTML=BADGES.map(b=>got[b.id]?`<button class="bdg" data-award="${b.id}">${medal(b.ic)}<b>${b.name}</b><small>${b.desc}</small><em>${new Date(got[b.id]).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</em></button>`
+    :`<div class="bdg locked">${medal(b.ic)}<b>${b.name}</b><small>${b.desc}</small></div>`).join('')}
+document.addEventListener('click',e=>{const a=e.target.closest('[data-award]');if(!a)return;const b=BADGES.find(x=>x.id===a.dataset.award);if(!b)return;
+  openShare({kind:'award',eyebrow:'Award unlocked',medal:b.ic,title:b.name,lines:[b.desc],text:`Just unlocked the "${b.name}" award on PlungeTX: ${b.desc.charAt(0).toLowerCase()+b.desc.slice(1)} 🏅`})});
+
+/* ---------- share / brag ---------- */
+let lastShare=null,shareText='',shareURL='',dlCap=null;
+(async()=>{try{dlCap=await window.claude?.use?.('downloads')}catch(e){}if(dlCap)$('shSave').hidden=false})();
+function loadImg(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src})}
+function fitText(g,txt,x,y,size,weight,fam,maxW){let s=size;do{g.font=`${weight} ${s}px ${fam}`;s-=2}while(g.measureText(txt).width>maxW&&s>20);g.fillText(txt,x,y)}
+async function makeCard(c,withMedal=true){try{await document.fonts.ready}catch(e){}
+  const W=1080,H=1350,cv=document.createElement('canvas');cv.width=W;cv.height=H;const g=cv.getContext('2d');
+  const pal={ice:['#0f4a5a','#05121a','#6dd3e0'],heat:['#6a3418','#140a06','#f3a25e'],breath:['#1f4b5c','#05121a','#e7f5f7'],month:['#173f4e','#120b08','#6dd3e0'],contrast:['#173f4e','#120b08','#ffd08a'],award:['#3f2c12','#05121a','#ffd08a']}[c.kind];
+  const bg=g.createRadialGradient(W/2,H*.4,40,W/2,H*.5,H*.85);bg.addColorStop(0,pal[0]);bg.addColorStop(1,pal[1]);g.fillStyle=bg;g.fillRect(0,0,W,H);
+  if(c.kind==='month'||c.kind==='contrast'){const hb=g.createLinearGradient(0,H,W,0);hb.addColorStop(0,'rgba(243,162,94,.22)');hb.addColorStop(.5,'rgba(243,162,94,0)');g.fillStyle=hb;g.fillRect(0,0,W,H)}
+  g.strokeStyle=pal[2];g.lineWidth=3;[250,350,450].forEach((r,i)=>{g.globalAlpha=.14-i*.035;g.beginPath();g.arc(W/2,H*.42,r,0,Math.PI*2);g.stroke()});g.globalAlpha=1;
+  g.textBaseline='alphabetic';g.textAlign='left';g.font='700 56px Sora, sans-serif';g.fillStyle='#e7f5f7';g.fillText('Plunge',80,140);const w=g.measureText('Plunge').width;g.fillStyle='#6dd3e0';g.fillText('TX',80+w,140);
+  g.textAlign='right';g.font='500 32px Inter, sans-serif';g.fillStyle='rgba(231,245,247,.6)';g.fillText(new Date().toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}),W-80,136);
+  g.textAlign='center';g.fillStyle=pal[2];g.font='600 38px Inter, sans-serif';try{g.letterSpacing='8px'}catch(e){}g.fillText(c.eyebrow.toUpperCase(),W/2,390);try{g.letterSpacing='0px'}catch(e){}
+  if(c.medal&&withMedal){const img=await loadImg('data:image/svg+xml;charset=utf-8,'+encodeURIComponent(medal(c.medal)));g.drawImage(img,W/2-190,430,380,380)}
+  else if(c.medal){g.fillStyle=pal[2];g.font='700 300px Sora, sans-serif';g.fillText('★',W/2,740)}
+  else{g.fillStyle='#ffffff';fitText(g,c.big,W/2,650,240,700,'Sora, sans-serif',W-160);g.font='500 46px Inter, sans-serif';g.fillStyle='rgba(231,245,247,.85)';g.fillText(c.unit||'',W/2,735)}
+  g.fillStyle='#e7f5f7';fitText(g,c.title,W/2,900,64,600,'Sora, sans-serif',W-160);
+  g.fillStyle='rgba(231,245,247,.75)';(c.lines||[]).forEach((l,i)=>fitText(g,l,W/2,980+i*60,40,400,'Inter, sans-serif',W-160));
+  g.fillStyle=pal[2];g.font='600 34px Inter, sans-serif';g.fillText('plungetx.com',W/2,H-90);
+  return cv.toDataURL('image/png')}
+async function openShare(c){shareText=c.text+' #PlungeTX plungetx.com';$('shTxt').textContent=shareText;$('shSms').href='sms:?&body='+encodeURIComponent(shareText);
+  const img=$('shImg');img.removeAttribute('src');$('share').hidden=false;
+  try{shareURL=await makeCard(c)}catch(e){try{shareURL=await makeCard(c,false)}catch(e2){shareURL=''}}if(shareURL)img.src=shareURL;
+  /* The phone's own share sheet works when the app is hosted on its own site; inside claude.ai it is unavailable and the button stays hidden. */
+  shareFile=null;try{if(shareURL)shareFile=new File([pngBlob()],'plungetx.png',{type:'image/png'})}catch(e){}
+  let can=false;try{can=!!(navigator.share&&navigator.canShare&&shareFile&&navigator.canShare({files:[shareFile]}))}catch(e){}
+  $('shSend').hidden=!can;$('shCopy').classList.toggle('pri',!can);
+  document.querySelector('.shhint').textContent=can?'Tap Send to text it to friends, or press and hold the card to save it.':'Press and hold the card to save it or send it in Messages.'}
+let shareFile=null;
+function pngBlob(){const bin=atob(shareURL.split(',')[1]),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new Blob([u],{type:'image/png'})}
+$('shSend').onclick=()=>{navigator.share({files:[shareFile],text:shareText}).catch(e=>{if(e&&e.name!=='AbortError')$('shSend').hidden=true})};
+$('dShare').onclick=()=>{if(lastShare)openShare(lastShare)};
+$('shClose').onclick=()=>{$('share').hidden=true};
+function selectTxt(){const r=document.createRange();r.selectNodeContents($('shTxt'));const s=getSelection();s.removeAllRanges();s.addRange(r)}
+$('shCopy').onclick=e=>{const b=e.currentTarget,ok=()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy brag text',1800)};
+  try{navigator.clipboard.writeText(shareText).then(ok,selectTxt)}catch(err){selectTxt()}};
+$('shSave').onclick=async e=>{if(!dlCap||!shareURL)return;const b=e.currentTarget;try{await dlCap.save({filename:'plungetx-brag.png',data:pngBlob()});b.textContent='Saved'}catch(err){b.textContent='Not saved'}setTimeout(()=>b.textContent='Save image',1800)};
+
+/* ---------- history ---------- */
+let lastSavedT=0;
+function save(e){const h=store.get('history',[]);e.t=e.t||Date.now();if(!e.manual)e.coach=S.g.coach;h.unshift(e);h.sort((a,b)=>b.t-a.t);store.set('history',h.slice(0,2000));if(!e.manual)lastSavedT=e.t;return checkBadges(h)}
+function renderStats(){const h=store.get('history',[]);checkBadges(h);const{since,pl,sa}=last30(h),today=dayNum(Date.now()),holds=holdsOf(h);
+  $('stStreak').textContent=curStreak(h);$('stBest').textContent=holds.length?fmt(Math.max(...holds)):'–';$('stAw').textContent=Object.keys(store.get('badges',{})).length;
+  $('mPl').textContent=pl.length;$('mPlMin').textContent=`plunge${pl.length===1?'':'s'} · ${mins(pl,coldS)} min`;
+  $('mSa').textContent=sa.length;$('mSaMin').textContent=`sauna${sa.length===1?'':'s'} · ${mins(sa,heatS)} min`;
+  const cs=new Set(pl.map(e=>dayNum(e.t))),hs=new Set(sa.map(e=>dayNum(e.t)));
+  $('mCal').innerHTML=Array.from({length:30},(_,i)=>{const d=since+i,c=cs.has(d),k=hs.has(d);return `<i class="${c&&k?'b':c?'c':k?'h':''}${d===today?' today':''}"></i>`}).join('')}
+$('mShare').onclick=()=>{const h=store.get('history',[]),{pl,sa}=last30(h),st=curStreak(h);
+  openShare({kind:'month',eyebrow:'Last 30 days',big:String(pl.length+sa.length),unit:'hot & cold sessions',title:`${pl.length} plunge${pl.length===1?'':'s'} · ${sa.length} sauna${sa.length===1?'':'s'}`,
+    lines:[`${mins(pl,coldS)} cold min · ${mins(sa,heatS)} sauna min`,st>1?`${st}-day streak`:''].filter(Boolean),
+    text:`My last 30 days: ${pl.length} cold plunge${pl.length===1?'':'s'} (${mins(pl,coldS)} min) and ${sa.length} sauna session${sa.length===1?'':'s'} (${mins(sa,heatS)} min)${st>1?`, on a ${st}-day streak`:''} 🥶🔥`})};
+const IC_B='<svg viewBox="0 0 24 24" fill="none" stroke="#6dd3e0" stroke-width="1.8" stroke-linecap="round"><path d="M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h8"/></svg>',
+      IC_I='<svg viewBox="0 0 24 24" fill="none" stroke="#6dd3e0" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v20M4.5 6.5l15 11M19.5 6.5l-15 11"/></svg>';
+const IC_S='<svg viewBox="0 0 24 24" fill="none" stroke="#f3a25e" stroke-width="1.8" stroke-linecap="round"><path d="M7 20c-2-3 2-5 0-9s1-6 1-6M12 20c-2-3 2-5 0-9s1-6 1-6M17 20c-2-3 2-5 0-9s1-6 1-6"/></svg>';
+const IC_X='<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M5 20c-2-3 2-5 0-9s1-6 1-6M10 20c-2-3 2-5 0-9s1-6 1-6" stroke="#f3a25e"/><path d="M17 4v16M13 8l8 8M21 8l-8 8" stroke="#6dd3e0"/></svg>';
+const FEEL=['','Drained','Flat','Good','Great','Electric'];
+function renderHistory(){const h=store.get('history',[]),ul=$('hList');$('hClear').hidden=!h.length;
+  if(!h.length){ul.innerHTML='<li class="empty" style="border:0;display:block">No sessions yet. Finish a session, or log one by hand above, and it will show up here.</li>';return}
+  const row=(e,ic,title,sub,right)=>`<li><span class="ic">${ic}</span><span class="m"><b>${title}</b><small>${sub}${e.feel?` · <span class="feelt">felt ${FEEL[e.feel].toLowerCase()}</span>`:''}${e.manual?' · logged by hand':''}</small></span><span class="r">${right}</span><button class="del" data-del="${e.t}" aria-label="Delete entry">×</button></li>`;
+  ul.innerHTML=h.map(e=>{const d=new Date(e.t),when=d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'})+(e.manual?'':' · '+d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'}));
+    if(e.type==='breath')return row(e,IC_B,`Breathing · ${e.holds.length} round${e.holds.length>1?'s':''}`,`${when} · holds ${e.holds.map(fmt).join(', ')}`,fmt(Math.max(...e.holds)));
+    if(e.type==='sauna')return row(e,IC_S,`Sauna${e.tempF!=null?' · '+e.tempF+'°F':''}`,when,fmt(e.actual));
+    if(e.type==='contrast')return row(e,IC_X,`Contrast · ${e.rounds} round${e.rounds===1?'':'s'}`,`${when} · ${fmt(e.heat)} hot · ${fmt(e.cold)} cold`,e.rounds+'×');
+    return row(e,IC_I,`Ice bath${e.tempF!=null?' · '+e.tempF+'°F':''}`,when,fmt(e.actual))}).join('')}
+$('hList').addEventListener('click',e=>{const b=e.target.closest('.del');if(!b)return;
+  if(b.classList.contains('armed')){const t=+b.dataset.del;store.set('history',store.get('history',[]).filter(x=>x.t!==t));renderHistory();return}
+  b.classList.add('armed');b.textContent='Delete';setTimeout(()=>{if(b.isConnected){b.classList.remove('armed');b.textContent='×'}},3000)});
+/* manual log */
+const todayISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+let lType='bath';
+$('hAdd').onclick=()=>{const f=$('hForm');f.hidden=!f.hidden;$('hMsg').innerHTML='';if(!f.hidden){$('lDate').value=todayISO();$('lDate').max=todayISO();$('lTemp').value=lType==='bath'?S.i.tempF:S.s.tempF}};
+$('lType').querySelectorAll('button').forEach(b=>b.onclick=()=>{lType=b.dataset.v;$('lType').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));$('lTemp').value=lType==='bath'?S.i.tempF:S.s.tempF;$('lMin').value=lType==='bath'?3:15});
+$('hForm').onsubmit=e=>{e.preventDefault();const m=parseFloat($('lMin').value),tp=parseInt($('lTemp').value,10),dv=$('lDate').value;
+  if(!(m>0)){$('hMsg').innerHTML='<p class="fine">Enter how many minutes the session lasted.</p>';return}
+  let t=Date.now();if(dv&&dv!==todayISO()){const[y,mo,d]=dv.split('-').map(Number);t=new Date(y,mo-1,d,12,0).getTime()}
+  const sec=Math.round(m*60),fresh=save({type:lType,planned:sec,actual:sec,tempF:isNaN(tp)?null:tp,manual:true,t});
+  $('hForm').hidden=true;renderHistory();$('hMsg').innerHTML=awardsHTML(fresh)||'<p class="fine" style="margin:0 0 10px">Saved to your log.</p>'};
+/* how do you feel */
+$('feelSeg').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(!b||!lastSavedT)return;const h=store.get('history',[]),it=h.find(x=>x.t===lastSavedT);if(!it)return;
+  it.feel=+b.dataset.f;store.set('history',h);$('feelSeg').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+function resetFeel(){$('feelSeg').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'))}
+
+/* ---------- natural voice setup ---------- */
+const isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1),isAndroid=/Android/i.test(navigator.userAgent);
+const hasGood=()=>voices.some(v=>vScore(v)>=45),bestGood=()=>voices.find(v=>vScore(v)>=45);
+let vPrompted=false;
+function voiceCheck(){if(!TTS||!voices.length)return;const good=hasGood(),off=store.get('voiceOff',false);$('vBanner').hidden=good||off;
+  if(!good&&!off&&!vPrompted&&!$('v-home').hidden&&$('share').hidden){vPrompted=true;openVoice()}}
+function openVoice(){
+  $('vSteps').innerHTML=isAndroid?'<ol><li>Open <b>Settings</b> › <b>Accessibility</b> (or <b>General management</b>) › <b>Text-to-speech</b>.</li><li>Choose <b>Speech Services by Google</b>, tap the gear, then <b>Install voice data</b> › <b>English (US)</b> and download a voice.</li><li>Come back here and tap <b>I downloaded one</b>.</li></ol>'
+    :isIOS?'<ol><li>Open <b>Settings</b> › <b>Accessibility</b> › <b>Spoken Content</b> › <b>Voices</b> › <b>English</b>.</li><li>Tap <b>Ava</b>, <b>Zoe</b> or <b>Evan</b> and download the <b>Enhanced</b> or <b>Premium</b> version.</li><li>Fully close this app, reopen it, then tap <b>I downloaded one</b>.</li></ol>'
+    :'<p class="small">On a computer, pick a voice marked ★ below. On your iPhone, open this app and follow the steps it shows there.</p>';
+  renderVList();$('vMsg').textContent='';$('vSheet').hidden=false}
+function renderVList(){const top=voices.slice(0,6),cur=pickVoice();
+  $('vList').innerHTML=top.length?'<p class="small">Voices on this device, best first:</p>'+top.map((v,i)=>`<div class="vrow"><span>${vLabel(v)}</span><button data-vplay="${i}">Play</button><button data-vuse="${i}" class="${cur===v?'on':''}">${cur===v?'In use':'Use'}</button></div>`).join(''):''}
+function previewVoice(v){if(!TTS||!v)return;audio();speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('Breathe in slowly. And let it go.');u.voice=v;u.lang=v.lang;u.rate=S.g.rate;speechSynthesis.speak(u)}
+$('vList').onclick=e=>{const p=e.target.closest('[data-vplay]'),u=e.target.closest('[data-vuse]');if(p)previewVoice(voices[+p.dataset.vplay]);
+  if(u){const v=voices[+u.dataset.vuse];setK('g.voiceName',v.name);$('gVoice').value=v.name;renderVList();previewVoice(v)}};
+$('vRecheck').onclick=()=>{if(TTS)loadVoices();setTimeout(()=>{if(TTS)loadVoices();const g=bestGood();
+  if(g){setK('g.voiceName',g.name);$('gVoice').value=g.name;$('vMsg').textContent=`Found ${g.name}. PlungeTX will use it from now on.`;previewVoice(g);$('vBanner').hidden=true}
+  else $('vMsg').textContent='No high-quality voice yet. Once the download finishes, fully close this app, open it again, and tap this button.';renderVList()},500)};
+$('vLater').onclick=()=>{$('vSheet').hidden=true};
+$('vNever').onclick=()=>{store.set('voiceOff',true);$('vSheet').hidden=true;$('vBanner').hidden=true};
+$('vBanner').onclick=openVoice;$('gVoiceHelp').onclick=openVoice;
+
+/* ---------- hot & cold contrast ---------- */
+function cxSteps(){const c=S.c,st=[],hot={k:'h',d:c.hot*60},cold={k:'c',d:Math.round(c.cold*60)},sw=Math.round(c.trans*60),[a,b]=c.order==='hc'?[hot,cold]:[cold,hot];
+  for(let r=1;r<=c.rounds;r++){st.push({...a,r},{k:'s',d:sw,to:b.k,r},{...b,r});if(r<c.rounds)st.push({k:'s',d:sw,to:a.k,r:r+1})}return st}
+function cxTotal(){return cxSteps().reduce((s,x)=>s+x.d,0)}
+function cxStep(){return sess.steps[sess.idx]}
+function startContrast(){if(!audio())return;speakOn=S.c.voice;wake();
+  sess={type:'contrast',t0:performance.now(),pausedTotal:0,paused:false,steps:cxSteps(),idx:0,done:[],enter:{step(){cxEnter()},done(){finishContrast(false)}}};
+  $('baPause').textContent='Pause';show('bath');setPhase('step');loopId=setInterval(tickContrast,100)}
+function cxEnter(){const s=sess,st=cxStep(),R=S.c.rounds,tc=$('baTemp'),first=!s.steps.slice(0,s.idx).some(x=>x.r===st.r&&x.k!=='s'),pre=first&&st.k!=='s'?`Round ${ORD[st.r]||st.r}. `:'';
+  $('v-bath').classList.toggle('sauna',st.k==='h'||(st.k==='s'&&st.to==='h'));tc.hidden=false;
+  if(st.k==='h'){ba.phase.textContent=`Round ${st.r} of ${R} · Heat`;tc.textContent=`${S.c.hotF}°F sauna`;ba.small.textContent='in the heat';ba.sub.textContent='';gong(52,.1);buzz(80);
+    say(pre+pick(s.idx===0?'Into the heat. Settle in, and let your breathing slow down.':'Back into the heat. Let your body warm up again.','Into the heat. Sit tall. Slow breath. Own it.'),true);if(S.c.music)playTrack(S.c.trackHot,5)}
+  else if(st.k==='c'){ba.phase.textContent=`Round ${st.r} of ${R} · Cold`;tc.textContent=`${S.c.coldF}°F plunge`;ba.small.textContent='in the cold';ba.sub.textContent='';gong(50,.12);buzz([60,80,60]);
+    say(pre+pick('Into the cold. Long, slow exhales.','Get in. No hesitating. Long, slow exhales.'),true);if(S.c.music)playTrack(S.c.trackCold,4)}
+  else{const toC=st.to==='c';ba.phase.textContent=toC?'Switch to cold':'Switch to heat';tc.textContent=toC?`${S.c.coldF}°F plunge next`:`${S.c.hotF}°F sauna next`;ba.small.textContent='to switch';ring(1);
+    ba.label.textContent=toC?'Head to the plunge':'Back to the sauna';ba.sub.textContent=toC?'Step in slowly when you get there':'Dry off on the way';orb(ba.orb,.8,2);buzz(60);
+    say(toC?pick('Time to switch. Head to the plunge, and step in slowly when you get there.','Time to switch. Walk to the plunge. Do not think about it. Just go.'):'Out of the cold. Dry off, and head back to the heat.',true)}}
+function tickContrast(){const s=sess;if(!s||s.paused||s.over)return;const st=cxStep(),t=phaseT(),d=st.d,rem=d-t;ba.time.textContent=fmt(Math.ceil(rem));ring(1-t/d);
+  if(st.k==='s')cue('r10',d>15&&rem<=10,'Ten seconds.');
+  else{slowBreath(t);
+    if(st.k==='h'){cue('r60',d>=180&&t>=d-60&&t<d-57,'One minute left in the heat.');cue('r10',t>=d-10&&t<d-7,'Ten seconds. Get ready to switch.');
+      if(t>=45){const k=Math.floor((t-45)/60),ts=45+60*k;if(t<ts+2&&ts<d-75)cue('s'+k,true,hard()?HARD_HEAT[(k+st.r*3)%8]:SCAN[(k+st.r*3)%SCAN.length])}}
+    else{cue('go',d>=40&&t>=12&&t<15,'Shoulders down. Hands relaxed.');cue('r30',d>=75&&t>=d-30&&t<d-27,'Thirty seconds left.');cue('r10',t>=d-10&&t<d-7,'Ten seconds.');
+      if(t>=30){const k=Math.floor((t-30)/25),ts=30+25*k;if(t<ts+2&&ts<d-35)cue('c'+k,true,pick(CALM,HARD_COLD)[(k+st.r)%8])}}}
+  if(rem<=0){if(st.k!=='s')s.done.push({k:st.k,s:d,r:st.r});if(s.idx<s.steps.length-1){s.idx++;setPhase('step')}else setPhase('done')}}
+function finishContrast(early){const s=sess,c=S.c;endSession();playTrack(null,8);
+  const H=s.done.filter(x=>x.k==='h'),C=s.done.filter(x=>x.k==='c'),heat=H.reduce((a,x)=>a+x.s,0),cold=C.reduce((a,x)=>a+x.s,0),rounds=new Set(s.done.map(x=>x.r)).size,endedCold=s.done.length&&s.done[s.done.length-1].k==='c';
+  if(!early){gong(50,.12);setTimeout(()=>gong(57,.1),900);buzz([100,80,100]);
+    say(pick(endedCold?'That was the last round. Step out slowly, and let your body warm up on its own. Drink some water.':'That was the last round. Sit up slowly, cool down gradually, and drink some water.','Done. Every round, hot and cold. That is how you get harder. Now step out slowly and drink some water.'),true)}else stopSpeech();
+  const fresh=save({type:'contrast',rounds,heat,cold,hotF:c.hotF,coldF:c.coldF,hotMax:Math.max(0,...H.map(x=>x.s)),coldMax:Math.max(0,...C.map(x=>x.s)),steps:s.done});announce(fresh);
+  lastShare={kind:'contrast',eyebrow:'Hot & cold contrast',big:`${rounds}×`,unit:`round${rounds===1?'':'s'} of hot and cold`,title:`${humanDur(heat)} heat · ${humanDur(cold)} cold`,lines:[`${c.hotF}°F sauna · ${c.coldF}°F plunge`],
+    text:`Just did ${rounds} round${rounds===1?'':'s'} of contrast: ${humanDur(heat)} in a ${c.hotF}°F sauna and ${humanDur(cold)} in a ${c.coldF}°F plunge 🔥🥶`};
+  $('v-bath').classList.remove('sauna');
+  $('dTitle').textContent=early?'Contrast logged':'Contrast complete';$('dSub').textContent=`${rounds} round${rounds===1?'':'s'} · ${fmt(heat)} hot · ${fmt(cold)} cold`;
+  const byR={};s.done.forEach(x=>{(byR[x.r]=byR[x.r]||{h:0,c:0})[x.k]+=x.s});
+  $('dBody').innerHTML=awardsHTML(fresh)+'<div class="bars">'+Object.entries(byR).map(([r,v])=>`<div class="barrow" style="grid-template-columns:72px 1fr 1fr"><span>Round ${r}</span><b style="text-align:left;color:var(--ember)">${fmt(v.h)} hot</b><b style="color:var(--glacier)">${fmt(v.c)} cold</b></div>`).join('')+'</div>'+
+    '<p class="fine" style="text-align:center">Drink water, and let your body rewarm on its own.</p>';
+  show('done')}
+$('cStart').onclick=startContrast;
+$('hClear').onclick=e=>{const b=e.currentTarget;if(b.dataset.armed){store.set('history',[]);delete b.dataset.armed;b.textContent='Clear history';renderHistory();return}
+  b.dataset.armed=1;b.textContent='Tap again to delete all';setTimeout(()=>{delete b.dataset.armed;b.textContent='Clear history'},3000)};
+
+renderStats();
+})();
+</script>
+
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}</script>
+</body>
+</html>
