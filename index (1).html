@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Mobile Cold Plunge Rentals in Houston, Pearland & surrounding areas. Pod Company Pro Chiller 1/2 HP with filtration delivered to your door. No ice required.">
+<title>PlungeTX — Mobile Cold Plunge Rentals Houston</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="shortcut icon" href="/favicon.svg">
+<meta name="theme-color" content="#020c13">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; } 
+
+:root {
+  --cyan:  #00d4ff;
+  --deep:  #020c13;
+  --mid:   #061520;
+  --card:  #0b2030;
+  --muted: #4d7a94;
+  --ice:   #c6eeff;
+  --white: #eef9ff;
+}
+
+body {
+  background: var(--deep);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.1rem 5vw;
+  background: rgba(2,12,19,0.8);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(0,212,255,.1);
+  transition: padding .3s;
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.75rem; letter-spacing: .14em;
+  color: var(--white); text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-links { display: flex; gap: 2.5rem; align-items: center; }
+.nav-links a {
+  color: var(--muted); text-decoration: none;
+  font-size: .8rem; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--white); }
+.btn-nav {
+  background: var(--cyan) !important;
+  color: var(--deep) !important;
+  padding: .55rem 1.4rem !important;
+  border-radius: 3px;
+  font-weight: 700 !important;
+  letter-spacing: .08em !important;
+  transition: opacity .2s !important;
+}
+.btn-nav:hover { opacity: .82 !important; color: var(--deep) !important; }
+
+/* ── HERO ── */
+#hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: flex-end;
+  padding: 0 5vw 7rem; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 65% 55% at 65% 25%, rgba(0,150,210,.18) 0%, transparent 70%),
+    radial-gradient(ellipse 35% 45% at 5% 85%, rgba(0,70,120,.22) 0%, transparent 60%),
+    linear-gradient(175deg, #061520 0%, #020c13 100%);
+}
+/* real setup photo layered into the hero */
+.hero-photo {
+  position: absolute; inset: 0; z-index: 0;
+  background: url('CPBack.png') center 40% / cover no-repeat;
+  opacity: .38;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.9) 0%, rgba(0,0,0,.75) 55%, transparent 96%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.9) 0%, rgba(0,0,0,.75) 55%, transparent 96%);
+  filter: saturate(.85);
+}
+.hero-photo::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(2,12,19,.92) 0%, rgba(2,12,19,.55) 45%, rgba(2,12,19,.25) 100%);
+}
+/* animated frost grid */
+.frost-grid {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+}
+.hero-glow {
+  position: absolute; z-index: 0;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,212,255,.08) 0%, transparent 70%);
+  top: 5%; right: 5%; border-radius: 50%;
+  animation: glow 6s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  from { transform: scale(1); opacity: .6; }
+  to   { transform: scale(1.15); opacity: 1; }
+}
+.watermark {
+  position: absolute; z-index: 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(12rem, 26vw, 26rem);
+  line-height: 1; letter-spacing: .03em;
+  color: rgba(0,212,255,.035);
+  top: 50%; right: -2vw;
+  transform: translateY(-50%);
+  pointer-events: none; white-space: nowrap;
+}
+
+/* particles */
+#particles { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+
+.hero-content { position: relative; z-index: 2; max-width: 780px; }
+.eyebrow {
+  display: flex; align-items: center; gap: .8rem;
+  font-size: .72rem; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--cyan);
+  margin-bottom: 1.4rem;
+}
+.eyebrow::before { content:''; width:36px; height:1px; background:var(--cyan); }
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4.5rem, 10vw, 10.5rem);
+  line-height: .9; letter-spacing: .02em;
+  margin-bottom: 1.6rem;
+}
+h1 .accent { color: var(--cyan); }
+
+.hero-desc {
+  font-size: 1.05rem; font-weight: 300; line-height: 1.8;
+  color: rgba(198,238,255,.6); max-width: 500px;
+  margin-bottom: 2.8rem;
+}
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-block;
+  background: var(--cyan); color: var(--deep);
+  text-decoration: none; padding: 1rem 2.5rem;
+  font-weight: 700; font-size: .88rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  border-radius: 3px;
+  box-shadow: 0 0 40px rgba(0,212,255,.28);
+  transition: transform .2s, box-shadow .2s;
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 60px rgba(0,212,255,.45);
+}
+.btn-outline {
+  display: inline-block;
+  border: 1px solid rgba(0,212,255,.35); color: var(--ice);
+  text-decoration: none; padding: 1rem 2.5rem;
+  font-size: .88rem; letter-spacing: .1em; text-transform: uppercase;
+  border-radius: 3px;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.btn-outline:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0,212,255,.05); }
+
+.scroll-cue {
+  position: absolute; bottom: 2.5rem; left: 50%;
+  transform: translateX(-50%); z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: .4rem;
+  color: var(--muted); font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
+}
+.scroll-line {
+  width: 1px; height: 44px;
+  background: linear-gradient(to bottom, var(--cyan), transparent);
+  animation: scrollAnim 2.2s ease-in-out infinite;
+}
+@keyframes scrollAnim {
+  0%,100% { opacity:.3; transform:scaleY(1); }
+  50% { opacity:1; transform:scaleY(1.1); }
+}
+
+/* ── DIVIDERS ── */
+.hr { width:100%; height:1px; background: linear-gradient(90deg, transparent, rgba(0,212,255,.18), transparent); }
+
+/* ── SECTIONS ── */
+section { padding: 6rem 5vw; }
+.label {
+  display: flex; align-items: center; gap: .7rem;
+  font-size: .7rem; letter-spacing: .28em;
+  text-transform: uppercase; color: var(--cyan);
+  margin-bottom: .9rem;
+}
+.label::before { content:''; width:24px; height:1px; background:var(--cyan); }
+h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.6rem, 5vw, 5rem);
+  line-height: 1; letter-spacing: .03em;
+}
+h2 .accent { color: var(--cyan); }
+
+/* ── ABOUT ── */
+#about {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center;
+}
+.about-body p {
+  font-size: 1rem; font-weight: 300; line-height: 1.9;
+  color: rgba(198,238,255,.65); margin-top: 1.5rem;
+}
+.about-body strong { color: var(--white); font-weight: 500; }
+.about-link {
+  display: inline-flex; align-items: center; gap: .5rem;
+  color: var(--cyan); font-size: .85rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 500; text-decoration: none;
+  margin-top: 1.8rem;
+  transition: gap .2s;
+}
+.about-link::after { content: '→'; }
+.about-link:hover { gap: .9rem; }
+
+.photo-stack {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 220px 200px;
+  gap: 10px; position: relative;
+}
+.photo-stack img {
+  width: 100%; height: 100%; object-fit: cover;
+  border-radius: 4px;
+  filter: saturate(.75) brightness(.88);
+  transition: filter .35s, transform .35s;
+}
+.photo-stack img:hover { filter: saturate(1) brightness(1); transform: scale(1.02); }
+.photo-stack img:first-child { grid-column: 1 / -1; height: 100%;object-position: center 50%;  }
+.badge {
+  position: absolute; bottom: -1.2rem; right: -1.2rem;
+  width: 105px; height: 105px; border-radius: 50%;
+  background: var(--cyan); color: var(--deep);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem; letter-spacing: .07em; line-height: 1.25;
+  box-shadow: 0 0 45px rgba(0,212,255,.35);
+  z-index: 1;
+}
+.badge small { font-family: 'DM Sans', sans-serif; font-size: .55rem; letter-spacing: .08em; font-weight: 500; }
+
+/* ── FEATURES ── */
+#features { background: var(--mid); text-align: center; }
+#features h2 { margin-bottom: 3.5rem; }
+.features-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border: 1px solid rgba(0,212,255,.1);
+  border-radius: 6px; overflow: hidden;
+  gap: 1px; background: rgba(0,212,255,.07);
+  max-width: 980px; margin: 0 auto;
+}
+.feat {
+  background: var(--mid); padding: 2.5rem 2rem;
+  text-align: left; transition: background .2s;
+}
+.feat:hover { background: var(--card); }
+.feat-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+.feat h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.45rem; letter-spacing: .06em;
+  margin-bottom: .55rem;
+}
+.feat p { font-size: .87rem; color: var(--muted); line-height: 1.75; font-weight: 300; }
+
+/* ── GALLERY ── */
+#gallery { text-align: center; }
+#gallery h2 { margin-bottom: .9rem; }
+.gallery-intro {
+  color: var(--muted); font-weight: 300; font-size: .95rem;
+  max-width: 520px; margin: 0 auto 3rem; line-height: 1.7;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 300px;
+  gap: 12px;
+  max-width: 1100px; margin: 0 auto;
+}
+.g-item {
+  position: relative; border-radius: 6px; overflow: hidden;
+  border: 1px solid rgba(0,212,255,.12);
+}
+.g-item.wide { grid-column: span 2; }
+.g-item img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: saturate(.8) brightness(.9);
+  transition: filter .4s, transform .5s;
+}
+.g-item:hover img { filter: saturate(1) brightness(1); transform: scale(1.04); }
+.g-cap {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 2.2rem 1.3rem 1.1rem;
+  background: linear-gradient(to top, rgba(2,12,19,.92) 0%, rgba(2,12,19,.55) 60%, transparent 100%);
+  text-align: left; pointer-events: none;
+}
+.g-cap-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.15rem; letter-spacing: .08em;
+  color: var(--white); line-height: 1.1;
+}
+.g-cap-label .accent { color: var(--cyan); }
+.g-cap p {
+  font-size: .74rem; color: rgba(198,238,255,.65);
+  font-weight: 300; margin-top: .25rem; line-height: 1.5;
+}
+.g-chip {
+  position: absolute; top: .9rem; right: .9rem;
+  background: var(--cyan); color: var(--deep);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.05rem; letter-spacing: .06em;
+  padding: .3rem .75rem; border-radius: 3px;
+  box-shadow: 0 0 30px rgba(0,212,255,.4);
+}
+
+/* ── PRICING ── */
+#pricing { text-align: center; }
+.pricing-intro {
+  color: var(--muted); font-weight: 300; font-size: .95rem;
+  max-width: 480px; margin: 1rem auto 3.5rem; line-height: 1.7;
+}
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; max-width: 1000px; margin: 0 auto 2.5rem;
+}
+.plan {
+  border: 1px solid rgba(0,212,255,.13);
+  border-radius: 6px; padding: 2.4rem 2rem;
+  background: var(--card); text-align: left;
+  position: relative; overflow: hidden;
+  transition: transform .25s, border-color .25s, box-shadow .25s;
+}
+.plan:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0,212,255,.4);
+  box-shadow: 0 12px 50px rgba(0,212,255,.1);
+}
+.plan.featured {
+  border-color: var(--cyan);
+  box-shadow: 0 0 60px rgba(0,212,255,.14);
+}
+.plan.featured::before {
+  content: 'MOST POPULAR';
+  position: absolute; top: 0; right: 0;
+  background: var(--cyan); color: var(--deep);
+  font-size: .62rem; font-weight: 700;
+  letter-spacing: .12em; padding: .32rem .9rem;
+  border-radius: 0 6px 0 4px;
+}
+
+.plan.sale::before {
+  content: 'LIMITED-TIME SALE';
+  position: absolute; top: 0; right: 0;
+  background: var(--cyan); color: var(--deep);
+  font-size: .62rem; font-weight: 700;
+  letter-spacing: .12em; padding: .32rem .9rem;
+  border-radius: 0 6px 0 4px;
+}
+.sale-banner {
+  max-width: 1000px; margin: -1.6rem auto 2rem;
+  padding: .9rem 1.2rem;
+  border: 1px solid rgba(0,212,255,.38);
+  background: rgba(0,212,255,.09);
+  color: var(--white); border-radius: 5px;
+  font-size: .82rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  box-shadow: 0 0 35px rgba(0,212,255,.12);
+}
+.old-price {
+  color: var(--muted); font-size: 1.15rem; font-weight: 500;
+  text-decoration: line-through; margin-bottom: .2rem;
+}
+.sale-note {
+  color: var(--cyan); font-size: .76rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  margin-top: -1.25rem; margin-bottom: 1.4rem;
+}
+.plan-period {
+  font-size: .7rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--cyan); margin-bottom: .5rem;
+}
+.plan-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem; letter-spacing: .05em; margin-bottom: .2rem;
+}
+.plan-who { font-size: .8rem; color: var(--muted); font-weight: 300; margin-bottom: 1.8rem; }
+.plan-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 4rem; line-height: 1; color: var(--white); margin-bottom: 1.8rem;
+}
+.plan-price sup { font-size: 1.8rem; color: var(--cyan); vertical-align: super; }
+.plan-perks { list-style: none; }
+.plan-perks li {
+  font-size: .84rem; color: rgba(198,238,255,.65);
+  padding: .42rem 0;
+  border-bottom: 1px solid rgba(0,212,255,.07);
+  display: flex; align-items: center; gap: .55rem;
+  font-weight: 300;
+}
+.plan-perks li::before { content:'✓'; color: var(--cyan); font-weight: 700; font-size: .72rem; }
+.pricing-notes {
+  color: var(--muted); font-size: .82rem;
+  font-weight: 300; line-height: 2; max-width: 600px; margin: 0 auto;
+}
+.pricing-notes strong { color: var(--white); font-weight: 500; }
+
+/* ── SERVICE AREA ── */
+#area {
+  background: var(--mid);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center;
+}
+.area-body p {
+  color: rgba(198,238,255,.6); font-weight: 300;
+  font-size: .95rem; line-height: 1.8; margin-top: 1.5rem;
+}
+.tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.8rem; }
+.tag {
+  border: 1px solid rgba(0,212,255,.2);
+  background: rgba(0,212,255,.06);
+  color: var(--ice); padding: .38rem 1rem;
+  border-radius: 2px; font-size: .78rem;
+  letter-spacing: .05em;
+  transition: background .2s, border-color .2s;
+}
+.tag:hover { background: rgba(0,212,255,.15); border-color: var(--cyan); }
+.area-phone {
+  margin-top: 2.5rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.6rem; letter-spacing: .06em;
+  color: var(--cyan); text-decoration: none;
+  display: block; transition: opacity .2s;
+}
+.area-phone:hover { opacity: .75; }
+.area-phone-label { color: var(--muted); font-size: .8rem; font-weight: 300; margin-top: .4rem; }
+
+.area-visual {
+  position: relative; border-radius: 6px; overflow: hidden;
+  background: rgba(0,212,255,.04);
+  border: 1px solid rgba(0,212,255,.12);
+  min-height: 340px;
+  display: flex; align-items: center; justify-content: center;
+}
+.rings { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(0,212,255,.1);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  animation: ripple 4s ease-in-out infinite;
+}
+.ring:nth-child(1) { width: 100px; height: 100px; }
+.ring:nth-child(2) { width: 200px; height: 200px; animation-delay: .8s; }
+.ring:nth-child(3) { width: 310px; height: 310px; animation-delay: 1.6s; }
+.ring:nth-child(4) { width: 430px; height: 430px; animation-delay: 2.4s; }
+@keyframes ripple {
+  0%,100% { opacity:.2; } 50% { opacity:.7; }
+}
+.pin-dot {
+  position: relative; z-index: 1; text-align: center;
+}
+.pin-dot span {
+  display: block; font-size: 3rem; margin-bottom: .5rem;
+}
+.pin-dot p {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem; letter-spacing: .1em; color: var(--cyan);
+}
+.pin-dot small { color: var(--muted); font-size: .75rem; font-weight: 300; }
+
+/* ── BOOKING FORM ── */
+#book {
+  background: var(--deep);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: start;
+}
+.book-info h2 { margin-bottom: 1.5rem; }
+.book-info p {
+  color: rgba(198,238,255,.6); font-weight: 300;
+  font-size: .95rem; line-height: 1.85; margin-bottom: 1rem;
+}
+.book-contact { margin-top: 2rem; }
+.book-contact a {
+  color: var(--cyan); font-size: .9rem; font-weight: 500;
+  text-decoration: none; display: flex; align-items: center; gap: .5rem;
+  transition: gap .2s;
+}
+.book-contact a::before { content: '→'; }
+.book-contact a:hover { gap: .9rem; }
+
+.form-card {
+  background: var(--card);
+  border: 1px solid rgba(0,212,255,.15);
+  border-radius: 8px; padding: 2.5rem;
+}
+.form-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem; letter-spacing: .06em;
+  margin-bottom: 1.8rem; color: var(--white);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.field { margin-bottom: 1.2rem; }
+.field label {
+  display: block; font-size: .72rem;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: .45rem; font-weight: 500;
+}
+.field input, .field select, .field textarea {
+  width: 100%; background: rgba(0,212,255,.05);
+  border: 1px solid rgba(0,212,255,.15);
+  color: var(--white); padding: .8rem 1rem;
+  border-radius: 3px; font-size: .9rem;
+  font-family: 'DM Sans', sans-serif; font-weight: 300;
+  outline: none; transition: border-color .2s, background .2s;
+  appearance: none;
+}
+.field input::placeholder, .field textarea::placeholder { color: rgba(77,122,148,.6); }
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--cyan);
+  background: rgba(0,212,255,.08);
+}
+.field select option { background: var(--card); color: var(--white); }
+.field textarea { resize: vertical; min-height: 90px; }
+.form-submit {
+  width: 100%; padding: 1.05rem;
+  background: var(--cyan); color: var(--deep);
+  border: none; border-radius: 3px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .88rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  transition: opacity .2s, transform .2s;
+  box-shadow: 0 0 35px rgba(0,212,255,.25);
+  margin-top: .5rem;
+}
+.form-submit:hover { opacity: .85; transform: translateY(-2px); }
+.form-note {
+  font-size: .72rem; color: var(--muted); font-weight: 300;
+  text-align: center; margin-top: 1rem; line-height: 1.6;
+}
+#form-success {
+  display: none; text-align: center; padding: 2rem;
+}
+#form-success .check { font-size: 3rem; margin-bottom: 1rem; }
+#form-success h4 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem; letter-spacing: .06em; color: var(--cyan); margin-bottom: .5rem;
+}
+#form-success p { color: var(--muted); font-size: .9rem; font-weight: 300; }
+
+/* ── FOOTER ── */
+footer {
+  background: #010a10;
+  border-top: 1px solid rgba(0,212,255,.08);
+  padding: 2.8rem 5vw;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 1.5rem;
+}
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem; letter-spacing: .12em;
+  color: var(--white); text-decoration: none;
+}
+.footer-logo span { color: var(--cyan); }
+.footer-copy { color: var(--muted); font-size: .75rem; font-weight: 300; text-align: center; line-height: 1.7; }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a {
+  color: var(--muted); text-decoration: none;
+  font-size: .78rem; font-weight: 300; transition: color .2s;
+}
+.footer-links a:hover { color: var(--cyan); }
+
+/* ── BOOKING FORM ── */
+#book {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: start;
+}
+.form-card {
+  background: var(--card);
+  border: 1px solid rgba(0,212,255,.15);
+  border-radius: 8px; padding: 2.5rem;
+}
+.form-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem; letter-spacing: .06em;
+  margin-bottom: 1.8rem; color: var(--white);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.field { margin-bottom: 1.2rem; }
+.field label {
+  display: block; font-size: .72rem;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: .45rem; font-weight: 500;
+}
+.field input, .field select, .field textarea {
+  width: 100%; background: rgba(0,212,255,.05);
+  border: 1px solid rgba(0,212,255,.15);
+  color: var(--white); padding: .8rem 1rem;
+  border-radius: 3px; font-size: .9rem;
+  font-family: 'DM Sans', sans-serif; font-weight: 300;
+  outline: none; transition: border-color .2s, background .2s;
+  appearance: none;
+}
+.field input::placeholder, .field textarea::placeholder { color: rgba(77,122,148,.6); }
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--cyan); background: rgba(0,212,255,.08);
+}
+.field select option { background: var(--card); color: var(--white); }
+.field textarea { resize: vertical; min-height: 90px; }
+.form-submit {
+  width: 100%; padding: 1.05rem;
+  background: var(--cyan); color: var(--deep);
+  border: none; border-radius: 3px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .88rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  transition: opacity .2s, transform .2s;
+  box-shadow: 0 0 35px rgba(0,212,255,.25);
+  margin-top: .5rem;
+}
+.form-submit:hover { opacity: .85; transform: translateY(-2px); }
+.form-note {
+  font-size: .72rem; color: var(--muted); font-weight: 300;
+  text-align: center; margin-top: 1rem; line-height: 1.6;
+}
+#form-success { display: none; text-align: center; padding: 2rem; }
+#form-success .check { font-size: 3rem; margin-bottom: 1rem; }
+#form-success h4 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem; letter-spacing: .06em; color: var(--cyan); margin-bottom: .5rem;
+}
+#form-success p { color: var(--muted); font-size: .9rem; font-weight: 300; }
+
+/* ── TWO-UP PRICING ── */
+.pricing-grid.two-up { grid-template-columns: repeat(2, 1fr); max-width: 720px; }
+
+/* ── REVIEWS ── */
+#reviews { text-align: center; }
+.reviews-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; max-width: 1000px; margin: 3rem auto 0;
+}
+.review {
+  background: var(--card);
+  border: 1px solid rgba(0,212,255,.12);
+  border-radius: 6px; padding: 2rem;
+  position: relative;
+}
+.review::before {
+  content: '"'; position: absolute; top: .5rem; left: 1.2rem;
+  font-family: 'Bebas Neue', sans-serif; font-size: 4rem;
+  color: rgba(0,212,255,.15); line-height: 1;
+}
+.review p {
+  font-size: .92rem; font-weight: 300; line-height: 1.8;
+  color: rgba(198,238,255,.75); position: relative; z-index: 1;
+  margin-bottom: 1.5rem;
+}
+.review-by {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem; letter-spacing: .08em; color: var(--cyan);
+  display: flex; flex-direction: column;
+}
+.review-by span {
+  font-family: 'DM Sans', sans-serif; font-size: .75rem;
+  letter-spacing: .05em; color: var(--muted); font-weight: 300;
+}
+
+/* ── EVENT PARTNER ── */
+.event-box {
+  max-width: 800px; margin: 0 auto;
+  background: linear-gradient(135deg, var(--card), #0a2f42);
+  border: 1px solid rgba(0,212,255,.3);
+  border-radius: 8px; padding: 3rem;
+  box-shadow: 0 0 60px rgba(0,212,255,.1);
+}
+.event-box h2 { margin-bottom: 1.2rem; }
+.event-box p {
+  color: rgba(198,238,255,.7); font-weight: 300;
+  font-size: 1rem; line-height: 1.85; margin-bottom: 1rem;
+}
+.event-box strong { color: var(--cyan); font-weight: 500; }
+
+/* ── FAQ ── */
+.faq-list { max-width: 760px; margin: 0 auto; }
+.faq-item {
+  border-bottom: 1px solid rgba(0,212,255,.12);
+  padding: 1.3rem 0;
+}
+.faq-item summary {
+  cursor: pointer; list-style: none;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem; letter-spacing: .04em;
+  color: var(--white);
+  display: flex; justify-content: space-between; align-items: center;
+  transition: color .2s;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: '+'; color: var(--cyan);
+  font-size: 1.6rem; font-weight: 300;
+  transition: transform .25s;
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item summary:hover { color: var(--cyan); }
+.faq-item p {
+  color: rgba(198,238,255,.65); font-weight: 300;
+  font-size: .92rem; line-height: 1.85;
+  margin-top: .9rem; padding-right: 2rem;
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+.d1 { transition-delay: .1s; }
+.d2 { transition-delay: .2s; }
+.d3 { transition-delay: .3s; }
+.d4 { transition-delay: .4s; }
+
+
+/* ── GOOGLE CALENDAR BOOKING EMBED ── */
+.calendar-card {
+  background: var(--card);
+  border: 1px solid rgba(0,212,255,.15);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0 45px rgba(0,212,255,.08);
+}
+.calendar-card iframe {
+  display: block;
+  width: 100%;
+  min-height: 760px;
+  border-radius: 6px;
+  background: #fff;
+}
+.calendar-note {
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 300;
+  line-height: 1.6;
+  text-align: center;
+  margin-top: .85rem;
+}
+
+/* ── BOOK (text only) ── */
+#book { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+#book .book-info { max-width: 640px; }
+#book .label { justify-content: center; }
+
+/* ── APP ── */
+.nav-links a.nav-app { white-space: nowrap; color: var(--ice); display: inline-flex; align-items: center; gap: .45rem; }
+.nav-links a.nav-app::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+#app {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center;
+}
+.app-body p {
+  color: rgba(198,238,255,.6); font-weight: 300;
+  font-size: .95rem; line-height: 1.8; margin-top: 1.5rem;
+}
+.app-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+.app-install { color: var(--muted); font-size: .8rem; font-weight: 300; margin-top: 1.1rem; line-height: 1.7; }
+.app-visual {
+  position: relative; border-radius: 6px; overflow: hidden;
+  background: radial-gradient(circle at 50% 45%, rgba(0,212,255,.12), transparent 65%), rgba(0,212,255,.03);
+  border: 1px solid rgba(0,212,255,.12);
+  min-height: 380px; display: flex; align-items: center; justify-content: center;
+}
+.app-timer {
+  position: relative; z-index: 1; width: 230px; height: 230px; border-radius: 50%;
+  border: 3px solid rgba(0,212,255,.18);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.app-timer::before {
+  content: ''; position: absolute; inset: -3px; border-radius: 50%;
+  border: 3px solid transparent; border-top-color: var(--cyan); border-right-color: var(--cyan);
+  transform: rotate(-20deg);
+}
+.app-timer b { font-family: 'Bebas Neue', sans-serif; font-size: 4.6rem; letter-spacing: .04em; line-height: 1; }
+.app-timer small { color: var(--muted); font-size: .68rem; letter-spacing: .25em; text-transform: uppercase; }
+.app-timer em { font-style: normal; color: var(--cyan); font-size: .8rem; margin-top: .6rem; letter-spacing: .05em; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  nav { padding: 1rem 4vw; }
+  .nav-links { gap: 1.2rem; }
+  .hide-sm { display: none; }
+  .nav-links a:not(.btn-nav):not(.nav-app) { display: none; }
+  section { padding: 5rem 5vw; }
+  #hero { padding: 0 5vw 6rem; }
+  #about, #area, #book, #app { grid-template-columns: 1fr; gap: 3rem; }
+  .app-visual { min-height: 300px; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 380px; }
+  .pricing-grid.two-up { grid-template-columns: 1fr; max-width: 380px; }
+  .reviews-grid { grid-template-columns: 1fr; max-width: 420px; }
+  .event-box { padding: 2rem; }
+  .features-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; text-align: center; }
+  .badge { right: 0; }
+  .form-row { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: 260px; }
+  .g-item.wide { grid-column: span 1; }
+  .hero-photo { opacity: .28; }
+  .hero-photo::after { background: linear-gradient(to bottom, rgba(2,12,19,.55) 0%, rgba(2,12,19,.85) 100%); }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><span>PLUNGE</span>TX</a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="#area">Service Area</a>
+    <a href="/app/" class="nav-app"><span class="hide-sm">Free&nbsp;</span>App</a>
+    <a href="#book" class="btn-nav">Book Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-photo"></div>
+  <div class="frost-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="watermark">COLD</div>
+  <canvas id="particles"></canvas>
+
+  <div class="hero-content">
+    <div class="eyebrow">Houston's Mobile Cold Plunge Delivery</div>
+    <h1>ICE COLD.<br><span class="accent">DELIVERED.</span></h1>
+    <p class="hero-desc">
+      A Pod Company Pro Chiller 1/2 HP with circulation and filtration—available for free pickup in Pearland or delivered, set up, and picked up for $100. No ice. No hassle.
+    </p>
+    <div class="hero-actions">
+      <a href="#book" class="btn-primary">Book Your Plunge</a>
+      <a href="#pricing" class="btn-outline">See Pricing</a>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-body reveal">
+    <div class="label">About Us</div>
+    <h2>RECOVERY<br>COMES TO <span class="accent">YOU</span></h2>
+    <p>Our mobile cold plunge rental includes a <strong>Pod Company Pro Chiller 1/2 HP</strong> with water circulation and 20-micron filtration. Whether you're hosting a backyard gathering in Pearland or Houston, organizing an athletic recovery event, or wanting to unplug at home—we deliver the cold plunge experience directly to you.</p>
+    <p><strong>No ice required.</strong> We handle delivery, setup, and pickup. You just show up and plunge.</p>
+    <p>Need something custom? We're happy to talk through options that don't fit our standard packages.</p>
+    <a href="sms:8327984827" class="about-link">Text us at 832-798-4827</a>
+  </div>
+  <div class="reveal d1" style="position:relative;">
+    <div class="photo-stack">
+      <img src="pic4.png" alt="PlungeTX cold plunge station installed at a Houston-area business" loading="lazy">
+      <img src="pic6.JPEG" alt="Cold plunge tub filled with fresh filtered water" loading="lazy">
+      <img src="pic7.png" alt="Pod Company Pro Chiller holding 45.6 degrees" loading="lazy">
+    </div>
+    <div class="badge">NO ICE<br>NEEDED<small><br>EVER</small></div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="label" style="justify-content:center;"><span style="display:none"></span>What's Included</div>
+  <h2 class="reveal">EVERYTHING <span class="accent">HANDLED</span></h2>
+  <div class="features-grid" style="margin-top:3.5rem;">
+    <div class="feat reveal d1">
+      <div class="feat-icon">🧊</div>
+      <h3>Pro 1/2 HP Chiller</h3>
+      <p>Pod Company Pro Chiller is designed for hot climates and can cool water down to 39°F under suitable operating conditions—without hauling bags of ice.</p>
+    </div>
+    <div class="feat reveal d2">
+      <div class="feat-icon">🚚</div>
+      <h3>Full Delivery</h3>
+      <p>We deliver, set up completely, and come back to pick everything up. Zero effort on your end.</p>
+    </div>
+    <div class="feat reveal d3">
+      <div class="feat-icon">💧</div>
+      <h3>Filtered Circulation</h3>
+      <p>Built-in water circulation and 20-micron filtration help keep the plunge water moving and cleaner throughout the rental.</p>
+    </div>
+    <div class="feat reveal d1">
+      <div class="feat-icon">🏠</div>
+      <h3>Home or Event</h3>
+      <p>Backyard hangouts, athletic recovery events, gyms, wellness pop-ups — we come to you.</p>
+    </div>
+    <div class="feat reveal d2">
+      <div class="feat-icon">📍</div>
+      <h3>Local Experts</h3>
+      <p>Houston-area based, serving Pearland, Friendswood, Manvel, League City and beyond.</p>
+    </div>
+    <div class="feat reveal d3">
+      <div class="feat-icon">📞</div>
+      <h3>Custom Packages</h3>
+      <p>Need something that doesn't fit our standard options? Just text us and we'll work it out.</p>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="label" style="justify-content:center;">Real Setups</div>
+  <h2 class="reveal">SEE IT <span class="accent">IN ACTION</span></h2>
+  <p class="gallery-intro reveal d1">From backyard weekends to commercial recovery stations — every rental arrives clean, filtered, and cold.</p>
+  <div class="gallery-grid">
+    <div class="g-item wide reveal d1">
+      <img src="pic4.png" alt="PlungeTX cold plunge recovery station installed at a Houston-area business" loading="lazy">
+      <div class="g-cap">
+        <div class="g-cap-label">COMMERCIAL <span class="accent">INSTALL</span></div>
+        <p>Recovery station live at a Houston-area business — branded, plumbed, and ready for members.</p>
+      </div>
+    </div>
+    <div class="g-item reveal d2">
+      <img src="pic7.png" alt="Pod Company Pro Chiller display reading 45.6 degrees Fahrenheit" loading="lazy">
+      <div class="g-chip">45.6°F</div>
+      <div class="g-cap">
+        <div class="g-cap-label">COLD THAT <span class="accent">HOLDS</span></div>
+        <p>The Pro Chiller holding sub-50° water in Texas summer heat — no ice, ever.</p>
+      </div>
+    </div>
+    <div class="g-item reveal d1">
+      <img src="pic6.JPEG" alt="Cold plunge tub being filled with fresh filtered water" loading="lazy">
+      <div class="g-cap">
+        <div class="g-cap-label">FRESH <span class="accent">FILL</span></div>
+        <p>Clean water, circulating and filtered from the first minute of every rental.</p>
+      </div>
+    </div>
+    <div class="g-item wide reveal d2">
+      <img src="pic5.png" alt="Complete cold plunge setup with tub, chiller, and signage" loading="lazy">
+      <div class="g-cap">
+        <div class="g-cap-label">TURNKEY <span class="accent">SETUP</span></div>
+        <p>Delivered, connected, and running before we leave — you just show up and plunge.</p>
+      </div>
+    </div>
+    <div class="g-item wide reveal d1">
+      <img src="CPBack.png" alt="Rigid PlungeTX cold plunge tub and chiller set up in a Houston backyard at night with string lights" loading="lazy">
+      <div class="g-cap">
+        <div class="g-cap-label">THE <span class="accent">UPGRADE</span></div>
+        <p>We've retired the inflatable tub — every rental now ships with this rigid, insulated shell built to hold its cold.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- TESTIMONIALS -->
+<section id="reviews">
+  <div class="label" style="justify-content:center;">Customer Experiences</div>
+  <h2 class="reveal">WHAT RENTERS <span class="accent">SAY</span></h2>
+  <div class="reviews-grid">
+    <article class="review reveal d1">
+      <p>The setup was quick, the water stayed cold all weekend, and everything was spotless. Such an easy rental experience!</p>
+      <div class="review-by">Weekend Renter<span>Pearland Area</span></div>
+    </article>
+    <article class="review reveal d2">
+      <p>We rented the cold plunge for our fitness event, and everyone loved it. PlungeTX handled the delivery and setup, so we didn’t have to worry about anything.</p>
+      <div class="review-by">Fitness Event Organizer<span>Houston Area</span></div>
+    </article>
+    <article class="review reveal d3">
+      <p>I’d wanted to try a cold plunge before buying one, and this was the perfect way to do it. Great equipment, simple instructions, and excellent service.</p>
+      <div class="review-by">First-Time Plunger<span>Greater Houston</span></div>
+    </article>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="label" style="justify-content:center;">Pricing & Packages</div>
+  <h2 class="reveal">SIMPLE <span class="accent">PRICING</span></h2>
+  <p class="pricing-intro reveal d1">Our limited-time sale makes it easier to bring recovery home. Free pickup is available in Pearland, or add delivery, setup, and pickup for a flat $100 within our local service area.</p>
+
+  <div class="pricing-grid two-up">
+    <div class="plan sale reveal d1">
+      <div class="plan-period">Fri – Mon/Tue</div>
+      <div class="plan-name">Weekend Chill</div>
+      <div class="plan-who">Try it out, or host a backyard session</div>
+      <div class="old-price">Regularly $200</div>
+      <div class="plan-price"><sup>$</sup>175</div>
+      <div class="sale-note">Save $25</div>
+      <ul class="plan-perks">
+        <li>Friday morning drop-off, Mon/Tue pickup</li>
+        <li>Free pickup in Pearland</li>
+        <li>Pod Company Pro Chiller — 1/2 HP</li>
+        <li>Circulation &amp; 20-micron filtration</li>
+        <li>Optional delivery, setup &amp; pickup: +$100</li>
+      </ul>
+    </div>
+    <div class="plan featured sale reveal d2">
+      <div class="plan-period">7 Days</div>
+      <div class="plan-name">Weekly Reset</div>
+      <div class="plan-who">Best value — most people want more than one session</div>
+      <div class="old-price">Regularly $400</div>
+      <div class="plan-price"><sup>$</sup>300</div>
+      <div class="sale-note">Save $100 — just $43/day</div>
+      <ul class="plan-perks">
+        <li>Full 7-day rental</li>
+        <li>Free pickup in Pearland</li>
+        <li>Pod Company Pro Chiller — 1/2 HP</li>
+        <li>Circulation &amp; 20-micron filtration</li>
+        <li>Optional delivery, setup &amp; pickup: +$100</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pricing-notes reveal">
+    <strong>📍 Free pickup</strong> in Pearland<br>
+    <strong>🚚 Delivery, setup &amp; pickup</strong> available for a flat $100 within our local service area<br>
+    For extended travel or event installs, <strong>text (832) 798-4827</strong> for a custom quote.
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- EVENT PARTNER -->
+<section id="events">
+  <div class="event-box reveal">
+    <div>
+      <div class="label">For Gyms &amp; Event Organizers</div>
+      <h2>EVENT <span class="accent">PARTNER</span></h2>
+      <p>Running a race, a gym open house, or a wellness pop-up? We'll bring the plunge out and set up a paid recovery station — you keep <strong>50% of every paid use</strong>. No rental fee, no equipment to buy.</p>
+      <p style="font-size:.88rem;">Delivery, setup, and pickup quoted per event based on location and duration.</p>
+      <a href="sms:8327984827" class="btn-outline" style="margin-top:1.5rem;">Text About an Event</a>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- APP -->
+<section id="app">
+  <div class="app-body reveal">
+    <div class="label">Free App</div>
+    <h2>TRAIN WITH<br><span class="accent">PLUNGETX</span></h2>
+    <p>Our free app guides every session: breath-hold rounds, a cold plunge timer with calm voice cues, guided sauna, and hot-and-cold contrast rounds. It tracks your last 30 days and unlocks awards you can text to friends.</p>
+    <div class="tags">
+      <span class="tag">Guided Breathing</span>
+      <span class="tag">Cold Plunge Timer</span>
+      <span class="tag">Guided Sauna</span>
+      <span class="tag">Hot &amp; Cold Contrast</span>
+      <span class="tag">Awards</span>
+    </div>
+    <div class="app-actions">
+      <a href="/app/" class="btn-primary">Open the App</a>
+    </div>
+    <p class="app-install">No download needed. On iPhone, open it in Safari, then tap Share › Add to Home Screen.</p>
+  </div>
+  <div class="app-visual reveal d1">
+    <div class="rings">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+    </div>
+    <div class="app-timer">
+      <b>2:00</b>
+      <small>Remaining</small>
+      <em>Long, slow exhales</em>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="label" style="justify-content:center;">Common Questions</div>
+  <h2 class="reveal" style="text-align:center; margin-bottom:3rem;">BEFORE YOU <span class="accent">BOOK</span></h2>
+  <div class="faq-list">
+    <details class="faq-item reveal d1">
+      <summary>What do I need to have ready?</summary>
+      <p>A flat spot (grass or concrete both work), a standard outdoor outlet within reach, and a garden hose spigot for filling. That's it — we bring everything else. The tub is only 40 lbs empty, so if you're doing free pickup in Pearland it fits easily in most vehicles.</p>
+    </details>
+    <details class="faq-item reveal d1">
+      <summary>How cold does it get, and how long does it take?</summary>
+      <p>The Pod Company Pro Chiller pulls the water down about 10°F per hour and holds it in the mid-40s even through Texas summer. Fill it in the morning and it's plunge-ready by afternoon.</p>
+    </details>
+    <details class="faq-item reveal d2">
+      <summary>Do I need to add ice?</summary>
+      <p>Never. The chiller handles it — that's the whole point. No ice runs, no coolers, no melting between sessions.</p>
+    </details>
+    <details class="faq-item reveal d2">
+      <summary>How much power does it use?</summary>
+      <p>Very little. The 1/2 HP chiller runs off a standard household outlet — a regular outdoor extension cord is fine. No dedicated circuit or electrician needed.</p>
+    </details>
+    <details class="faq-item reveal d3">
+      <summary>Is the water clean between users?</summary>
+      <p>Yes — the system runs continuous circulation with 20-micron filtration, and we start every rental with a fresh fill.</p>
+    </details>
+    <details class="faq-item reveal d3">
+      <summary>When do drop-off and pickup happen?</summary>
+      <p>We're flexible, but our usual rhythm is a Friday morning drop-off and pickup after 5PM the following Monday or Tuesday — so a "weekend" rental usually gets you a few extra days. Need different timing? Just ask.</p>
+    </details>
+    <details class="faq-item reveal d3">
+      <summary>What if I need to cancel or reschedule?</summary>
+      <p>Just text us at least 48 hours ahead and we'll reschedule or cancel — no charge, no hassle.</p>
+    </details>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- SERVICE AREA -->
+<section id="area">
+  <div class="area-body reveal">
+    <div class="label">Service Area</div>
+    <h2>WE COME<br>TO <span class="accent">YOUR DOOR</span></h2>
+    <p>Based in Pearland, we cover the greater Houston metro area. If you're not sure if we reach you — just text us.</p>
+    <div class="tags">
+      <span class="tag">Pearland</span>
+      <span class="tag">Houston</span>
+      <span class="tag">Friendswood</span>
+      <span class="tag">Manvel</span>
+      <span class="tag">Alvin</span>
+      <span class="tag">League City</span>
+      <span class="tag">Missouri City</span>
+      <span class="tag">Sugar Land</span>
+      <span class="tag">& Nearby Areas</span>
+    </div>
+    <a href="sms:8327984827" class="area-phone">(832) 798-4827</a>
+    <p class="area-phone-label">Text us to check availability</p>
+  </div>
+  <div class="area-visual reveal d1">
+    <div class="rings">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+    </div>
+    <div class="pin-dot">
+      <span>📍</span>
+      <p>PEARLAND, TX</p>
+      <small>Serving ~50mi radius</small>
+    </div>
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- BOOK CTA -->
+<section id="book">
+  <div class="book-info reveal">
+    <div class="label">Book Now</div>
+    <h2>READY TO<br><span class="accent">PLUNGE?</span></h2>
+    <p style="color:rgba(198,238,255,.6); font-weight:300; font-size:1rem; margin:1.5rem 0 2rem; line-height:1.8;">
+      Fastest way is a text — send your dates, package, and address and we'll confirm availability.
+    </p>
+    <a href="sms:8327984827" class="btn-primary" style="font-size:1rem;">
+      Text (832) 798-4827
+    </a>
+    <p style="color:var(--muted); font-size:.8rem; font-weight:300; margin-top:1.2rem;">We typically reply within a few hours.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a class="footer-logo" href="#"><span>PLUNGE</span>TX</a>
+  <div class="footer-copy">
+    © 2026 BLambInvestments LLC. All rights reserved.<br>
+    TEXT: (832) 798-4827
+  </div>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="/app/">App</a>
+    <a href="#book">Book Now</a>
+  </div>
+</footer>
+
+<script>
+// ── PARTICLES ──
+(function(){
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for(let i=0;i<55;i++){
+    particles.push({
+      x: Math.random()*window.innerWidth,
+      y: Math.random()*window.innerHeight,
+      r: Math.random()*1.5+.5,
+      speed: Math.random()*.4+.15,
+      opacity: Math.random()*.5+.1,
+      drift: (Math.random()-.5)*.3
+    });
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,212,255,${p.opacity})`;
+      ctx.fill();
+      p.y -= p.speed;
+      p.x += p.drift;
+      if(p.y < -5){
+        p.y = canvas.height+5;
+        p.x = Math.random()*canvas.width;
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── SCROLL REVEAL ──
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:.12});
+reveals.forEach(r=>observer.observe(r));
+
+</script>
+</body>
+</html>
