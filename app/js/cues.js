@@ -69,6 +69,8 @@ export const CALM = Array.from({ length: 8 }, (_, i) => `calm_${i}`);
 export const HARD_COLD = Array.from({ length: 8 }, (_, i) => `hard_cold_${i}`);
 export const SCAN = Array.from({ length: 10 }, (_, i) => `scan_${i}`);
 export const HARD_HEAT = Array.from({ length: 8 }, (_, i) => `hard_heat_${i}`);
+export const SAVAGE_COLD = Array.from({ length: 24 }, (_, i) => `savage_cold_${String(i).padStart(2, '0')}`);
+export const SAVAGE_HEAT = Array.from({ length: 24 }, (_, i) => `savage_heat_${String(i).padStart(2, '0')}`);
 
 export const AWARD_IDS = [
   'first_plunge', 'first_sauna', 'first_breath', 'contrast', 'contrast10', 'cx_session', 'cx3',
@@ -129,6 +131,8 @@ export function catalog() {
   HARD_COLD.forEach((id) => ids.add(id));
   SCAN.forEach((id) => ids.add(id));
   HARD_HEAT.forEach((id) => ids.add(id));
+  SAVAGE_COLD.forEach((id) => ids.add(id));
+  SAVAGE_HEAT.forEach((id) => ids.add(id));
   AWARD_IDS.forEach((id) => ids.add(`award_${id}`));
   for (let r = 1; r <= 6; r++) {
     for (let b = 20; b <= 50; b += 5) ids.add(`well_do_r${r}_b${b}`);

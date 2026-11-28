@@ -24,7 +24,8 @@ export function createVoice({ voiceId, onDuck }) {
   }
 
   function clipUrl(id) {
-    const voice = voiceId() === 'harper_32' ? 'harper_32' : 'george';
+    const chosen = voiceId();
+    const voice = chosen === 'george' || chosen === 'john-rhys-davies' ? chosen : 'harper_32';
     return new URL(`audio/${voice}/${id}.mp3`, document.baseURI).href;
   }
 
@@ -87,11 +88,14 @@ export function createVoice({ voiceId, onDuck }) {
     else if (!current && queue.length) pump();
   }
 
+  function busy() { return !!(current || queue.length); }
+
   return {
     say,
     cancel,
     unlock,
     nudge,
+    busy,
     missing: () => [...missing],
     has: (id) => CLIP_IDS.has(id)
   };

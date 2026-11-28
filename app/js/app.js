@@ -2,7 +2,7 @@ import { store, exportBackup, normalizeBackup } from './store.js';
 import { createAudio } from './audio.js';
 import { createVoice, CLIP_IDS } from './voice.js';
 import {
-  C, CALM, HARD_COLD, SCAN, HARD_HEAT,
+  C, CALM, HARD_COLD, SCAN, HARD_HEAT, SAVAGE_COLD, SAVAGE_HEAT,
   breathIntro, letGoRound, holdCue, minutesIn, roundOf, awardClips, coachLine
 } from './cues.js';
 
@@ -19,14 +19,15 @@ const DEF = {
 const saved = store.get('settings', {});
 const S = {};
 for (const key of Object.keys(DEF)) S[key] = Object.assign({}, DEF[key], saved[key] || {});
-if (S.g.voice !== 'george' && S.g.voice !== 'harper_32') S.g.voice = 'harper_32';
+if (!['harper_32', 'george', 'john-rhys-davies'].includes(S.g.voice)) S.g.voice = 'harper_32';
 if (S.s.track === 'cedar') S.s.track = 'firstlight';
 if (!['off', 'firstlight', 'hearth', 'stillness'].includes(S.s.track)) S.s.track = 'firstlight';
 
 const PACE = { slow: 4.6, standard: 3.4, fast: 2.4 };
 const PRESETS = { beginner: 60, intermediate: 120, advanced: 240 };
 const SAUNA_PRESETS = { short: 600, classic: 900, deep: 1200 };
-const hard = () => S.g.coach === 'hard';
+const hard = () => S.g.coach === 'hard' || S.g.coach === 'savage';
+const VOICE_IDS = ['harper_32', 'george', 'john-rhys-davies'];
 const fmt = (sec) => {
   sec = Math.max(0, Math.round(sec));
   return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0');
@@ -95,9 +96,11 @@ const getK = (key) => {
 function setK(key, value) {
   const [a, b] = key.split('.');
   S[a][b] = value;
-  if (key === 'g.voice' && value !== 'harper_32' && value !== 'george') S.g.voice = 'harper_32';
+  if (key === 'g.voice' && !VOICE_IDS.includes(value)) S.g.voice = 'harper_32';
+  if (key === 'g.coach' && !['calm', 'hard', 'savage'].includes(value)) S.g.coach = 'calm';
   store.set('settings', S);
   if (key === 'g.musicVol') audio.applyMusic(value);
+  if (key === 'g.voice') warmVoice(S.g.voice);
   refresh();
 }
 
@@ -197,9 +200,12 @@ function refresh() {
   $('sTrackLine').textContent = heat.line;
   $('cTrackLine').textContent = heat.line;
   document.querySelectorAll('select.heat').forEach((sel) => { sel.value = heat.id; });
-  $('gCoachHint').textContent = hard()
-    ? 'Blunter lines. The safety cues stay in.'
-    : 'Calm, steady guidance.';
+  $('gCoachHint').textContent = S.g.coach === 'savage'
+    ? 'Brutal language. Not for kids.'
+    : hard()
+      ? 'Blunter lines. The safety cues stay in.'
+      : 'Calm, steady guidance.';
+  $('gCoachHint').classList.toggle('brutal', S.g.coach === 'savage');
   $('gMusicVolV').textContent = Math.round(S.g.musicVol * 100) + '%';
 }
 
@@ -259,8 +265,35 @@ function setPhase(name) {
   sess.ps = active();
   sess.cues = {};
   sess.sub = null;
+  sess.savageKind = null;
+  sess.savageBag = [];
+  sess.nextSavage = null;
   const enter = sess.enter[name];
   if (enter) enter();
+}
+function shuffleIds(list) {
+  const bag = list.slice();
+  for (let i = bag.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const swap = bag[i];
+    bag[i] = bag[j];
+    bag[j] = swap;
+  }
+  return bag;
+}
+function tickSavage(kind) {
+  if (!sess || S.g.coach !== 'savage' || !voiceOn) return;
+  if (sess.savageKind !== kind) {
+    sess.savageKind = kind;
+    sess.savageBag = shuffleIds(kind === 'heat' ? SAVAGE_HEAT : SAVAGE_COLD);
+    sess.nextSavage = phaseT() + 25 + Math.random() * 10;
+    return;
+  }
+  if (phaseT() < sess.nextSavage) return;
+  sess.nextSavage = phaseT() + 25 + Math.random() * 10;
+  if (voice.busy()) return;
+  if (!sess.savageBag.length) sess.savageBag = shuffleIds(kind === 'heat' ? SAVAGE_HEAT : SAVAGE_COLD);
+  speak(sess.savageBag.pop());
 }
 function cueOnce(key, at, ids) {
   if (!sess || sess.cues[key] || at == null) return;
@@ -686,6 +719,7 @@ function tickBath() {
         cueOnce('c' + k, ts, (hard() ? HARD_COLD : CALM)[k % 8]);
       }
     }
+    if (rem > 12) tickSavage('cold');
     if (rem <= 0) setPhase('done');
   }
 }
@@ -791,6 +825,7 @@ function tickSauna() {
       cueOnce('s' + k, ts, hard() ? HARD_HEAT[k % 8] : SCAN[k % SCAN.length]);
     }
   }
+  if (rem > 12) tickSavage('heat');
   if (rem <= 0) setPhase('done');
 }
 function finishSauna(early) {
@@ -908,6 +943,7 @@ function tickContrast() {
         if (ts < d - 35) cueOnce('c' + k, ts, (hard() ? HARD_COLD : CALM)[(k + step.r) % 8]);
       }
     }
+    if (rem > 12) tickSavage(step.k === 'h' ? 'heat' : 'cold');
   }
   if (rem <= 0) {
     if (step.k !== 's') s.done.push({ k: step.k, s: d, r: step.r });
@@ -1419,7 +1455,7 @@ $('hFile').onchange = async () => {
     if (data.badges) store.set('badges', data.badges);
     if (data.settings) {
       for (const key of Object.keys(DEF)) S[key] = Object.assign({}, DEF[key], data.settings[key] || {});
-      if (S.g.voice !== 'george' && S.g.voice !== 'harper_32') S.g.voice = 'harper_32';
+      if (!VOICE_IDS.includes(S.g.voice)) S.g.voice = 'harper_32';
       store.set('settings', S);
       document.querySelectorAll('[data-key]').forEach((el) => {
         const value = getK(el.dataset.key);
@@ -1644,21 +1680,24 @@ if (!store.get('safetyOk')) {
   show('home');
 }
 
+function warmVoice(name) {
+  if (!('serviceWorker' in navigator) || !VOICE_IDS.includes(name)) return;
+  const urls = [];
+  CLIP_IDS.forEach((id) => urls.push(new URL(`audio/${name}/${id}.mp3`, document.baseURI).href));
+  const send = (worker) => { if (worker) worker.postMessage({ type: 'warm', urls }); };
+  navigator.serviceWorker.getRegistration().then((reg) => {
+    if (reg) send(reg.active || reg.waiting || reg.installing);
+  }).catch(() => {});
+  navigator.serviceWorker.ready.then((ready) => send(ready.active)).catch(() => {});
+}
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     // Scope is this directory, whether the site is /app/ or /plungetx-app/.
     const base = new URL(document.baseURI);
     if (!base.pathname.endsWith('/')) base.pathname = base.pathname.replace(/[^/]*$/, '');
-    navigator.serviceWorker.register(new URL('sw.js', base).href, { scope: base.href }).then((reg) => {
-      const urls = [];
-      for (const name of ['george', 'harper_32']) {
-        CLIP_IDS.forEach((id) => urls.push(new URL(`audio/${name}/${id}.mp3`, document.baseURI).href));
-      }
-      const worker = reg.active || reg.waiting || reg.installing;
-      if (worker) worker.postMessage({ type: 'warm', urls });
-      navigator.serviceWorker.ready.then((ready) => {
-        if (ready.active) ready.active.postMessage({ type: 'warm', urls });
-      });
+    navigator.serviceWorker.register(new URL('sw.js', base).href, { scope: base.href }).then(() => {
+      warmVoice(S.g.voice);
     }).catch(() => {});
   });
 }

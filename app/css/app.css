@@ -387,6 +387,7 @@ h1, h2, h3, .display { font-family: var(--display); margin: 0; text-wrap: balanc
 .stack { display: flex; flex-direction: column; gap: 14px; }
 .card h2 { font-size: 16px; margin-bottom: 4px; }
 .hint { color: var(--mist); font-size: 14px; margin: 8px 0 0; }
+.hint.brutal { color: #8a3b32; font-weight: 600; }
 .row {
   display: flex;
   align-items: center;
@@ -420,6 +421,17 @@ h1, h2, h3, .display { font-family: var(--display); margin: 0; text-wrap: balanc
   font-size: 14px;
 }
 .seg button[aria-pressed="true"] { background: var(--deep); color: white; }
+.seg.voices { grid-auto-flow: row; grid-template-columns: 1fr; }
+.seg.voices button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 10px 14px;
+  gap: 1px;
+}
+.seg.voices small { font-size: 12px; font-weight: 500; opacity: .75; }
+.seg.voices button[aria-pressed="true"] small { opacity: .85; }
 .seg.levels button {
   display: flex;
   flex-direction: column;

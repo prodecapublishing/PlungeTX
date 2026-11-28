@@ -16,14 +16,15 @@ Then open http://localhost:5173/ . Use a narrow window, about 390×844, to see t
 
 ## Voices
 
-Guidance is recorded audio, not the browser's speech synthesizer. Two voices ship in the repo:
+Guidance is recorded audio, not the browser's speech synthesizer. Three voices ship in the repo:
 
 | Folder | Name |
 | --- | --- |
-| `audio/george/` | George |
 | `audio/harper_32/` | Harper |
+| `audio/george/` | George |
+| `audio/john-rhys-davies/` | John Rhys-Davies |
 
-Each folder has the same 235 clips. `audio/manifest.json` maps every clip id to the spoken line, the coach mode (`calm`, `hard`, or `both`), and the cue in the session code that plays it.
+Each folder has the same clips: the core cues, the finish cheer, and 48 savage lines (`savage_cold_00`–`23` and `savage_heat_00`–`23`). `audio/manifest.json` maps every clip id to the spoken line.
 
 Lines that change with the setup are already split into clips, and the player queues them in order:
 
@@ -33,7 +34,9 @@ Lines that change with the setup are already split into clips, and the player qu
 - `minutes_{n}` and `minutes_{n}_thirty` during a long breath hold
 - `new_award` plus one `award_{id}` clip per new award
 
-Harper is the voice for a new phone. A saved choice of George or Harper is left as it is. Preview plays a short line in the selected voice.
+Harper is the voice for a new phone. A saved choice of George, Harper, or John Rhys-Davies is left as it is. Preview plays a short line in the selected voice.
+
+Coaching style is Calm, Hard, or Savage. Savage is a drill-sergeant layer on top of the hard lines. During an active plunge, sauna, or contrast hold it plays one savage clip about every 30 seconds (give or take 5). Cold holds use the cold lines, heat holds use the heat lines, and contrast switches with the phase. The pool is shuffled and not repeated until every line in that pool has played. A line waits if another cue is already speaking. Breathing sessions stay quiet of savage lines. The selector says: Brutal language. Not for kids.
 
 ## Sauna music
 
@@ -65,7 +68,7 @@ Results → **Export backup** downloads those three records as JSON. **Import ba
 
 ## Offline
 
-After the first online load, the service worker keeps the app shell, the fonts, and both voice packs. A later visit in a sauna or plunge area with no signal still opens and still speaks.
+After the first online load, the service worker keeps the app shell, the fonts, the sauna music, and the voice you have selected (about 8 MB). The other two voices are cached the next time you pick them, while you are online. A later visit with no signal still opens and still speaks in the voice you already used. The cache name is `plungetx-app-v4`.
 
 ## Deploy
 

@@ -1,7 +1,8 @@
-/* PlungeTX offline shell. Network first for the app, cache first for fonts and voice clips.
+/* PlungeTX offline shell. Network first for the app, cache first for fonts and audio.
    Paths are relative to this file, so the same worker is valid at /app/ and at /plungetx-app/.
-   The cache name is new on purpose: activate drops the retired plungetx-v2 shell. */
-const CACHE = 'plungetx-app-v3';
+   Install caches the shell and the sauna music. The page then warms the selected voice.
+   Other voices are stored the first time they are fetched. Activate drops older caches. */
+const CACHE = 'plungetx-app-v4';
 const SHELL = [
   './',
   'index.html',
@@ -21,9 +22,7 @@ const SHELL = [
   'audio/manifest.json',
   'audio/music/first-light.mp3',
   'audio/music/soft-rain.mp3',
-  'audio/music/stillness.mp3',
-  'audio/george/finish_ohyeah.mp3',
-  'audio/harper_32/finish_ohyeah.mp3'
+  'audio/music/stillness.mp3'
 ];
 
 self.addEventListener('install', (event) => {
