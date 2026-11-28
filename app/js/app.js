@@ -590,7 +590,7 @@ function finishBreath() {
   const nr = s.holds.length;
   const pace = S.b.pace[0].toUpperCase() + S.b.pace.slice(1);
   lastShare = {
-    kind: 'breath', eyebrow: 'Breathwork', big: fmt(best), unit: 'best breath hold',
+    kind: 'breath', eyebrow: 'Breathwork', big: fmt(best), seconds: best, unit: 'best breath hold',
     title: `${nr} round${nr === 1 ? '' : 's'} · ${pace} pace`,
     lines: ['Holds  ' + s.holds.map(fmt).join('  ·  ')],
     text: `Held my breath for ${humanDur(best)} after ${nr} round${nr === 1 ? '' : 's'} of breathwork`
@@ -601,6 +601,7 @@ function finishBreath() {
   $('dBody').innerHTML = awardsHTML(fresh) + '<div class="bars">' + s.holds.map((h, i) =>
     `<div class="barrow"><span>Round ${i + 1}</span><div class="t"><i style="width:${Math.max(4, h / width * 100)}%"></i></div><b>${fmt(h)}</b></div>`
   ).join('') + '</div>';
+  offerShare();
   show('done');
 }
 
@@ -720,12 +721,20 @@ function tickBath() {
       }
     }
     if (rem > 12) tickSavage('cold');
-    if (rem <= 0) setPhase('done');
+    if (rem <= 0) {
+      s.logged = Math.round(Math.min(Math.max(t, 0), d));
+      setPhase('done');
+    }
   }
+}
+function heldSeconds(s, phaseName, cap) {
+  if (typeof s.logged === 'number') return s.logged;
+  if (!phaseName || s.phase === phaseName) return Math.round(Math.min(Math.max(phaseT(), 0), cap));
+  return 0;
 }
 function finishBath(early) {
   const s = sess;
-  const actual = s.phase === 'cold' ? Math.round(Math.min(phaseT(), s.dur)) : 0;
+  const actual = heldSeconds(s, 'cold', s.dur);
   endSession();
   audio.playTrack(null, 6);
   if (!early) {
@@ -739,7 +748,7 @@ function finishBath(early) {
   voiceOn = true;
   const n = last30().pl.length;
   lastShare = {
-    kind: 'ice', eyebrow: 'Cold plunge', big: fmt(actual),
+    kind: 'ice', eyebrow: 'Cold plunge', big: fmt(actual), seconds: actual,
     unit: S.i.tempOn ? `in ${S.i.tempF}°F water` : 'in the cold',
     title: `${n} plunge${n === 1 ? '' : 's'} in the last 30 days`, lines: [],
     text: `Just did ${humanDur(actual)} in a ${S.i.tempOn ? S.i.tempF + '°F ' : ''}cold plunge. That's ${n} plunge${n === 1 ? '' : 's'} in the last 30 days.`
@@ -747,6 +756,7 @@ function finishBath(early) {
   $('dTitle').textContent = early ? 'Plunge logged' : 'Plunge complete';
   $('dSub').textContent = `${fmt(actual)} in the water` + (S.i.tempOn ? ` at ${S.i.tempF}°F` : '');
   $('dBody').innerHTML = awardsHTML(fresh) + '<p class="fine" style="text-align:center">Warm up on your own: move around, get dressed, and give it a few minutes before a hot shower.</p>';
+  offerShare();
   show('done');
 }
 $('baPause').onclick = (e) => pauseToggle(e.currentTarget);
@@ -826,11 +836,14 @@ function tickSauna() {
     }
   }
   if (rem > 12) tickSavage('heat');
-  if (rem <= 0) setPhase('done');
+  if (rem <= 0) {
+    s.logged = Math.round(Math.min(Math.max(t, 0), d));
+    setPhase('done');
+  }
 }
 function finishSauna(early) {
   const s = sess;
-  const actual = Math.round(Math.min(phaseT(), s.dur));
+  const actual = heldSeconds(s, 'heat', s.dur);
   endSession();
   audio.playTrack(null, 8);
   if (!early) {
@@ -844,13 +857,14 @@ function finishSauna(early) {
   voiceOn = true;
   const n = last30().sa.length;
   lastShare = {
-    kind: 'heat', eyebrow: 'Sauna', big: fmt(actual), unit: `at ${S.s.tempF}°F`,
+    kind: 'heat', eyebrow: 'Sauna', big: fmt(actual), seconds: actual, unit: `at ${S.s.tempF}°F`,
     title: `${n} sauna${n === 1 ? '' : 's'} in the last 30 days`, lines: [],
     text: `${humanDur(actual)} in a ${S.s.tempF}°F sauna. That's ${n} sauna session${n === 1 ? '' : 's'} in the last 30 days.`
   };
   $('dTitle').textContent = early ? 'Sauna logged' : 'Sauna complete';
   $('dSub').textContent = `${fmt(actual)} at ${S.s.tempF}°F`;
   $('dBody').innerHTML = awardsHTML(fresh) + '<p class="fine" style="text-align:center">Drink water and cool down gradually. Doing contrast? Head to the plunge once your breathing has settled.</p>';
+  offerShare();
   show('done');
 }
 $('sStart').onclick = startSauna;
@@ -977,7 +991,7 @@ function finishContrast(early) {
   if (!early) speak(C.finishOhYeah);
   voiceOn = true;
   lastShare = {
-    kind: 'contrast', eyebrow: 'Hot and cold contrast', big: `${rounds}×`,
+    kind: 'contrast', eyebrow: 'Hot and cold contrast', big: `${rounds}×`, seconds: heat + cold,
     unit: `round${rounds === 1 ? '' : 's'} of hot and cold`,
     title: `${humanDur(heat)} heat · ${humanDur(cold)} cold`,
     lines: [`${c.hotF}°F sauna · ${c.coldF}°F plunge`],
@@ -991,6 +1005,7 @@ function finishContrast(early) {
   $('dBody').innerHTML = awardsHTML(fresh) + '<div class="bars">' + Object.entries(byRound).map(([r, v]) =>
     `<div class="barrow" style="grid-template-columns:72px 1fr 1fr"><span>Round ${r}</span><b style="text-align:left;color:var(--ember)">${fmt(v.h)} hot</b><b style="color:var(--glacier)">${fmt(v.c)} cold</b></div>`
   ).join('') + '</div><p class="fine" style="text-align:center">Drink water, and let your body rewarm on its own.</p>';
+  offerShare();
   show('done');
 }
 $('cStart').onclick = startContrast;
@@ -1316,6 +1331,7 @@ function renderResults() {
   renderHistory();
   renderCalendar();
   renderBadges();
+  $('mShare').hidden = last30(h).rows.length === 0;
   setTab(resultTab);
 }
 
@@ -1573,12 +1589,22 @@ function pngBlob() {
   for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
   return new Blob([bytes], { type: 'image/png' });
 }
+function offerShare() {
+  if (!lastShare || !(lastShare.seconds > 0)) lastShare = null;
+  $('dShare').hidden = !lastShare;
+}
+function closeShare() {
+  $('share').hidden = true;
+  document.body.classList.remove('sharing');
+}
 async function openShare(card) {
+  if (!card || card.seconds === 0) return;
   shareText = card.text + ' #PlungeTX plungetx.com';
   $('shTxt').textContent = shareText;
   $('shSms').href = smsHref(shareText);
   const img = $('shImg');
   img.removeAttribute('src');
+  document.body.classList.add('sharing');
   $('share').hidden = false;
   try { shareURL = await makeCard(card); }
   catch (e) { try { shareURL = await makeCard(card, false); } catch (e2) { shareURL = ''; } }
@@ -1599,8 +1625,8 @@ $('shSend').onclick = () => {
   if (shareFile && navigator.canShare && navigator.canShare({ files: [shareFile] })) payload.files = [shareFile];
   navigator.share(payload).catch((e) => { if (e && e.name !== 'AbortError') $('shSend').hidden = true; });
 };
-$('dShare').onclick = () => { if (lastShare) openShare(lastShare); };
-$('shClose').onclick = () => { $('share').hidden = true; };
+$('dShare').onclick = () => { if (lastShare && lastShare.seconds > 0) openShare(lastShare); };
+$('shClose').onclick = closeShare;
 $('mShare').onclick = () => {
   const h = store.get('history', []);
   const { pl, sa } = last30(h);

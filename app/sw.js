@@ -2,7 +2,7 @@
    Paths are relative to this file, so the same worker is valid at /app/ and at /plungetx-app/.
    Install caches the shell and the sauna music. The page then warms the selected voice.
    Other voices are stored the first time they are fetched. Activate drops older caches. */
-const CACHE = 'plungetx-app-v4';
+const CACHE = 'plungetx-app-v5';
 const SHELL = [
   './',
   'index.html',

@@ -641,12 +641,15 @@ body[data-view="bath"] { background: var(--abyss); color: var(--frost); }
 .barrow b { text-align: right; font-family: var(--display); }
 
 .sheet {
-  position: fixed; inset: 0; z-index: 30;
-  background: rgba(8, 24, 32, 0.72);
+  position: fixed; inset: 0; z-index: 80;
+  background: var(--abyss);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
-  padding: calc(20px + env(safe-area-inset-top, 0px)) 16px calc(20px + env(safe-area-inset-bottom, 0px));
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 16px calc(28px + env(safe-area-inset-bottom, 0px));
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
+body.sharing .dock,
+body.sharing .nav { visibility: hidden; }
 .sheet img { width: auto; max-width: min(78vw, 340px); max-height: 52vh; border-radius: 18px; background: var(--deep); }
 .shhint, .shtxt { color: white; text-align: center; margin: 0; }
 .shtxt { max-width: 40ch; font-size: 14px; line-height: 1.45; user-select: text; padding: 10px 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.25); }

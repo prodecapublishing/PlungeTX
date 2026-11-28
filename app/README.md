@@ -68,7 +68,7 @@ Results → **Export backup** downloads those three records as JSON. **Import ba
 
 ## Offline
 
-After the first online load, the service worker keeps the app shell, the fonts, the sauna music, and the voice you have selected (about 8 MB). The other two voices are cached the next time you pick them, while you are online. A later visit with no signal still opens and still speaks in the voice you already used. The cache name is `plungetx-app-v4`.
+After the first online load, the service worker keeps the app shell, the fonts, the sauna music, and the voice you have selected (about 8 MB). The other two voices are cached the next time you pick them, while you are online. A later visit with no signal still opens and still speaks in the voice you already used. The cache name is `plungetx-app-v5`.
 
 ## Deploy
 
