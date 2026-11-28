@@ -1,7 +1,7 @@
 /* PlungeTX offline shell. Network first for the app, cache first for fonts and voice clips.
    Paths are relative to this file, so the same worker is valid at /app/ and at /plungetx-app/.
    The cache name is new on purpose: activate drops the retired plungetx-v2 shell. */
-const CACHE = 'plungetx-app-v1';
+const CACHE = 'plungetx-app-v2';
 const SHELL = [
   './',
   'index.html',
@@ -18,7 +18,8 @@ const SHELL = [
   'icon-512.png',
   'fonts/inter.woff2',
   'fonts/sora.woff2',
-  'audio/manifest.json'
+  'audio/manifest.json',
+  'audio/sauna-bed.mp3'
 ];
 
 self.addEventListener('install', (event) => {

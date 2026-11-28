@@ -13,13 +13,13 @@ const DEF = {
   i: { preset: 'intermediate', custom: 3, prep: 2, voice: true, tempOn: true, tempF: 50, music: true, track: 'drift' },
   s: { preset: 'classic', custom: 15, voice: true, tempF: 175, music: true, track: 'cedar' },
   c: { rounds: 3, hot: 12, cold: 2, trans: 1, order: 'hc', hotF: 175, coldF: 50, voice: true, music: true, trackHot: 'cedar', trackCold: 'drift' },
-  g: { voice: 'george', musicVol: 0.7, coach: 'calm' }
+  g: { voice: 'harper_32', musicVol: 0.7, coach: 'calm' }
 };
 
 const saved = store.get('settings', {});
 const S = {};
 for (const key of Object.keys(DEF)) S[key] = Object.assign({}, DEF[key], saved[key] || {});
-if (S.g.voice !== 'harper_32') S.g.voice = 'george';
+if (S.g.voice !== 'george' && S.g.voice !== 'harper_32') S.g.voice = 'harper_32';
 
 const PACE = { slow: 4.6, standard: 3.4, fast: 2.4 };
 const PRESETS = { beginner: 60, intermediate: 120, advanced: 240 };
@@ -93,7 +93,7 @@ const getK = (key) => {
 function setK(key, value) {
   const [a, b] = key.split('.');
   S[a][b] = value;
-  if (key === 'g.voice' && value !== 'harper_32') S.g.voice = 'george';
+  if (key === 'g.voice' && value !== 'harper_32' && value !== 'george') S.g.voice = 'harper_32';
   store.set('settings', S);
   if (key === 'g.musicVol') audio.applyMusic(value);
   refresh();
@@ -1398,7 +1398,7 @@ $('hFile').onchange = async () => {
     if (data.badges) store.set('badges', data.badges);
     if (data.settings) {
       for (const key of Object.keys(DEF)) S[key] = Object.assign({}, DEF[key], data.settings[key] || {});
-      if (S.g.voice !== 'harper_32') S.g.voice = 'george';
+      if (S.g.voice !== 'george' && S.g.voice !== 'harper_32') S.g.voice = 'harper_32';
       store.set('settings', S);
       document.querySelectorAll('[data-key]').forEach((el) => {
         const value = getK(el.dataset.key);

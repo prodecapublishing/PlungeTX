@@ -33,7 +33,13 @@ Lines that change with the setup are already split into clips, and the player qu
 - `minutes_{n}` and `minutes_{n}_thirty` during a long breath hold
 - `new_award` plus one `award_{id}` clip per new award
 
-Choose George or Harper in Settings. The choice is saved with the rest of the settings. Preview plays a short line in the selected voice.
+Harper is the voice for a new phone. A saved choice of George or Harper is left as it is. Preview plays a short line in the selected voice.
+
+## Sauna music
+
+The sauna bed, and the hot half of a contrast session when that track is selected, is a recording rather than the synthesized pads used for breathing and cold. The file is `audio/sauna-bed.mp3` (128 kbps, a little over two minutes). It loops. The last four seconds are crossfaded into the opening so the repeat does not click, and it plays through the same volume control that ducks under the voice.
+
+“First Light Particles” by Yoiyami. Soft piano and slow ambient pads, no percussion. [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). Source: [OpenGameArt](https://opengameart.org/content/first-light-particles-%E2%80%93-cc0-atmospheric-pianoambient-track). Attribution is not required; the credit is kept in Settings.
 
 Hold-time announcements are recorded through 12:00. A hold longer than that stays on the timer and simply stops adding spoken minute marks.
 
