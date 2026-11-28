@@ -1,0 +1,5934 @@
+{
+  "model": "simba-3.5",
+  "voices": {
+    "george": {
+      "id": "george",
+      "display_name": "George",
+      "gender": "male",
+      "locale": "en-US",
+      "accent": "American"
+    },
+    "harper_32": {
+      "id": "harper_32",
+      "display_name": "Harper",
+      "gender": "female",
+      "locale": "en-US",
+      "accent": "American"
+    }
+  },
+  "ssml": {
+    "calm_rate": "-15%",
+    "both_rate": "-10%",
+    "hard_rate": "default (no prosody rate)",
+    "notes": "Calm-only cues use prosody rate=-15%. Shared (both-mode) cues use -10%. Hard-only cues use the model's default rate. Emotion styles are not applied on simba-3.5."
+  },
+  "audio": {
+    "format": "mp3",
+    "channels": 1,
+    "sample_rate_hz": 24000,
+    "bitrate": "80k",
+    "loudness": "ffmpeg loudnorm I=-16 TP=-1.5 LRA=11; leading/trailing silence only (reverse-trim so mid-sentence pauses are kept), short pad left at each end"
+  },
+  "compose": {
+    "breath_intro": [
+      "breath_intro",
+      "well_do_r{rounds}_b{breaths}",
+      "breath_begin"
+    ],
+    "plunge_minutes_in_halfway": [
+      "one_minute_in or minutes_in_{k}",
+      "halfway_there"
+    ],
+    "sauna_minutes_in_halfway": [
+      "minutes_in_{k}",
+      "halfway_check_in"
+    ],
+    "contrast_enter": [
+      "round_{n}_of_{r}",
+      "then the heat/cold enter line"
+    ],
+    "awards": [
+      "new_award",
+      "award_{badgeId}",
+      "award_{badgeId}",
+      "..."
+    ]
+  },
+  "restructures": [
+    "Contrast enter lines originally prepend `Round ${st.r} of ${R}. ` in the same utterance; play round_{n}_of_{r} immediately before the heat/cold sentence.",
+    "Split from one template sentence into intro + We'll do N rounds of M breaths + close.",
+    "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words.",
+    "Closing clause of the startBreath intro sentence.",
+    "Pre-rendered for next-round 2-6 (max rounds is 6).",
+    "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00.",
+    "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes.",
+    "Play after minutes_in_* when the code appends ' Halfway there.'",
+    "Play after minutes_in_* when the code appends ' Halfway. Check in with your body.'",
+    "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line.",
+    "Play first, then one award_* clip per newly earned badge (joined with periods in the original template).",
+    "Trailing period so multiple award clips can chain after 'New award.'",
+    "Display name is 'Hot & Cold'. Spoken with 'and' if needed, and a trailing period so clips chain.",
+    "Display name is 'Fire & Ice'. Spoken with 'and' if needed, and a trailing period so clips chain."
+  ],
+  "clips": [
+    {
+      "id": "welcome_plungetx",
+      "text": "Welcome to PlungeTX. Breathe in slowly, and let it go.",
+      "mode": "both",
+      "cues": [
+        "gTest click (line 643)"
+      ],
+      "files": {
+        "george": "george/welcome_plungetx.mp3",
+        "harper_32": "harper_32/welcome_plungetx.mp3"
+      },
+      "billable_characters": {
+        "george": 54,
+        "harper_32": 54
+      },
+      "duration_sec": {
+        "george": 4.656,
+        "harper_32": 4.224
+      },
+      "bytes": {
+        "george": 46844,
+        "harper_32": 42524
+      }
+    },
+    {
+      "id": "preview_breathe",
+      "text": "Breathe in slowly. And let it go.",
+      "mode": "both",
+      "cues": [
+        "previewVoice (line 947)"
+      ],
+      "files": {
+        "george": "george/preview_breathe.mp3",
+        "harper_32": "harper_32/preview_breathe.mp3"
+      },
+      "billable_characters": {
+        "george": 33,
+        "harper_32": 33
+      },
+      "duration_sec": {
+        "george": 3.312,
+        "harper_32": 3.192
+      },
+      "bytes": {
+        "george": 33404,
+        "harper_32": 32204
+      }
+    },
+    {
+      "id": "breath_intro",
+      "text": "Sit or lie down somewhere safe, and get comfortable.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675)"
+      ],
+      "files": {
+        "george": "george/breath_intro.mp3",
+        "harper_32": "harper_32/breath_intro.mp3"
+      },
+      "billable_characters": {
+        "george": 52,
+        "harper_32": 52
+      },
+      "duration_sec": {
+        "george": 3.504,
+        "harper_32": 3.696
+      },
+      "bytes": {
+        "george": 35324,
+        "harper_32": 37244
+      },
+      "restructure": "Split from one template sentence into intro + We'll do N rounds of M breaths + close."
+    },
+    {
+      "id": "well_do_r1_b20",
+      "text": "We'll do one round of twenty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=1, b.breaths=20"
+      ],
+      "files": {
+        "george": "george/well_do_r1_b20.mp3",
+        "harper_32": "harper_32/well_do_r1_b20.mp3"
+      },
+      "billable_characters": {
+        "george": 37,
+        "harper_32": 37
+      },
+      "duration_sec": {
+        "george": 2.568,
+        "harper_32": 1.848
+      },
+      "bytes": {
+        "george": 25964,
+        "harper_32": 18764
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r1_b25",
+      "text": "We'll do one round of twenty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=1, b.breaths=25"
+      ],
+      "files": {
+        "george": "george/well_do_r1_b25.mp3",
+        "harper_32": "harper_32/well_do_r1_b25.mp3"
+      },
+      "billable_characters": {
+        "george": 42,
+        "harper_32": 42
+      },
+      "duration_sec": {
+        "george": 2.976,
+        "harper_32": 2.064
+      },
+      "bytes": {
+        "george": 30044,
+        "harper_32": 20924
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r1_b30",
+      "text": "We'll do one round of thirty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=1, b.breaths=30"
+      ],
+      "files": {
+        "george": "george/well_do_r1_b30.mp3",
+        "harper_32": "harper_32/well_do_r1_b30.mp3"
+      },
+      "billable_characters": {
+        "george": 37,
+        "harper_32": 37
+      },
+      "duration_sec": {
+        "george": 2.568,
+        "harper_32": 1.872
+      },
+      "bytes": {
+        "george": 25964,
+        "harper_32": 19004
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r1_b35",
+      "text": "We'll do one round of thirty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=1, b.breaths=35"
+      ],
+      "files": {
+        "george": "george/well_do_r1_b35.mp3",
+        "harper_32": "harper_32/well_do_r1_b35.mp3"
+      },
+      "billable_characters": {
+        "george": 42,
+        "harper_32": 42
+      },
+      "duration_sec": {
+        "george": 3.0,
+        "harper_32": 2.208
+      },
+      "bytes": {
+        "george": 30284,
+        "harper_32": 22364
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r1_b40",
+      "text": "We'll do one round of forty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=1, b.breaths=40"
+      ],
+      "files": {
+        "george": "george/well_do_r1_b40.mp3",
+        "harper_32": "harper_32/well_do_r1_b40.mp3"
+      },
+      "billable_characters": {
+        "george": 36,
+        "harper_32": 36
+      },
+      "duration_sec": {
+        "george": 2.568,
+        "harper_32": 1.848
+      },
+      "bytes": {
+        "george": 25964,
+        "harper_32": 18764
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r1_b45",
+      "text": "We'll do one round of forty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=1, b.breaths=45"
+      ],
+      "files": {
+        "george": "george/well_do_r1_b45.mp3",
+        "harper_32": "harper_32/well_do_r1_b45.mp3"
+      },
+      "billable_characters": {
+        "george": 41,
+        "harper_32": 41
+      },
+      "duration_sec": {
+        "george": 3.216,
+        "harper_32": 2.16
+      },
+      "bytes": {
+        "george": 32444,
+        "harper_32": 21884
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r1_b50",
+      "text": "We'll do one round of fifty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=1, b.breaths=50"
+      ],
+      "files": {
+        "george": "george/well_do_r1_b50.mp3",
+        "harper_32": "harper_32/well_do_r1_b50.mp3"
+      },
+      "billable_characters": {
+        "george": 36,
+        "harper_32": 36
+      },
+      "duration_sec": {
+        "george": 2.496,
+        "harper_32": 1.92
+      },
+      "bytes": {
+        "george": 25244,
+        "harper_32": 19484
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r2_b20",
+      "text": "We'll do two rounds of twenty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=2, b.breaths=20"
+      ],
+      "files": {
+        "george": "george/well_do_r2_b20.mp3",
+        "harper_32": "harper_32/well_do_r2_b20.mp3"
+      },
+      "billable_characters": {
+        "george": 38,
+        "harper_32": 38
+      },
+      "duration_sec": {
+        "george": 2.256,
+        "harper_32": 2.04
+      },
+      "bytes": {
+        "george": 22844,
+        "harper_32": 20684
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r2_b25",
+      "text": "We'll do two rounds of twenty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=2, b.breaths=25"
+      ],
+      "files": {
+        "george": "george/well_do_r2_b25.mp3",
+        "harper_32": "harper_32/well_do_r2_b25.mp3"
+      },
+      "billable_characters": {
+        "george": 43,
+        "harper_32": 43
+      },
+      "duration_sec": {
+        "george": 2.568,
+        "harper_32": 2.184
+      },
+      "bytes": {
+        "george": 25964,
+        "harper_32": 22124
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r2_b30",
+      "text": "We'll do two rounds of thirty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=2, b.breaths=30"
+      ],
+      "files": {
+        "george": "george/well_do_r2_b30.mp3",
+        "harper_32": "harper_32/well_do_r2_b30.mp3"
+      },
+      "billable_characters": {
+        "george": 38,
+        "harper_32": 38
+      },
+      "duration_sec": {
+        "george": 2.328,
+        "harper_32": 1.944
+      },
+      "bytes": {
+        "george": 23564,
+        "harper_32": 19724
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r2_b35",
+      "text": "We'll do two rounds of thirty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=2, b.breaths=35"
+      ],
+      "files": {
+        "george": "george/well_do_r2_b35.mp3",
+        "harper_32": "harper_32/well_do_r2_b35.mp3"
+      },
+      "billable_characters": {
+        "george": 43,
+        "harper_32": 43
+      },
+      "duration_sec": {
+        "george": 2.568,
+        "harper_32": 2.28
+      },
+      "bytes": {
+        "george": 25964,
+        "harper_32": 23084
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r2_b40",
+      "text": "We'll do two rounds of forty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=2, b.breaths=40"
+      ],
+      "files": {
+        "george": "george/well_do_r2_b40.mp3",
+        "harper_32": "harper_32/well_do_r2_b40.mp3"
+      },
+      "billable_characters": {
+        "george": 37,
+        "harper_32": 37
+      },
+      "duration_sec": {
+        "george": 2.328,
+        "harper_32": 2.064
+      },
+      "bytes": {
+        "george": 23564,
+        "harper_32": 20924
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r2_b45",
+      "text": "We'll do two rounds of forty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=2, b.breaths=45"
+      ],
+      "files": {
+        "george": "george/well_do_r2_b45.mp3",
+        "harper_32": "harper_32/well_do_r2_b45.mp3"
+      },
+      "billable_characters": {
+        "george": 42,
+        "harper_32": 42
+      },
+      "duration_sec": {
+        "george": 2.568,
+        "harper_32": 2.28
+      },
+      "bytes": {
+        "george": 25964,
+        "harper_32": 23084
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r2_b50",
+      "text": "We'll do two rounds of fifty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=2, b.breaths=50"
+      ],
+      "files": {
+        "george": "george/well_do_r2_b50.mp3",
+        "harper_32": "harper_32/well_do_r2_b50.mp3"
+      },
+      "billable_characters": {
+        "george": 37,
+        "harper_32": 37
+      },
+      "duration_sec": {
+        "george": 2.304,
+        "harper_32": 2.04
+      },
+      "bytes": {
+        "george": 23324,
+        "harper_32": 20684
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r3_b20",
+      "text": "We'll do three rounds of twenty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=3, b.breaths=20"
+      ],
+      "files": {
+        "george": "george/well_do_r3_b20.mp3",
+        "harper_32": "harper_32/well_do_r3_b20.mp3"
+      },
+      "billable_characters": {
+        "george": 40,
+        "harper_32": 40
+      },
+      "duration_sec": {
+        "george": 2.472,
+        "harper_32": 2.136
+      },
+      "bytes": {
+        "george": 25004,
+        "harper_32": 21644
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r3_b25",
+      "text": "We'll do three rounds of twenty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=3, b.breaths=25"
+      ],
+      "files": {
+        "george": "george/well_do_r3_b25.mp3",
+        "harper_32": "harper_32/well_do_r3_b25.mp3"
+      },
+      "billable_characters": {
+        "george": 45,
+        "harper_32": 45
+      },
+      "duration_sec": {
+        "george": 2.784,
+        "harper_32": 2.424
+      },
+      "bytes": {
+        "george": 28124,
+        "harper_32": 24524
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r3_b30",
+      "text": "We'll do three rounds of thirty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=3, b.breaths=30"
+      ],
+      "files": {
+        "george": "george/well_do_r3_b30.mp3",
+        "harper_32": "harper_32/well_do_r3_b30.mp3"
+      },
+      "billable_characters": {
+        "george": 40,
+        "harper_32": 40
+      },
+      "duration_sec": {
+        "george": 2.448,
+        "harper_32": 2.208
+      },
+      "bytes": {
+        "george": 24764,
+        "harper_32": 22364
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r3_b35",
+      "text": "We'll do three rounds of thirty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=3, b.breaths=35"
+      ],
+      "files": {
+        "george": "george/well_do_r3_b35.mp3",
+        "harper_32": "harper_32/well_do_r3_b35.mp3"
+      },
+      "billable_characters": {
+        "george": 45,
+        "harper_32": 45
+      },
+      "duration_sec": {
+        "george": 2.832,
+        "harper_32": 2.448
+      },
+      "bytes": {
+        "george": 28604,
+        "harper_32": 24764
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r3_b40",
+      "text": "We'll do three rounds of forty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=3, b.breaths=40"
+      ],
+      "files": {
+        "george": "george/well_do_r3_b40.mp3",
+        "harper_32": "harper_32/well_do_r3_b40.mp3"
+      },
+      "billable_characters": {
+        "george": 39,
+        "harper_32": 39
+      },
+      "duration_sec": {
+        "george": 2.472,
+        "harper_32": 2.184
+      },
+      "bytes": {
+        "george": 25004,
+        "harper_32": 22124
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r3_b45",
+      "text": "We'll do three rounds of forty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=3, b.breaths=45"
+      ],
+      "files": {
+        "george": "george/well_do_r3_b45.mp3",
+        "harper_32": "harper_32/well_do_r3_b45.mp3"
+      },
+      "billable_characters": {
+        "george": 44,
+        "harper_32": 44
+      },
+      "duration_sec": {
+        "george": 2.832,
+        "harper_32": 2.448
+      },
+      "bytes": {
+        "george": 28604,
+        "harper_32": 24764
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r3_b50",
+      "text": "We'll do three rounds of fifty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=3, b.breaths=50"
+      ],
+      "files": {
+        "george": "george/well_do_r3_b50.mp3",
+        "harper_32": "harper_32/well_do_r3_b50.mp3"
+      },
+      "billable_characters": {
+        "george": 39,
+        "harper_32": 39
+      },
+      "duration_sec": {
+        "george": 2.448,
+        "harper_32": 2.304
+      },
+      "bytes": {
+        "george": 24764,
+        "harper_32": 23324
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r4_b20",
+      "text": "We'll do four rounds of twenty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=4, b.breaths=20"
+      ],
+      "files": {
+        "george": "george/well_do_r4_b20.mp3",
+        "harper_32": "harper_32/well_do_r4_b20.mp3"
+      },
+      "billable_characters": {
+        "george": 39,
+        "harper_32": 39
+      },
+      "duration_sec": {
+        "george": 2.544,
+        "harper_32": 2.136
+      },
+      "bytes": {
+        "george": 25724,
+        "harper_32": 21644
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r4_b25",
+      "text": "We'll do four rounds of twenty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=4, b.breaths=25"
+      ],
+      "files": {
+        "george": "george/well_do_r4_b25.mp3",
+        "harper_32": "harper_32/well_do_r4_b25.mp3"
+      },
+      "billable_characters": {
+        "george": 44,
+        "harper_32": 44
+      },
+      "duration_sec": {
+        "george": 2.88,
+        "harper_32": 2.448
+      },
+      "bytes": {
+        "george": 29084,
+        "harper_32": 24764
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r4_b30",
+      "text": "We'll do four rounds of thirty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=4, b.breaths=30"
+      ],
+      "files": {
+        "george": "george/well_do_r4_b30.mp3",
+        "harper_32": "harper_32/well_do_r4_b30.mp3"
+      },
+      "billable_characters": {
+        "george": 39,
+        "harper_32": 39
+      },
+      "duration_sec": {
+        "george": 2.736,
+        "harper_32": 2.184
+      },
+      "bytes": {
+        "george": 27644,
+        "harper_32": 22124
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r4_b35",
+      "text": "We'll do four rounds of thirty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=4, b.breaths=35"
+      ],
+      "files": {
+        "george": "george/well_do_r4_b35.mp3",
+        "harper_32": "harper_32/well_do_r4_b35.mp3"
+      },
+      "billable_characters": {
+        "george": 44,
+        "harper_32": 44
+      },
+      "duration_sec": {
+        "george": 3.192,
+        "harper_32": 2.448
+      },
+      "bytes": {
+        "george": 32204,
+        "harper_32": 24764
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r4_b40",
+      "text": "We'll do four rounds of forty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=4, b.breaths=40"
+      ],
+      "files": {
+        "george": "george/well_do_r4_b40.mp3",
+        "harper_32": "harper_32/well_do_r4_b40.mp3"
+      },
+      "billable_characters": {
+        "george": 38,
+        "harper_32": 38
+      },
+      "duration_sec": {
+        "george": 2.736,
+        "harper_32": 2.184
+      },
+      "bytes": {
+        "george": 27644,
+        "harper_32": 22124
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r4_b45",
+      "text": "We'll do four rounds of forty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=4, b.breaths=45"
+      ],
+      "files": {
+        "george": "george/well_do_r4_b45.mp3",
+        "harper_32": "harper_32/well_do_r4_b45.mp3"
+      },
+      "billable_characters": {
+        "george": 43,
+        "harper_32": 43
+      },
+      "duration_sec": {
+        "george": 3.216,
+        "harper_32": 2.448
+      },
+      "bytes": {
+        "george": 32444,
+        "harper_32": 24764
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r4_b50",
+      "text": "We'll do four rounds of fifty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=4, b.breaths=50"
+      ],
+      "files": {
+        "george": "george/well_do_r4_b50.mp3",
+        "harper_32": "harper_32/well_do_r4_b50.mp3"
+      },
+      "billable_characters": {
+        "george": 38,
+        "harper_32": 38
+      },
+      "duration_sec": {
+        "george": 2.568,
+        "harper_32": 2.304
+      },
+      "bytes": {
+        "george": 25964,
+        "harper_32": 23324
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r5_b20",
+      "text": "We'll do five rounds of twenty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=5, b.breaths=20"
+      ],
+      "files": {
+        "george": "george/well_do_r5_b20.mp3",
+        "harper_32": "harper_32/well_do_r5_b20.mp3"
+      },
+      "billable_characters": {
+        "george": 39,
+        "harper_32": 39
+      },
+      "duration_sec": {
+        "george": 2.568,
+        "harper_32": 2.304
+      },
+      "bytes": {
+        "george": 25964,
+        "harper_32": 23324
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r5_b25",
+      "text": "We'll do five rounds of twenty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=5, b.breaths=25"
+      ],
+      "files": {
+        "george": "george/well_do_r5_b25.mp3",
+        "harper_32": "harper_32/well_do_r5_b25.mp3"
+      },
+      "billable_characters": {
+        "george": 44,
+        "harper_32": 44
+      },
+      "duration_sec": {
+        "george": 2.88,
+        "harper_32": 2.616
+      },
+      "bytes": {
+        "george": 29084,
+        "harper_32": 26444
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r5_b30",
+      "text": "We'll do five rounds of thirty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=5, b.breaths=30"
+      ],
+      "files": {
+        "george": "george/well_do_r5_b30.mp3",
+        "harper_32": "harper_32/well_do_r5_b30.mp3"
+      },
+      "billable_characters": {
+        "george": 39,
+        "harper_32": 39
+      },
+      "duration_sec": {
+        "george": 2.76,
+        "harper_32": 2.184
+      },
+      "bytes": {
+        "george": 27884,
+        "harper_32": 22124
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r5_b35",
+      "text": "We'll do five rounds of thirty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=5, b.breaths=35"
+      ],
+      "files": {
+        "george": "george/well_do_r5_b35.mp3",
+        "harper_32": "harper_32/well_do_r5_b35.mp3"
+      },
+      "billable_characters": {
+        "george": 44,
+        "harper_32": 44
+      },
+      "duration_sec": {
+        "george": 3.144,
+        "harper_32": 2.496
+      },
+      "bytes": {
+        "george": 31724,
+        "harper_32": 25244
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r5_b40",
+      "text": "We'll do five rounds of forty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=5, b.breaths=40"
+      ],
+      "files": {
+        "george": "george/well_do_r5_b40.mp3",
+        "harper_32": "harper_32/well_do_r5_b40.mp3"
+      },
+      "billable_characters": {
+        "george": 38,
+        "harper_32": 38
+      },
+      "duration_sec": {
+        "george": 2.76,
+        "harper_32": 2.208
+      },
+      "bytes": {
+        "george": 27884,
+        "harper_32": 22364
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r5_b45",
+      "text": "We'll do five rounds of forty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=5, b.breaths=45"
+      ],
+      "files": {
+        "george": "george/well_do_r5_b45.mp3",
+        "harper_32": "harper_32/well_do_r5_b45.mp3"
+      },
+      "billable_characters": {
+        "george": 43,
+        "harper_32": 43
+      },
+      "duration_sec": {
+        "george": 3.0,
+        "harper_32": 2.448
+      },
+      "bytes": {
+        "george": 30284,
+        "harper_32": 24764
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r5_b50",
+      "text": "We'll do five rounds of fifty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=5, b.breaths=50"
+      ],
+      "files": {
+        "george": "george/well_do_r5_b50.mp3",
+        "harper_32": "harper_32/well_do_r5_b50.mp3"
+      },
+      "billable_characters": {
+        "george": 38,
+        "harper_32": 38
+      },
+      "duration_sec": {
+        "george": 2.568,
+        "harper_32": 2.184
+      },
+      "bytes": {
+        "george": 25964,
+        "harper_32": 22124
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r6_b20",
+      "text": "We'll do six rounds of twenty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=6, b.breaths=20"
+      ],
+      "files": {
+        "george": "george/well_do_r6_b20.mp3",
+        "harper_32": "harper_32/well_do_r6_b20.mp3"
+      },
+      "billable_characters": {
+        "george": 38,
+        "harper_32": 38
+      },
+      "duration_sec": {
+        "george": 2.76,
+        "harper_32": 2.136
+      },
+      "bytes": {
+        "george": 27884,
+        "harper_32": 21644
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r6_b25",
+      "text": "We'll do six rounds of twenty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=6, b.breaths=25"
+      ],
+      "files": {
+        "george": "george/well_do_r6_b25.mp3",
+        "harper_32": "harper_32/well_do_r6_b25.mp3"
+      },
+      "billable_characters": {
+        "george": 43,
+        "harper_32": 43
+      },
+      "duration_sec": {
+        "george": 2.88,
+        "harper_32": 2.376
+      },
+      "bytes": {
+        "george": 29084,
+        "harper_32": 24044
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r6_b30",
+      "text": "We'll do six rounds of thirty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=6, b.breaths=30"
+      ],
+      "files": {
+        "george": "george/well_do_r6_b30.mp3",
+        "harper_32": "harper_32/well_do_r6_b30.mp3"
+      },
+      "billable_characters": {
+        "george": 38,
+        "harper_32": 38
+      },
+      "duration_sec": {
+        "george": 2.832,
+        "harper_32": 2.184
+      },
+      "bytes": {
+        "george": 28604,
+        "harper_32": 22124
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r6_b35",
+      "text": "We'll do six rounds of thirty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=6, b.breaths=35"
+      ],
+      "files": {
+        "george": "george/well_do_r6_b35.mp3",
+        "harper_32": "harper_32/well_do_r6_b35.mp3"
+      },
+      "billable_characters": {
+        "george": 43,
+        "harper_32": 43
+      },
+      "duration_sec": {
+        "george": 3.192,
+        "harper_32": 2.448
+      },
+      "bytes": {
+        "george": 32204,
+        "harper_32": 24764
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r6_b40",
+      "text": "We'll do six rounds of forty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=6, b.breaths=40"
+      ],
+      "files": {
+        "george": "george/well_do_r6_b40.mp3",
+        "harper_32": "harper_32/well_do_r6_b40.mp3"
+      },
+      "billable_characters": {
+        "george": 37,
+        "harper_32": 37
+      },
+      "duration_sec": {
+        "george": 2.832,
+        "harper_32": 2.184
+      },
+      "bytes": {
+        "george": 28604,
+        "harper_32": 22124
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r6_b45",
+      "text": "We'll do six rounds of forty-five breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=6, b.breaths=45"
+      ],
+      "files": {
+        "george": "george/well_do_r6_b45.mp3",
+        "harper_32": "harper_32/well_do_r6_b45.mp3"
+      },
+      "billable_characters": {
+        "george": 42,
+        "harper_32": 42
+      },
+      "duration_sec": {
+        "george": 3.456,
+        "harper_32": 2.448
+      },
+      "bytes": {
+        "george": 34844,
+        "harper_32": 24764
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "well_do_r6_b50",
+      "text": "We'll do six rounds of fifty breaths.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675); b.rounds=6, b.breaths=50"
+      ],
+      "files": {
+        "george": "george/well_do_r6_b50.mp3",
+        "harper_32": "harper_32/well_do_r6_b50.mp3"
+      },
+      "billable_characters": {
+        "george": 37,
+        "harper_32": 37
+      },
+      "duration_sec": {
+        "george": 2.832,
+        "harper_32": 2.184
+      },
+      "bytes": {
+        "george": 28604,
+        "harper_32": 22124
+      },
+      "restructure": "Pre-rendered for valid ranges: rounds 1-6, breaths 20-50 step 5. Numbers spoken as words."
+    },
+    {
+      "id": "breath_begin",
+      "text": "Breathe in fully, and let it go.",
+      "mode": "both",
+      "cues": [
+        "startBreath enter (line 675)"
+      ],
+      "files": {
+        "george": "george/breath_begin.mp3",
+        "harper_32": "harper_32/breath_begin.mp3"
+      },
+      "billable_characters": {
+        "george": 32,
+        "harper_32": 32
+      },
+      "duration_sec": {
+        "george": 2.832,
+        "harper_32": 2.544
+      },
+      "bytes": {
+        "george": 28604,
+        "harper_32": 25724
+      },
+      "restructure": "Closing clause of the startBreath intro sentence."
+    },
+    {
+      "id": "belly_chest",
+      "text": "Belly, chest, and let it go.",
+      "mode": "both",
+      "cues": [
+        "breathStep first inhale of round 1 (line 692)"
+      ],
+      "files": {
+        "george": "george/belly_chest.mp3",
+        "harper_32": "harper_32/belly_chest.mp3"
+      },
+      "billable_characters": {
+        "george": 28,
+        "harper_32": 28
+      },
+      "duration_sec": {
+        "george": 2.856,
+        "harper_32": 2.544
+      },
+      "bytes": {
+        "george": 28844,
+        "harper_32": 25724
+      }
+    },
+    {
+      "id": "halfway",
+      "text": "Halfway.",
+      "mode": "both",
+      "cues": [
+        "breathStep midpoint breath (line 692)"
+      ],
+      "files": {
+        "george": "george/halfway.mp3",
+        "harper_32": "harper_32/halfway.mp3"
+      },
+      "billable_characters": {
+        "george": 8,
+        "harper_32": 8
+      },
+      "duration_sec": {
+        "george": 0.624,
+        "harper_32": 0.624
+      },
+      "bytes": {
+        "george": 6524,
+        "harper_32": 6524
+      }
+    },
+    {
+      "id": "five_more",
+      "text": "Five more.",
+      "mode": "both",
+      "cues": [
+        "breathStep five breaths left, N>=20 (line 692)"
+      ],
+      "files": {
+        "george": "george/five_more.mp3",
+        "harper_32": "harper_32/five_more.mp3"
+      },
+      "billable_characters": {
+        "george": 10,
+        "harper_32": 10
+      },
+      "duration_sec": {
+        "george": 0.96,
+        "harper_32": 0.672
+      },
+      "bytes": {
+        "george": 9884,
+        "harper_32": 7004
+      }
+    },
+    {
+      "id": "last_one",
+      "text": "Last one. All the way in.",
+      "mode": "both",
+      "cues": [
+        "breathStep last breath of a round (line 692)"
+      ],
+      "files": {
+        "george": "george/last_one.mp3",
+        "harper_32": "harper_32/last_one.mp3"
+      },
+      "billable_characters": {
+        "george": 25,
+        "harper_32": 25
+      },
+      "duration_sec": {
+        "george": 2.424,
+        "harper_32": 2.16
+      },
+      "bytes": {
+        "george": 24524,
+        "harper_32": 21884
+      }
+    },
+    {
+      "id": "let_go_hold",
+      "text": "And let it go. Hold your breath.",
+      "mode": "both",
+      "cues": [
+        "breath phase hold enter (line 678)"
+      ],
+      "files": {
+        "george": "george/let_go_hold.mp3",
+        "harper_32": "harper_32/let_go_hold.mp3"
+      },
+      "billable_characters": {
+        "george": 32,
+        "harper_32": 32
+      },
+      "duration_sec": {
+        "george": 2.568,
+        "harper_32": 1.848
+      },
+      "bytes": {
+        "george": 25964,
+        "harper_32": 18764
+      }
+    },
+    {
+      "id": "breathe_in_hold",
+      "text": "Breathe all the way in, and hold.",
+      "mode": "both",
+      "cues": [
+        "breath phase recover enter (line 680)"
+      ],
+      "files": {
+        "george": "george/breathe_in_hold.mp3",
+        "harper_32": "harper_32/breathe_in_hold.mp3"
+      },
+      "billable_characters": {
+        "george": 33,
+        "harper_32": 33
+      },
+      "duration_sec": {
+        "george": 3.336,
+        "harper_32": 2.352
+      },
+      "bytes": {
+        "george": 33644,
+        "harper_32": 23804
+      }
+    },
+    {
+      "id": "let_go_round_2",
+      "text": "Let it go. Round two.",
+      "mode": "both",
+      "cues": [
+        "breath phase release when more rounds remain; ORD[sess.round+1]=two (line 682)"
+      ],
+      "files": {
+        "george": "george/let_go_round_2.mp3",
+        "harper_32": "harper_32/let_go_round_2.mp3"
+      },
+      "billable_characters": {
+        "george": 21,
+        "harper_32": 21
+      },
+      "duration_sec": {
+        "george": 2.304,
+        "harper_32": 2.136
+      },
+      "bytes": {
+        "george": 23324,
+        "harper_32": 21644
+      },
+      "restructure": "Pre-rendered for next-round 2-6 (max rounds is 6)."
+    },
+    {
+      "id": "let_go_round_3",
+      "text": "Let it go. Round three.",
+      "mode": "both",
+      "cues": [
+        "breath phase release when more rounds remain; ORD[sess.round+1]=three (line 682)"
+      ],
+      "files": {
+        "george": "george/let_go_round_3.mp3",
+        "harper_32": "harper_32/let_go_round_3.mp3"
+      },
+      "billable_characters": {
+        "george": 23,
+        "harper_32": 23
+      },
+      "duration_sec": {
+        "george": 2.496,
+        "harper_32": 2.136
+      },
+      "bytes": {
+        "george": 25244,
+        "harper_32": 21644
+      },
+      "restructure": "Pre-rendered for next-round 2-6 (max rounds is 6)."
+    },
+    {
+      "id": "let_go_round_4",
+      "text": "Let it go. Round four.",
+      "mode": "both",
+      "cues": [
+        "breath phase release when more rounds remain; ORD[sess.round+1]=four (line 682)"
+      ],
+      "files": {
+        "george": "george/let_go_round_4.mp3",
+        "harper_32": "harper_32/let_go_round_4.mp3"
+      },
+      "billable_characters": {
+        "george": 22,
+        "harper_32": 22
+      },
+      "duration_sec": {
+        "george": 2.424,
+        "harper_32": 2.16
+      },
+      "bytes": {
+        "george": 24524,
+        "harper_32": 21884
+      },
+      "restructure": "Pre-rendered for next-round 2-6 (max rounds is 6)."
+    },
+    {
+      "id": "let_go_round_5",
+      "text": "Let it go. Round five.",
+      "mode": "both",
+      "cues": [
+        "breath phase release when more rounds remain; ORD[sess.round+1]=five (line 682)"
+      ],
+      "files": {
+        "george": "george/let_go_round_5.mp3",
+        "harper_32": "harper_32/let_go_round_5.mp3"
+      },
+      "billable_characters": {
+        "george": 22,
+        "harper_32": 22
+      },
+      "duration_sec": {
+        "george": 2.568,
+        "harper_32": 2.16
+      },
+      "bytes": {
+        "george": 25964,
+        "harper_32": 21884
+      },
+      "restructure": "Pre-rendered for next-round 2-6 (max rounds is 6)."
+    },
+    {
+      "id": "let_go_round_6",
+      "text": "Let it go. Round six.",
+      "mode": "both",
+      "cues": [
+        "breath phase release when more rounds remain; ORD[sess.round+1]=six (line 682)"
+      ],
+      "files": {
+        "george": "george/let_go_round_6.mp3",
+        "harper_32": "harper_32/let_go_round_6.mp3"
+      },
+      "billable_characters": {
+        "george": 21,
+        "harper_32": 21
+      },
+      "duration_sec": {
+        "george": 2.664,
+        "harper_32": 2.28
+      },
+      "bytes": {
+        "george": 26924,
+        "harper_32": 23084
+      },
+      "restructure": "Pre-rendered for next-round 2-6 (max rounds is 6)."
+    },
+    {
+      "id": "let_go",
+      "text": "Let it go.",
+      "mode": "both",
+      "cues": [
+        "breath phase release after the final hold (line 683)"
+      ],
+      "files": {
+        "george": "george/let_go.mp3",
+        "harper_32": "harper_32/let_go.mp3"
+      },
+      "billable_characters": {
+        "george": 10,
+        "harper_32": 10
+      },
+      "duration_sec": {
+        "george": 0.744,
+        "harper_32": 0.744
+      },
+      "bytes": {
+        "george": 7724,
+        "harper_32": 7724
+      }
+    },
+    {
+      "id": "final_round_notice",
+      "text": "That was the final round. Breathe normally, and notice how your body feels.",
+      "mode": "both",
+      "cues": [
+        "finishBreath (line 708)"
+      ],
+      "files": {
+        "george": "george/final_round_notice.mp3",
+        "harper_32": "harper_32/final_round_notice.mp3"
+      },
+      "billable_characters": {
+        "george": 75,
+        "harper_32": 75
+      },
+      "duration_sec": {
+        "george": 5.424,
+        "harper_32": 4.704
+      },
+      "bytes": {
+        "george": 54524,
+        "harper_32": 47324
+      }
+    },
+    {
+      "id": "hold_relax",
+      "text": "Relax every muscle. Tap the screen when you need to breathe.",
+      "mode": "both",
+      "cues": [
+        "HOLD_CUES[8] in tickBreath hold (line 697)"
+      ],
+      "files": {
+        "george": "george/hold_relax.mp3",
+        "harper_32": "harper_32/hold_relax.mp3"
+      },
+      "billable_characters": {
+        "george": 60,
+        "harper_32": 60
+      },
+      "duration_sec": {
+        "george": 4.104,
+        "harper_32": 3.912
+      },
+      "bytes": {
+        "george": 41324,
+        "harper_32": 39404
+      }
+    },
+    {
+      "id": "thirty_seconds",
+      "text": "Thirty seconds.",
+      "mode": "both",
+      "cues": [
+        "HOLD_CUES[30] in tickBreath hold (line 697)"
+      ],
+      "files": {
+        "george": "george/thirty_seconds.mp3",
+        "harper_32": "harper_32/thirty_seconds.mp3"
+      },
+      "billable_characters": {
+        "george": 15,
+        "harper_32": 15
+      },
+      "duration_sec": {
+        "george": 1.08,
+        "harper_32": 0.816
+      },
+      "bytes": {
+        "george": 11084,
+        "harper_32": 8444
+      }
+    },
+    {
+      "id": "hold_stay_soft",
+      "text": "Stay soft. Nothing to do but wait.",
+      "mode": "both",
+      "cues": [
+        "HOLD_CUES[45] in tickBreath hold (line 697)"
+      ],
+      "files": {
+        "george": "george/hold_stay_soft.mp3",
+        "harper_32": "harper_32/hold_stay_soft.mp3"
+      },
+      "billable_characters": {
+        "george": 34,
+        "harper_32": 34
+      },
+      "duration_sec": {
+        "george": 3.168,
+        "harper_32": 3.216
+      },
+      "bytes": {
+        "george": 31964,
+        "harper_32": 32444
+      }
+    },
+    {
+      "id": "one_minute",
+      "text": "One minute.",
+      "mode": "both",
+      "cues": [
+        "HOLD_CUES[60] in tickBreath hold (line 697)"
+      ],
+      "files": {
+        "george": "george/one_minute.mp3",
+        "harper_32": "harper_32/one_minute.mp3"
+      },
+      "billable_characters": {
+        "george": 11,
+        "harper_32": 11
+      },
+      "duration_sec": {
+        "george": 0.864,
+        "harper_32": 0.744
+      },
+      "bytes": {
+        "george": 8924,
+        "harper_32": 7724
+      }
+    },
+    {
+      "id": "hold_be_still",
+      "text": "Let the body be still.",
+      "mode": "both",
+      "cues": [
+        "HOLD_CUES[75] in tickBreath hold (line 697)"
+      ],
+      "files": {
+        "george": "george/hold_be_still.mp3",
+        "harper_32": "harper_32/hold_be_still.mp3"
+      },
+      "billable_characters": {
+        "george": 22,
+        "harper_32": 22
+      },
+      "duration_sec": {
+        "george": 1.752,
+        "harper_32": 1.464
+      },
+      "bytes": {
+        "george": 17804,
+        "harper_32": 14924
+      }
+    },
+    {
+      "id": "one_minute_thirty",
+      "text": "One minute, thirty.",
+      "mode": "both",
+      "cues": [
+        "HOLD_CUES[90] in tickBreath hold (line 697)"
+      ],
+      "files": {
+        "george": "george/one_minute_thirty.mp3",
+        "harper_32": "harper_32/one_minute_thirty.mp3"
+      },
+      "billable_characters": {
+        "george": 19,
+        "harper_32": 19
+      },
+      "duration_sec": {
+        "george": 1.584,
+        "harper_32": 1.536
+      },
+      "bytes": {
+        "george": 16124,
+        "harper_32": 15644
+      }
+    },
+    {
+      "id": "hold_calm_quiet",
+      "text": "Calm and quiet.",
+      "mode": "both",
+      "cues": [
+        "HOLD_CUES[105] in tickBreath hold (line 697)"
+      ],
+      "files": {
+        "george": "george/hold_calm_quiet.mp3",
+        "harper_32": "harper_32/hold_calm_quiet.mp3"
+      },
+      "billable_characters": {
+        "george": 15,
+        "harper_32": 15
+      },
+      "duration_sec": {
+        "george": 1.752,
+        "harper_32": 1.824
+      },
+      "bytes": {
+        "george": 17804,
+        "harper_32": 18524
+      }
+    },
+    {
+      "id": "two_minutes",
+      "text": "Two minutes.",
+      "mode": "both",
+      "cues": [
+        "HOLD_CUES[120] in tickBreath hold (line 697)"
+      ],
+      "files": {
+        "george": "george/two_minutes.mp3",
+        "harper_32": "harper_32/two_minutes.mp3"
+      },
+      "billable_characters": {
+        "george": 12,
+        "harper_32": 12
+      },
+      "duration_sec": {
+        "george": 0.744,
+        "harper_32": 0.744
+      },
+      "bytes": {
+        "george": 7724,
+        "harper_32": 7724
+      }
+    },
+    {
+      "id": "minutes_2_thirty",
+      "text": "two minutes, thirty.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=150 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_2_thirty.mp3",
+        "harper_32": "harper_32/minutes_2_thirty.mp3"
+      },
+      "billable_characters": {
+        "george": 20,
+        "harper_32": 20
+      },
+      "duration_sec": {
+        "george": 1.488,
+        "harper_32": 1.536
+      },
+      "bytes": {
+        "george": 15164,
+        "harper_32": 15644
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_3",
+      "text": "three minutes.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=180 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_3.mp3",
+        "harper_32": "harper_32/minutes_3.mp3"
+      },
+      "billable_characters": {
+        "george": 14,
+        "harper_32": 14
+      },
+      "duration_sec": {
+        "george": 0.888,
+        "harper_32": 0.792
+      },
+      "bytes": {
+        "george": 9164,
+        "harper_32": 8204
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_3_thirty",
+      "text": "three minutes, thirty.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=210 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_3_thirty.mp3",
+        "harper_32": "harper_32/minutes_3_thirty.mp3"
+      },
+      "billable_characters": {
+        "george": 22,
+        "harper_32": 22
+      },
+      "duration_sec": {
+        "george": 2.16,
+        "harper_32": 1.56
+      },
+      "bytes": {
+        "george": 21884,
+        "harper_32": 15884
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_4",
+      "text": "four minutes.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=240 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_4.mp3",
+        "harper_32": "harper_32/minutes_4.mp3"
+      },
+      "billable_characters": {
+        "george": 13,
+        "harper_32": 13
+      },
+      "duration_sec": {
+        "george": 0.864,
+        "harper_32": 0.696
+      },
+      "bytes": {
+        "george": 8924,
+        "harper_32": 7244
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_4_thirty",
+      "text": "four minutes, thirty.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=270 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_4_thirty.mp3",
+        "harper_32": "harper_32/minutes_4_thirty.mp3"
+      },
+      "billable_characters": {
+        "george": 21,
+        "harper_32": 21
+      },
+      "duration_sec": {
+        "george": 2.16,
+        "harper_32": 1.536
+      },
+      "bytes": {
+        "george": 21884,
+        "harper_32": 15644
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_5",
+      "text": "five minutes.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=300 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_5.mp3",
+        "harper_32": "harper_32/minutes_5.mp3"
+      },
+      "billable_characters": {
+        "george": 13,
+        "harper_32": 13
+      },
+      "duration_sec": {
+        "george": 0.984,
+        "harper_32": 0.816
+      },
+      "bytes": {
+        "george": 10124,
+        "harper_32": 8444
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_5_thirty",
+      "text": "five minutes, thirty.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=330 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_5_thirty.mp3",
+        "harper_32": "harper_32/minutes_5_thirty.mp3"
+      },
+      "billable_characters": {
+        "george": 21,
+        "harper_32": 21
+      },
+      "duration_sec": {
+        "george": 2.16,
+        "harper_32": 1.488
+      },
+      "bytes": {
+        "george": 21884,
+        "harper_32": 15164
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_6",
+      "text": "six minutes.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=360 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_6.mp3",
+        "harper_32": "harper_32/minutes_6.mp3"
+      },
+      "billable_characters": {
+        "george": 12,
+        "harper_32": 12
+      },
+      "duration_sec": {
+        "george": 0.984,
+        "harper_32": 0.984
+      },
+      "bytes": {
+        "george": 10124,
+        "harper_32": 10124
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_6_thirty",
+      "text": "six minutes, thirty.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=390 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_6_thirty.mp3",
+        "harper_32": "harper_32/minutes_6_thirty.mp3"
+      },
+      "billable_characters": {
+        "george": 20,
+        "harper_32": 20
+      },
+      "duration_sec": {
+        "george": 1.8,
+        "harper_32": 1.992
+      },
+      "bytes": {
+        "george": 18284,
+        "harper_32": 20204
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_7",
+      "text": "seven minutes.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=420 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_7.mp3",
+        "harper_32": "harper_32/minutes_7.mp3"
+      },
+      "billable_characters": {
+        "george": 14,
+        "harper_32": 14
+      },
+      "duration_sec": {
+        "george": 0.984,
+        "harper_32": 1.008
+      },
+      "bytes": {
+        "george": 10124,
+        "harper_32": 10364
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_7_thirty",
+      "text": "seven minutes, thirty.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=450 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_7_thirty.mp3",
+        "harper_32": "harper_32/minutes_7_thirty.mp3"
+      },
+      "billable_characters": {
+        "george": 22,
+        "harper_32": 22
+      },
+      "duration_sec": {
+        "george": 1.392,
+        "harper_32": 1.92
+      },
+      "bytes": {
+        "george": 14204,
+        "harper_32": 19484
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_8",
+      "text": "eight minutes.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=480 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_8.mp3",
+        "harper_32": "harper_32/minutes_8.mp3"
+      },
+      "billable_characters": {
+        "george": 14,
+        "harper_32": 14
+      },
+      "duration_sec": {
+        "george": 0.864,
+        "harper_32": 0.792
+      },
+      "bytes": {
+        "george": 8924,
+        "harper_32": 8204
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_8_thirty",
+      "text": "eight minutes, thirty.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=510 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_8_thirty.mp3",
+        "harper_32": "harper_32/minutes_8_thirty.mp3"
+      },
+      "billable_characters": {
+        "george": 22,
+        "harper_32": 22
+      },
+      "duration_sec": {
+        "george": 1.752,
+        "harper_32": 1.512
+      },
+      "bytes": {
+        "george": 17804,
+        "harper_32": 15404
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_9",
+      "text": "nine minutes.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=540 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_9.mp3",
+        "harper_32": "harper_32/minutes_9.mp3"
+      },
+      "billable_characters": {
+        "george": 13,
+        "harper_32": 13
+      },
+      "duration_sec": {
+        "george": 1.032,
+        "harper_32": 1.032
+      },
+      "bytes": {
+        "george": 10604,
+        "harper_32": 10604
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_9_thirty",
+      "text": "nine minutes, thirty.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=570 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_9_thirty.mp3",
+        "harper_32": "harper_32/minutes_9_thirty.mp3"
+      },
+      "billable_characters": {
+        "george": 21,
+        "harper_32": 21
+      },
+      "duration_sec": {
+        "george": 1.728,
+        "harper_32": 1.776
+      },
+      "bytes": {
+        "george": 17564,
+        "harper_32": 18044
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_10",
+      "text": "ten minutes.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=600 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_10.mp3",
+        "harper_32": "harper_32/minutes_10.mp3"
+      },
+      "billable_characters": {
+        "george": 12,
+        "harper_32": 12
+      },
+      "duration_sec": {
+        "george": 0.72,
+        "harper_32": 0.792
+      },
+      "bytes": {
+        "george": 7484,
+        "harper_32": 8204
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_10_thirty",
+      "text": "ten minutes, thirty.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=630 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_10_thirty.mp3",
+        "harper_32": "harper_32/minutes_10_thirty.mp3"
+      },
+      "billable_characters": {
+        "george": 20,
+        "harper_32": 20
+      },
+      "duration_sec": {
+        "george": 1.704,
+        "harper_32": 1.536
+      },
+      "bytes": {
+        "george": 17324,
+        "harper_32": 15644
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_11",
+      "text": "eleven minutes.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=660 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_11.mp3",
+        "harper_32": "harper_32/minutes_11.mp3"
+      },
+      "billable_characters": {
+        "george": 15,
+        "harper_32": 15
+      },
+      "duration_sec": {
+        "george": 1.056,
+        "harper_32": 1.128
+      },
+      "bytes": {
+        "george": 10844,
+        "harper_32": 11564
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_11_thirty",
+      "text": "eleven minutes, thirty.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=690 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_11_thirty.mp3",
+        "harper_32": "harper_32/minutes_11_thirty.mp3"
+      },
+      "billable_characters": {
+        "george": 23,
+        "harper_32": 23
+      },
+      "duration_sec": {
+        "george": 1.752,
+        "harper_32": 1.92
+      },
+      "bytes": {
+        "george": 17804,
+        "harper_32": 19484
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "minutes_12",
+      "text": "twelve minutes.",
+      "mode": "both",
+      "cues": [
+        "tickBreath hold after 2:00, sec=720 (line 698)"
+      ],
+      "files": {
+        "george": "george/minutes_12.mp3",
+        "harper_32": "harper_32/minutes_12.mp3"
+      },
+      "billable_characters": {
+        "george": 15,
+        "harper_32": 15
+      },
+      "duration_sec": {
+        "george": 1.296,
+        "harper_32": 1.032
+      },
+      "bytes": {
+        "george": 13244,
+        "harper_32": 10604
+      },
+      "restructure": "Template is `${m} minutes, thirty.`; spoken with word numbers. Pre-rendered 2:30\u201312:00."
+    },
+    {
+      "id": "three_two_one",
+      "text": "Three. Two. One.",
+      "mode": "both",
+      "cues": [
+        "tickBreath recover countdown cue c (line 700)"
+      ],
+      "files": {
+        "george": "george/three_two_one.mp3",
+        "harper_32": "harper_32/three_two_one.mp3"
+      },
+      "billable_characters": {
+        "george": 16,
+        "harper_32": 16
+      },
+      "duration_sec": {
+        "george": 2.904,
+        "harper_32": 2.16
+      },
+      "bytes": {
+        "george": 29324,
+        "harper_32": 21884
+      }
+    },
+    {
+      "id": "prep_breathe",
+      "text": "Time to prepare. Breathe in slowly through the nose, and out through the mouth, longer than you breathed in.",
+      "mode": "both",
+      "cues": [
+        "startBath prep enter (line 726)"
+      ],
+      "files": {
+        "george": "george/prep_breathe.mp3",
+        "harper_32": "harper_32/prep_breathe.mp3"
+      },
+      "billable_characters": {
+        "george": 108,
+        "harper_32": 108
+      },
+      "duration_sec": {
+        "george": 6.648,
+        "harper_32": 6.744
+      },
+      "bytes": {
+        "george": 66764,
+        "harper_32": 67724
+      }
+    },
+    {
+      "id": "relax_jaw",
+      "text": "Relax your jaw and shoulders. Keep the breath slow.",
+      "mode": "both",
+      "cues": [
+        "tickBath prep half, if prep>=120s (line 741)"
+      ],
+      "files": {
+        "george": "george/relax_jaw.mp3",
+        "harper_32": "harper_32/relax_jaw.mp3"
+      },
+      "billable_characters": {
+        "george": 51,
+        "harper_32": 51
+      },
+      "duration_sec": {
+        "george": 4.008,
+        "harper_32": 3.336
+      },
+      "bytes": {
+        "george": 40364,
+        "harper_32": 33644
+      }
+    },
+    {
+      "id": "one_minute_left_steady",
+      "text": "One minute left. Stay slow and steady.",
+      "mode": "both",
+      "cues": [
+        "tickBath prep r60 (line 741)"
+      ],
+      "files": {
+        "george": "george/one_minute_left_steady.mp3",
+        "harper_32": "harper_32/one_minute_left_steady.mp3"
+      },
+      "billable_characters": {
+        "george": 38,
+        "harper_32": 38
+      },
+      "duration_sec": {
+        "george": 3.6,
+        "harper_32": 3.216
+      },
+      "bytes": {
+        "george": 36284,
+        "harper_32": 32444
+      }
+    },
+    {
+      "id": "thirty_seconds_head_to_tub",
+      "text": "Thirty seconds. Head to the tub when you are ready.",
+      "mode": "both",
+      "cues": [
+        "tickBath prep r30 (line 742)"
+      ],
+      "files": {
+        "george": "george/thirty_seconds_head_to_tub.mp3",
+        "harper_32": "harper_32/thirty_seconds_head_to_tub.mp3"
+      },
+      "billable_characters": {
+        "george": 51,
+        "harper_32": 51
+      },
+      "duration_sec": {
+        "george": 3.216,
+        "harper_32": 3.312
+      },
+      "bytes": {
+        "george": 32444,
+        "harper_32": 33404
+      }
+    },
+    {
+      "id": "ten_seconds",
+      "text": "Ten seconds.",
+      "mode": "both",
+      "cues": [
+        "tickBath prep r10 (742)",
+        "tickBath cold r10 (751)",
+        "tickSauna r10 (786)",
+        "tickContrast switch r10 (985)",
+        "tickContrast cold r10 (989)"
+      ],
+      "files": {
+        "george": "george/ten_seconds.mp3",
+        "harper_32": "harper_32/ten_seconds.mp3"
+      },
+      "billable_characters": {
+        "george": 12,
+        "harper_32": 12
+      },
+      "duration_sec": {
+        "george": 0.864,
+        "harper_32": 0.984
+      },
+      "bytes": {
+        "george": 8924,
+        "harper_32": 10124
+      }
+    },
+    {
+      "id": "step_in_slowly",
+      "text": "Step in now, slowly. Breathe out long as the cold reaches you.",
+      "mode": "both",
+      "cues": [
+        "startBath enter phase (line 728)"
+      ],
+      "files": {
+        "george": "george/step_in_slowly.mp3",
+        "harper_32": "harper_32/step_in_slowly.mp3"
+      },
+      "billable_characters": {
+        "george": 62,
+        "harper_32": 62
+      },
+      "duration_sec": {
+        "george": 5.136,
+        "harper_32": 4.68
+      },
+      "bytes": {
+        "george": 51644,
+        "harper_32": 47084
+      }
+    },
+    {
+      "id": "timer_started",
+      "text": "Timer started. Long, slow exhales.",
+      "mode": "calm",
+      "cues": [
+        "startBath cold enter, calm coach (line 729)"
+      ],
+      "files": {
+        "george": "george/timer_started.mp3",
+        "harper_32": "harper_32/timer_started.mp3"
+      },
+      "billable_characters": {
+        "george": 34,
+        "harper_32": 34
+      },
+      "duration_sec": {
+        "george": 3.864,
+        "harper_32": 3.768
+      },
+      "bytes": {
+        "george": 38924,
+        "harper_32": 37964
+      }
+    },
+    {
+      "id": "clock_running",
+      "text": "Clock is running. No hesitating. Long, slow exhales.",
+      "mode": "hard",
+      "cues": [
+        "startBath cold enter, hard coach (line 729)"
+      ],
+      "files": {
+        "george": "george/clock_running.mp3",
+        "harper_32": "harper_32/clock_running.mp3"
+      },
+      "billable_characters": {
+        "george": 52,
+        "harper_32": 52
+      },
+      "duration_sec": {
+        "george": 4.248,
+        "harper_32": 4.608
+      },
+      "bytes": {
+        "george": 42764,
+        "harper_32": 46364
+      }
+    },
+    {
+      "id": "breathe_in",
+      "text": "Breathe in.",
+      "mode": "both",
+      "cues": [
+        "tickBath prep slowBreath voice, t=8\u201332s (line 740)"
+      ],
+      "files": {
+        "george": "george/breathe_in.mp3",
+        "harper_32": "harper_32/breathe_in.mp3"
+      },
+      "billable_characters": {
+        "george": 11,
+        "harper_32": 11
+      },
+      "duration_sec": {
+        "george": 0.912,
+        "harper_32": 0.72
+      },
+      "bytes": {
+        "george": 9404,
+        "harper_32": 7484
+      }
+    },
+    {
+      "id": "and_out_slowly",
+      "text": "And out, slowly.",
+      "mode": "both",
+      "cues": [
+        "tickBath prep slowBreath voice, t=8\u201332s (line 740)"
+      ],
+      "files": {
+        "george": "george/and_out_slowly.mp3",
+        "harper_32": "harper_32/and_out_slowly.mp3"
+      },
+      "billable_characters": {
+        "george": 16,
+        "harper_32": 16
+      },
+      "duration_sec": {
+        "george": 1.8,
+        "harper_32": 1.68
+      },
+      "bytes": {
+        "george": 18284,
+        "harper_32": 17084
+      }
+    },
+    {
+      "id": "let_shoulders_drop",
+      "text": "Let your shoulders drop.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold cue go at ~12s (line 752)"
+      ],
+      "files": {
+        "george": "george/let_shoulders_drop.mp3",
+        "harper_32": "harper_32/let_shoulders_drop.mp3"
+      },
+      "billable_characters": {
+        "george": 24,
+        "harper_32": 24
+      },
+      "duration_sec": {
+        "george": 1.608,
+        "harper_32": 1.272
+      },
+      "bytes": {
+        "george": 16364,
+        "harper_32": 13004
+      }
+    },
+    {
+      "id": "one_minute_in",
+      "text": "One minute in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold k=1 (line 748)"
+      ],
+      "files": {
+        "george": "george/one_minute_in.mp3",
+        "harper_32": "harper_32/one_minute_in.mp3"
+      },
+      "billable_characters": {
+        "george": 14,
+        "harper_32": 14
+      },
+      "duration_sec": {
+        "george": 1.296,
+        "harper_32": 1.224
+      },
+      "bytes": {
+        "george": 13244,
+        "harper_32": 12524
+      }
+    },
+    {
+      "id": "minutes_in_2",
+      "text": "two minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_2.mp3",
+        "harper_32": "harper_32/minutes_in_2.mp3"
+      },
+      "billable_characters": {
+        "george": 15,
+        "harper_32": 15
+      },
+      "duration_sec": {
+        "george": 0.84,
+        "harper_32": 0.96
+      },
+      "bytes": {
+        "george": 8684,
+        "harper_32": 9884
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_3",
+      "text": "three minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_3.mp3",
+        "harper_32": "harper_32/minutes_in_3.mp3"
+      },
+      "billable_characters": {
+        "george": 17,
+        "harper_32": 17
+      },
+      "duration_sec": {
+        "george": 1.464,
+        "harper_32": 1.416
+      },
+      "bytes": {
+        "george": 14924,
+        "harper_32": 14444
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_4",
+      "text": "four minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_4.mp3",
+        "harper_32": "harper_32/minutes_in_4.mp3"
+      },
+      "billable_characters": {
+        "george": 16,
+        "harper_32": 16
+      },
+      "duration_sec": {
+        "george": 1.608,
+        "harper_32": 1.32
+      },
+      "bytes": {
+        "george": 16364,
+        "harper_32": 13484
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_5",
+      "text": "five minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_5.mp3",
+        "harper_32": "harper_32/minutes_in_5.mp3"
+      },
+      "billable_characters": {
+        "george": 16,
+        "harper_32": 16
+      },
+      "duration_sec": {
+        "george": 1.488,
+        "harper_32": 1.08
+      },
+      "bytes": {
+        "george": 15164,
+        "harper_32": 11084
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_6",
+      "text": "six minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_6.mp3",
+        "harper_32": "harper_32/minutes_in_6.mp3"
+      },
+      "billable_characters": {
+        "george": 15,
+        "harper_32": 15
+      },
+      "duration_sec": {
+        "george": 1.272,
+        "harper_32": 1.464
+      },
+      "bytes": {
+        "george": 13004,
+        "harper_32": 14924
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_7",
+      "text": "seven minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_7.mp3",
+        "harper_32": "harper_32/minutes_in_7.mp3"
+      },
+      "billable_characters": {
+        "george": 17,
+        "harper_32": 17
+      },
+      "duration_sec": {
+        "george": 1.272,
+        "harper_32": 1.464
+      },
+      "bytes": {
+        "george": 13004,
+        "harper_32": 14924
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_8",
+      "text": "eight minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_8.mp3",
+        "harper_32": "harper_32/minutes_in_8.mp3"
+      },
+      "billable_characters": {
+        "george": 17,
+        "harper_32": 17
+      },
+      "duration_sec": {
+        "george": 1.056,
+        "harper_32": 0.96
+      },
+      "bytes": {
+        "george": 10844,
+        "harper_32": 9884
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_9",
+      "text": "nine minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_9.mp3",
+        "harper_32": "harper_32/minutes_in_9.mp3"
+      },
+      "billable_characters": {
+        "george": 16,
+        "harper_32": 16
+      },
+      "duration_sec": {
+        "george": 1.488,
+        "harper_32": 1.296
+      },
+      "bytes": {
+        "george": 15164,
+        "harper_32": 13244
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_10",
+      "text": "ten minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_10.mp3",
+        "harper_32": "harper_32/minutes_in_10.mp3"
+      },
+      "billable_characters": {
+        "george": 15,
+        "harper_32": 15
+      },
+      "duration_sec": {
+        "george": 0.984,
+        "harper_32": 0.936
+      },
+      "bytes": {
+        "george": 10124,
+        "harper_32": 9644
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_11",
+      "text": "eleven minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_11.mp3",
+        "harper_32": "harper_32/minutes_in_11.mp3"
+      },
+      "billable_characters": {
+        "george": 18,
+        "harper_32": 18
+      },
+      "duration_sec": {
+        "george": 1.488,
+        "harper_32": 1.224
+      },
+      "bytes": {
+        "george": 15164,
+        "harper_32": 12524
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_12",
+      "text": "twelve minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_12.mp3",
+        "harper_32": "harper_32/minutes_in_12.mp3"
+      },
+      "billable_characters": {
+        "george": 18,
+        "harper_32": 18
+      },
+      "duration_sec": {
+        "george": 1.464,
+        "harper_32": 1.344
+      },
+      "bytes": {
+        "george": 14924,
+        "harper_32": 13724
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_13",
+      "text": "thirteen minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_13.mp3",
+        "harper_32": "harper_32/minutes_in_13.mp3"
+      },
+      "billable_characters": {
+        "george": 20,
+        "harper_32": 20
+      },
+      "duration_sec": {
+        "george": 1.536,
+        "harper_32": 1.416
+      },
+      "bytes": {
+        "george": 15644,
+        "harper_32": 14444
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_14",
+      "text": "fourteen minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_14.mp3",
+        "harper_32": "harper_32/minutes_in_14.mp3"
+      },
+      "billable_characters": {
+        "george": 20,
+        "harper_32": 20
+      },
+      "duration_sec": {
+        "george": 1.44,
+        "harper_32": 1.296
+      },
+      "bytes": {
+        "george": 14684,
+        "harper_32": 13244
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_15",
+      "text": "fifteen minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_15.mp3",
+        "harper_32": "harper_32/minutes_in_15.mp3"
+      },
+      "billable_characters": {
+        "george": 19,
+        "harper_32": 19
+      },
+      "duration_sec": {
+        "george": 1.536,
+        "harper_32": 1.488
+      },
+      "bytes": {
+        "george": 15644,
+        "harper_32": 15164
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_16",
+      "text": "sixteen minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_16.mp3",
+        "harper_32": "harper_32/minutes_in_16.mp3"
+      },
+      "billable_characters": {
+        "george": 19,
+        "harper_32": 19
+      },
+      "duration_sec": {
+        "george": 1.44,
+        "harper_32": 1.656
+      },
+      "bytes": {
+        "george": 14684,
+        "harper_32": 16844
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_17",
+      "text": "seventeen minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_17.mp3",
+        "harper_32": "harper_32/minutes_in_17.mp3"
+      },
+      "billable_characters": {
+        "george": 21,
+        "harper_32": 21
+      },
+      "duration_sec": {
+        "george": 1.464,
+        "harper_32": 1.488
+      },
+      "bytes": {
+        "george": 14924,
+        "harper_32": 15164
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_18",
+      "text": "eighteen minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_18.mp3",
+        "harper_32": "harper_32/minutes_in_18.mp3"
+      },
+      "billable_characters": {
+        "george": 20,
+        "harper_32": 20
+      },
+      "duration_sec": {
+        "george": 1.296,
+        "harper_32": 1.2
+      },
+      "bytes": {
+        "george": 13244,
+        "harper_32": 12284
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_19",
+      "text": "nineteen minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_19.mp3",
+        "harper_32": "harper_32/minutes_in_19.mp3"
+      },
+      "billable_characters": {
+        "george": 20,
+        "harper_32": 20
+      },
+      "duration_sec": {
+        "george": 1.44,
+        "harper_32": 1.464
+      },
+      "bytes": {
+        "george": 14684,
+        "harper_32": 14924
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_20",
+      "text": "twenty minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_20.mp3",
+        "harper_32": "harper_32/minutes_in_20.mp3"
+      },
+      "billable_characters": {
+        "george": 18,
+        "harper_32": 18
+      },
+      "duration_sec": {
+        "george": 1.488,
+        "harper_32": 1.488
+      },
+      "bytes": {
+        "george": 15164,
+        "harper_32": 15164
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_21",
+      "text": "twenty-one minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_21.mp3",
+        "harper_32": "harper_32/minutes_in_21.mp3"
+      },
+      "billable_characters": {
+        "george": 22,
+        "harper_32": 22
+      },
+      "duration_sec": {
+        "george": 1.68,
+        "harper_32": 1.32
+      },
+      "bytes": {
+        "george": 17084,
+        "harper_32": 13484
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_22",
+      "text": "twenty-two minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_22.mp3",
+        "harper_32": "harper_32/minutes_in_22.mp3"
+      },
+      "billable_characters": {
+        "george": 22,
+        "harper_32": 22
+      },
+      "duration_sec": {
+        "george": 1.488,
+        "harper_32": 1.32
+      },
+      "bytes": {
+        "george": 15164,
+        "harper_32": 13484
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_23",
+      "text": "twenty-three minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_23.mp3",
+        "harper_32": "harper_32/minutes_in_23.mp3"
+      },
+      "billable_characters": {
+        "george": 24,
+        "harper_32": 24
+      },
+      "duration_sec": {
+        "george": 1.488,
+        "harper_32": 1.368
+      },
+      "bytes": {
+        "george": 15164,
+        "harper_32": 13964
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_24",
+      "text": "twenty-four minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_24.mp3",
+        "harper_32": "harper_32/minutes_in_24.mp3"
+      },
+      "billable_characters": {
+        "george": 23,
+        "harper_32": 23
+      },
+      "duration_sec": {
+        "george": 1.728,
+        "harper_32": 1.488
+      },
+      "bytes": {
+        "george": 17564,
+        "harper_32": 15164
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_25",
+      "text": "twenty-five minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_25.mp3",
+        "harper_32": "harper_32/minutes_in_25.mp3"
+      },
+      "billable_characters": {
+        "george": 23,
+        "harper_32": 23
+      },
+      "duration_sec": {
+        "george": 1.752,
+        "harper_32": 1.416
+      },
+      "bytes": {
+        "george": 17804,
+        "harper_32": 14444
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_26",
+      "text": "twenty-six minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_26.mp3",
+        "harper_32": "harper_32/minutes_in_26.mp3"
+      },
+      "billable_characters": {
+        "george": 22,
+        "harper_32": 22
+      },
+      "duration_sec": {
+        "george": 1.68,
+        "harper_32": 1.512
+      },
+      "bytes": {
+        "george": 17084,
+        "harper_32": 15404
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_27",
+      "text": "twenty-seven minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_27.mp3",
+        "harper_32": "harper_32/minutes_in_27.mp3"
+      },
+      "billable_characters": {
+        "george": 24,
+        "harper_32": 24
+      },
+      "duration_sec": {
+        "george": 1.656,
+        "harper_32": 1.44
+      },
+      "bytes": {
+        "george": 16844,
+        "harper_32": 14684
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_28",
+      "text": "twenty-eight minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_28.mp3",
+        "harper_32": "harper_32/minutes_in_28.mp3"
+      },
+      "billable_characters": {
+        "george": 24,
+        "harper_32": 24
+      },
+      "duration_sec": {
+        "george": 1.824,
+        "harper_32": 1.32
+      },
+      "bytes": {
+        "george": 18524,
+        "harper_32": 13484
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_29",
+      "text": "twenty-nine minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_29.mp3",
+        "harper_32": "harper_32/minutes_in_29.mp3"
+      },
+      "billable_characters": {
+        "george": 23,
+        "harper_32": 23
+      },
+      "duration_sec": {
+        "george": 1.8,
+        "harper_32": 1.296
+      },
+      "bytes": {
+        "george": 18284,
+        "harper_32": 13244
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "minutes_in_30",
+      "text": "thirty minutes in.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold minutes-in loop (line 748)",
+        "tickSauna every 5 min when k>=5 (line 783)"
+      ],
+      "files": {
+        "george": "george/minutes_in_30.mp3",
+        "harper_32": "harper_32/minutes_in_30.mp3"
+      },
+      "billable_characters": {
+        "george": 18,
+        "harper_32": 18
+      },
+      "duration_sec": {
+        "george": 1.272,
+        "harper_32": 1.128
+      },
+      "bytes": {
+        "george": 13004,
+        "harper_32": 11564
+      },
+      "restructure": "Template is `${k} minutes in.`; spoken with word numbers. Pre-rendered 2\u201330 minutes."
+    },
+    {
+      "id": "halfway_there",
+      "text": "Halfway there.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold suffix when a minute mark is d/2 (line 748)",
+        "tickBath cold standalone halfway when d/2 is not on a minute (line 749)"
+      ],
+      "files": {
+        "george": "george/halfway_there.mp3",
+        "harper_32": "harper_32/halfway_there.mp3"
+      },
+      "billable_characters": {
+        "george": 14,
+        "harper_32": 14
+      },
+      "duration_sec": {
+        "george": 0.84,
+        "harper_32": 0.864
+      },
+      "bytes": {
+        "george": 8684,
+        "harper_32": 8924
+      },
+      "restructure": "Play after minutes_in_* when the code appends ' Halfway there.'"
+    },
+    {
+      "id": "thirty_seconds_left",
+      "text": "Thirty seconds left.",
+      "mode": "both",
+      "cues": [
+        "tickBath cold r30 (line 750)",
+        "tickContrast cold r30 (line 989)"
+      ],
+      "files": {
+        "george": "george/thirty_seconds_left.mp3",
+        "harper_32": "harper_32/thirty_seconds_left.mp3"
+      },
+      "billable_characters": {
+        "george": 20,
+        "harper_32": 20
+      },
+      "duration_sec": {
+        "george": 1.488,
+        "harper_32": 1.272
+      },
+      "bytes": {
+        "george": 15164,
+        "harper_32": 13004
+      }
+    },
+    {
+      "id": "calm_0",
+      "text": "Breathe out slowly. Let the exhale be longer than the inhale.",
+      "mode": "calm",
+      "cues": [
+        "CALM[0] tickBath cold rotation (line 753)",
+        "CALM[0] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/calm_0.mp3",
+        "harper_32": "harper_32/calm_0.mp3"
+      },
+      "billable_characters": {
+        "george": 61,
+        "harper_32": 61
+      },
+      "duration_sec": {
+        "george": 4.44,
+        "harper_32": 4.248
+      },
+      "bytes": {
+        "george": 44684,
+        "harper_32": 42764
+      }
+    },
+    {
+      "id": "calm_1",
+      "text": "Unclench your hands. Let them float.",
+      "mode": "calm",
+      "cues": [
+        "CALM[1] tickBath cold rotation (line 753)",
+        "CALM[1] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/calm_1.mp3",
+        "harper_32": "harper_32/calm_1.mp3"
+      },
+      "billable_characters": {
+        "george": 36,
+        "harper_32": 36
+      },
+      "duration_sec": {
+        "george": 3.36,
+        "harper_32": 3.096
+      },
+      "bytes": {
+        "george": 33884,
+        "harper_32": 31244
+      }
+    },
+    {
+      "id": "calm_2",
+      "text": "Stay with your breath. In, and a long way out.",
+      "mode": "calm",
+      "cues": [
+        "CALM[2] tickBath cold rotation (line 753)",
+        "CALM[2] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/calm_2.mp3",
+        "harper_32": "harper_32/calm_2.mp3"
+      },
+      "billable_characters": {
+        "george": 46,
+        "harper_32": 46
+      },
+      "duration_sec": {
+        "george": 4.032,
+        "harper_32": 4.152
+      },
+      "bytes": {
+        "george": 40604,
+        "harper_32": 41804
+      }
+    },
+    {
+      "id": "calm_3",
+      "text": "Notice the urge to rush. Let it pass.",
+      "mode": "calm",
+      "cues": [
+        "CALM[3] tickBath cold rotation (line 753)",
+        "CALM[3] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/calm_3.mp3",
+        "harper_32": "harper_32/calm_3.mp3"
+      },
+      "billable_characters": {
+        "george": 37,
+        "harper_32": 37
+      },
+      "duration_sec": {
+        "george": 3.744,
+        "harper_32": 3.48
+      },
+      "bytes": {
+        "george": 37724,
+        "harper_32": 35084
+      }
+    },
+    {
+      "id": "calm_4",
+      "text": "Relax your face and jaw.",
+      "mode": "calm",
+      "cues": [
+        "CALM[4] tickBath cold rotation (line 753)",
+        "CALM[4] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/calm_4.mp3",
+        "harper_32": "harper_32/calm_4.mp3"
+      },
+      "billable_characters": {
+        "george": 24,
+        "harper_32": 24
+      },
+      "duration_sec": {
+        "george": 2.568,
+        "harper_32": 1.656
+      },
+      "bytes": {
+        "george": 25964,
+        "harper_32": 16844
+      }
+    },
+    {
+      "id": "calm_5",
+      "text": "Steady breathing. You are in control.",
+      "mode": "calm",
+      "cues": [
+        "CALM[5] tickBath cold rotation (line 753)",
+        "CALM[5] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/calm_5.mp3",
+        "harper_32": "harper_32/calm_5.mp3"
+      },
+      "billable_characters": {
+        "george": 37,
+        "harper_32": 37
+      },
+      "duration_sec": {
+        "george": 3.528,
+        "harper_32": 3.024
+      },
+      "bytes": {
+        "george": 35564,
+        "harper_32": 30524
+      }
+    },
+    {
+      "id": "calm_6",
+      "text": "Let your shoulders sink.",
+      "mode": "calm",
+      "cues": [
+        "CALM[6] tickBath cold rotation (line 753)",
+        "CALM[6] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/calm_6.mp3",
+        "harper_32": "harper_32/calm_6.mp3"
+      },
+      "billable_characters": {
+        "george": 24,
+        "harper_32": 24
+      },
+      "duration_sec": {
+        "george": 1.656,
+        "harper_32": 1.392
+      },
+      "bytes": {
+        "george": 16844,
+        "harper_32": 14204
+      }
+    },
+    {
+      "id": "calm_7",
+      "text": "The cold is strong. So are you.",
+      "mode": "calm",
+      "cues": [
+        "CALM[7] tickBath cold rotation (line 753)",
+        "CALM[7] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/calm_7.mp3",
+        "harper_32": "harper_32/calm_7.mp3"
+      },
+      "billable_characters": {
+        "george": 31,
+        "harper_32": 31
+      },
+      "duration_sec": {
+        "george": 3.192,
+        "harper_32": 2.856
+      },
+      "bytes": {
+        "george": 32204,
+        "harper_32": 28844
+      }
+    },
+    {
+      "id": "hard_cold_0",
+      "text": "You chose this. Own every second.",
+      "mode": "hard",
+      "cues": [
+        "HARD_COLD[0] tickBath cold rotation (line 753)",
+        "HARD_COLD[0] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/hard_cold_0.mp3",
+        "harper_32": "harper_32/hard_cold_0.mp3"
+      },
+      "billable_characters": {
+        "george": 33,
+        "harper_32": 33
+      },
+      "duration_sec": {
+        "george": 3.264,
+        "harper_32": 2.496
+      },
+      "bytes": {
+        "george": 32924,
+        "harper_32": 25244
+      }
+    },
+    {
+      "id": "hard_cold_1",
+      "text": "The cold is talking. You do not have to listen.",
+      "mode": "hard",
+      "cues": [
+        "HARD_COLD[1] tickBath cold rotation (line 753)",
+        "HARD_COLD[1] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/hard_cold_1.mp3",
+        "harper_32": "harper_32/hard_cold_1.mp3"
+      },
+      "billable_characters": {
+        "george": 47,
+        "harper_32": 47
+      },
+      "duration_sec": {
+        "george": 3.072,
+        "harper_32": 3.048
+      },
+      "bytes": {
+        "george": 31004,
+        "harper_32": 30764
+      }
+    },
+    {
+      "id": "hard_cold_2",
+      "text": "Your mind quits long before your body does.",
+      "mode": "hard",
+      "cues": [
+        "HARD_COLD[2] tickBath cold rotation (line 753)",
+        "HARD_COLD[2] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/hard_cold_2.mp3",
+        "harper_32": "harper_32/hard_cold_2.mp3"
+      },
+      "billable_characters": {
+        "george": 43,
+        "harper_32": 43
+      },
+      "duration_sec": {
+        "george": 2.904,
+        "harper_32": 2.112
+      },
+      "bytes": {
+        "george": 29324,
+        "harper_32": 21404
+      }
+    },
+    {
+      "id": "hard_cold_3",
+      "text": "Nobody is coming to pull you out. Stay in.",
+      "mode": "hard",
+      "cues": [
+        "HARD_COLD[3] tickBath cold rotation (line 753)",
+        "HARD_COLD[3] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/hard_cold_3.mp3",
+        "harper_32": "harper_32/hard_cold_3.mp3"
+      },
+      "billable_characters": {
+        "george": 42,
+        "harper_32": 42
+      },
+      "duration_sec": {
+        "george": 3.096,
+        "harper_32": 2.808
+      },
+      "bytes": {
+        "george": 31244,
+        "harper_32": 28364
+      }
+    },
+    {
+      "id": "hard_cold_4",
+      "text": "Slow breath. You are tougher than this water.",
+      "mode": "hard",
+      "cues": [
+        "HARD_COLD[4] tickBath cold rotation (line 753)",
+        "HARD_COLD[4] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/hard_cold_4.mp3",
+        "harper_32": "harper_32/hard_cold_4.mp3"
+      },
+      "billable_characters": {
+        "george": 45,
+        "harper_32": 45
+      },
+      "duration_sec": {
+        "george": 2.808,
+        "harper_32": 3.0
+      },
+      "bytes": {
+        "george": 28364,
+        "harper_32": 30284
+      }
+    },
+    {
+      "id": "hard_cold_5",
+      "text": "This is where most people get out. Not you.",
+      "mode": "hard",
+      "cues": [
+        "HARD_COLD[5] tickBath cold rotation (line 753)",
+        "HARD_COLD[5] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/hard_cold_5.mp3",
+        "harper_32": "harper_32/hard_cold_5.mp3"
+      },
+      "billable_characters": {
+        "george": 43,
+        "harper_32": 43
+      },
+      "duration_sec": {
+        "george": 3.216,
+        "harper_32": 2.616
+      },
+      "bytes": {
+        "george": 32444,
+        "harper_32": 26444
+      }
+    },
+    {
+      "id": "hard_cold_6",
+      "text": "Comfort is the enemy. Sit in it.",
+      "mode": "hard",
+      "cues": [
+        "HARD_COLD[6] tickBath cold rotation (line 753)",
+        "HARD_COLD[6] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/hard_cold_6.mp3",
+        "harper_32": "harper_32/hard_cold_6.mp3"
+      },
+      "billable_characters": {
+        "george": 32,
+        "harper_32": 32
+      },
+      "duration_sec": {
+        "george": 2.304,
+        "harper_32": 2.856
+      },
+      "bytes": {
+        "george": 23324,
+        "harper_32": 28844
+      }
+    },
+    {
+      "id": "hard_cold_7",
+      "text": "Every second in here counts. Keep stacking them.",
+      "mode": "hard",
+      "cues": [
+        "HARD_COLD[7] tickBath cold rotation (line 753)",
+        "HARD_COLD[7] tickContrast cold rotation (line 990)"
+      ],
+      "files": {
+        "george": "george/hard_cold_7.mp3",
+        "harper_32": "harper_32/hard_cold_7.mp3"
+      },
+      "billable_characters": {
+        "george": 48,
+        "harper_32": 48
+      },
+      "duration_sec": {
+        "george": 3.36,
+        "harper_32": 2.88
+      },
+      "bytes": {
+        "george": 33884,
+        "harper_32": 29084
+      }
+    },
+    {
+      "id": "time_step_out",
+      "text": "Time. Step out slowly, and let your body warm up on its own.",
+      "mode": "calm",
+      "cues": [
+        "finishBath, calm coach (line 756)"
+      ],
+      "files": {
+        "george": "george/time_step_out.mp3",
+        "harper_32": "harper_32/time_step_out.mp3"
+      },
+      "billable_characters": {
+        "george": 60,
+        "harper_32": 60
+      },
+      "duration_sec": {
+        "george": 5.016,
+        "harper_32": 5.28
+      },
+      "bytes": {
+        "george": 50444,
+        "harper_32": 53084
+      }
+    },
+    {
+      "id": "time_you_did",
+      "text": "Time. You did what most people will not. Step out slowly, and warm up on your own.",
+      "mode": "hard",
+      "cues": [
+        "finishBath, hard coach (line 756)"
+      ],
+      "files": {
+        "george": "george/time_you_did.mp3",
+        "harper_32": "harper_32/time_you_did.mp3"
+      },
+      "billable_characters": {
+        "george": 82,
+        "harper_32": 82
+      },
+      "duration_sec": {
+        "george": 5.64,
+        "harper_32": 5.736
+      },
+      "bytes": {
+        "george": 56684,
+        "harper_32": 57644
+      }
+    },
+    {
+      "id": "thirty_seconds_added",
+      "text": "Thirty seconds added.",
+      "mode": "both",
+      "cues": [
+        "baPlus for bath/sauna/contrast (line 767)"
+      ],
+      "files": {
+        "george": "george/thirty_seconds_added.mp3",
+        "harper_32": "harper_32/thirty_seconds_added.mp3"
+      },
+      "billable_characters": {
+        "george": 21,
+        "harper_32": 21
+      },
+      "duration_sec": {
+        "george": 1.584,
+        "harper_32": 1.272
+      },
+      "bytes": {
+        "george": 16124,
+        "harper_32": 13004
+      }
+    },
+    {
+      "id": "welcome_to_heat",
+      "text": "Welcome to the heat. Find a comfortable seat, and close your eyes if you like. Let your breathing slow down.",
+      "mode": "calm",
+      "cues": [
+        "startSauna heat enter, calm coach (line 776)"
+      ],
+      "files": {
+        "george": "george/welcome_to_heat.mp3",
+        "harper_32": "harper_32/welcome_to_heat.mp3"
+      },
+      "billable_characters": {
+        "george": 108,
+        "harper_32": 108
+      },
+      "duration_sec": {
+        "george": 7.728,
+        "harper_32": 6.936
+      },
+      "bytes": {
+        "george": 77564,
+        "harper_32": 69644
+      }
+    },
+    {
+      "id": "into_the_heat_hard",
+      "text": "Into the heat. Sit tall. Slow breath. You are not leaving early.",
+      "mode": "hard",
+      "cues": [
+        "startSauna heat enter, hard coach (line 776)"
+      ],
+      "files": {
+        "george": "george/into_the_heat_hard.mp3",
+        "harper_32": "harper_32/into_the_heat_hard.mp3"
+      },
+      "billable_characters": {
+        "george": 64,
+        "harper_32": 64
+      },
+      "duration_sec": {
+        "george": 4.56,
+        "harper_32": 4.536
+      },
+      "bytes": {
+        "george": 45884,
+        "harper_32": 45644
+      }
+    },
+    {
+      "id": "breath_four_six",
+      "text": "Breathe in through the nose for four. And out slowly, for six.",
+      "mode": "both",
+      "cues": [
+        "tickSauna pace cue at ~16s (line 781)"
+      ],
+      "files": {
+        "george": "george/breath_four_six.mp3",
+        "harper_32": "harper_32/breath_four_six.mp3"
+      },
+      "billable_characters": {
+        "george": 62,
+        "harper_32": 62
+      },
+      "duration_sec": {
+        "george": 4.56,
+        "harper_32": 4.224
+      },
+      "bytes": {
+        "george": 45884,
+        "harper_32": 42524
+      }
+    },
+    {
+      "id": "halfway_check_in",
+      "text": "Halfway. Check in with your body.",
+      "mode": "both",
+      "cues": [
+        "tickSauna suffix on a 5-minute mark that is also d/2 (line 783)"
+      ],
+      "files": {
+        "george": "george/halfway_check_in.mp3",
+        "harper_32": "harper_32/halfway_check_in.mp3"
+      },
+      "billable_characters": {
+        "george": 33,
+        "harper_32": 33
+      },
+      "duration_sec": {
+        "george": 2.568,
+        "harper_32": 2.664
+      },
+      "bytes": {
+        "george": 25964,
+        "harper_32": 26924
+      },
+      "restructure": "Play after minutes_in_* when the code appends ' Halfway. Check in with your body.'"
+    },
+    {
+      "id": "halfway_check_in_step_out",
+      "text": "Halfway. Check in with your body. Step out anytime you need to.",
+      "mode": "both",
+      "cues": [
+        "tickSauna standalone halfway when d/2 is not on a 5-minute mark (line 784)"
+      ],
+      "files": {
+        "george": "george/halfway_check_in_step_out.mp3",
+        "harper_32": "harper_32/halfway_check_in_step_out.mp3"
+      },
+      "billable_characters": {
+        "george": 63,
+        "harper_32": 63
+      },
+      "duration_sec": {
+        "george": 4.2,
+        "harper_32": 4.56
+      },
+      "bytes": {
+        "george": 42284,
+        "harper_32": 45884
+      }
+    },
+    {
+      "id": "one_minute_left_heat",
+      "text": "One minute left. Enjoy the last of the heat.",
+      "mode": "both",
+      "cues": [
+        "tickSauna r60 (line 785)"
+      ],
+      "files": {
+        "george": "george/one_minute_left_heat.mp3",
+        "harper_32": "harper_32/one_minute_left_heat.mp3"
+      },
+      "billable_characters": {
+        "george": 44,
+        "harper_32": 44
+      },
+      "duration_sec": {
+        "george": 3.552,
+        "harper_32": 3.288
+      },
+      "bytes": {
+        "george": 35804,
+        "harper_32": 33164
+      }
+    },
+    {
+      "id": "scan_0",
+      "text": "Let your forehead soften.",
+      "mode": "calm",
+      "cues": [
+        "SCAN[0] tickSauna body-scan rotation (line 787)",
+        "SCAN[0] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/scan_0.mp3",
+        "harper_32": "harper_32/scan_0.mp3"
+      },
+      "billable_characters": {
+        "george": 25,
+        "harper_32": 25
+      },
+      "duration_sec": {
+        "george": 1.944,
+        "harper_32": 1.56
+      },
+      "bytes": {
+        "george": 19724,
+        "harper_32": 15884
+      }
+    },
+    {
+      "id": "scan_1",
+      "text": "Drop your shoulders away from your ears.",
+      "mode": "calm",
+      "cues": [
+        "SCAN[1] tickSauna body-scan rotation (line 787)",
+        "SCAN[1] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/scan_1.mp3",
+        "harper_32": "harper_32/scan_1.mp3"
+      },
+      "billable_characters": {
+        "george": 40,
+        "harper_32": 40
+      },
+      "duration_sec": {
+        "george": 3.432,
+        "harper_32": 2.568
+      },
+      "bytes": {
+        "george": 34604,
+        "harper_32": 25964
+      }
+    },
+    {
+      "id": "scan_2",
+      "text": "Let your hands rest open and heavy.",
+      "mode": "calm",
+      "cues": [
+        "SCAN[2] tickSauna body-scan rotation (line 787)",
+        "SCAN[2] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/scan_2.mp3",
+        "harper_32": "harper_32/scan_2.mp3"
+      },
+      "billable_characters": {
+        "george": 35,
+        "harper_32": 35
+      },
+      "duration_sec": {
+        "george": 2.976,
+        "harper_32": 2.472
+      },
+      "bytes": {
+        "george": 30044,
+        "harper_32": 25004
+      }
+    },
+    {
+      "id": "scan_3",
+      "text": "Feel the warmth settle into your back.",
+      "mode": "calm",
+      "cues": [
+        "SCAN[3] tickSauna body-scan rotation (line 787)",
+        "SCAN[3] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/scan_3.mp3",
+        "harper_32": "harper_32/scan_3.mp3"
+      },
+      "billable_characters": {
+        "george": 38,
+        "harper_32": 38
+      },
+      "duration_sec": {
+        "george": 2.736,
+        "harper_32": 2.088
+      },
+      "bytes": {
+        "george": 27644,
+        "harper_32": 21164
+      }
+    },
+    {
+      "id": "scan_4",
+      "text": "Unclench your jaw. Let your tongue rest.",
+      "mode": "calm",
+      "cues": [
+        "SCAN[4] tickSauna body-scan rotation (line 787)",
+        "SCAN[4] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/scan_4.mp3",
+        "harper_32": "harper_32/scan_4.mp3"
+      },
+      "billable_characters": {
+        "george": 40,
+        "harper_32": 40
+      },
+      "duration_sec": {
+        "george": 3.384,
+        "harper_32": 3.24
+      },
+      "bytes": {
+        "george": 34124,
+        "harper_32": 32684
+      }
+    },
+    {
+      "id": "scan_5",
+      "text": "Let your legs grow heavy on the bench.",
+      "mode": "calm",
+      "cues": [
+        "SCAN[5] tickSauna body-scan rotation (line 787)",
+        "SCAN[5] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/scan_5.mp3",
+        "harper_32": "harper_32/scan_5.mp3"
+      },
+      "billable_characters": {
+        "george": 38,
+        "harper_32": 38
+      },
+      "duration_sec": {
+        "george": 2.64,
+        "harper_32": 2.328
+      },
+      "bytes": {
+        "george": 26684,
+        "harper_32": 23564
+      }
+    },
+    {
+      "id": "scan_6",
+      "text": "Notice your heartbeat. There is nothing to change.",
+      "mode": "calm",
+      "cues": [
+        "SCAN[6] tickSauna body-scan rotation (line 787)",
+        "SCAN[6] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/scan_6.mp3",
+        "harper_32": "harper_32/scan_6.mp3"
+      },
+      "billable_characters": {
+        "george": 50,
+        "harper_32": 50
+      },
+      "duration_sec": {
+        "george": 3.72,
+        "harper_32": 3.504
+      },
+      "bytes": {
+        "george": 37484,
+        "harper_32": 35324
+      }
+    },
+    {
+      "id": "scan_7",
+      "text": "With each breath out, let go of a little more.",
+      "mode": "calm",
+      "cues": [
+        "SCAN[7] tickSauna body-scan rotation (line 787)",
+        "SCAN[7] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/scan_7.mp3",
+        "harper_32": "harper_32/scan_7.mp3"
+      },
+      "billable_characters": {
+        "george": 46,
+        "harper_32": 46
+      },
+      "duration_sec": {
+        "george": 3.648,
+        "harper_32": 3.144
+      },
+      "bytes": {
+        "george": 36764,
+        "harper_32": 31724
+      }
+    },
+    {
+      "id": "scan_8",
+      "text": "Let your thoughts drift past like steam.",
+      "mode": "calm",
+      "cues": [
+        "SCAN[8] tickSauna body-scan rotation (line 787)",
+        "SCAN[8] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/scan_8.mp3",
+        "harper_32": "harper_32/scan_8.mp3"
+      },
+      "billable_characters": {
+        "george": 40,
+        "harper_32": 40
+      },
+      "duration_sec": {
+        "george": 2.952,
+        "harper_32": 2.616
+      },
+      "bytes": {
+        "george": 29804,
+        "harper_32": 26444
+      }
+    },
+    {
+      "id": "scan_9",
+      "text": "If you feel lightheaded, step out and cool down. That is always fine.",
+      "mode": "calm",
+      "cues": [
+        "SCAN[9] tickSauna body-scan rotation (line 787)",
+        "SCAN[9] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/scan_9.mp3",
+        "harper_32": "harper_32/scan_9.mp3"
+      },
+      "billable_characters": {
+        "george": 69,
+        "harper_32": 69
+      },
+      "duration_sec": {
+        "george": 4.92,
+        "harper_32": 4.704
+      },
+      "bytes": {
+        "george": 49484,
+        "harper_32": 47324
+      }
+    },
+    {
+      "id": "hard_heat_0",
+      "text": "Heat is just pressure. Breathe through it.",
+      "mode": "hard",
+      "cues": [
+        "HARD_HEAT[0] tickSauna rotation (line 787)",
+        "HARD_HEAT[0] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/hard_heat_0.mp3",
+        "harper_32": "harper_32/hard_heat_0.mp3"
+      },
+      "billable_characters": {
+        "george": 42,
+        "harper_32": 42
+      },
+      "duration_sec": {
+        "george": 2.592,
+        "harper_32": 2.208
+      },
+      "bytes": {
+        "george": 26204,
+        "harper_32": 22364
+      }
+    },
+    {
+      "id": "hard_heat_1",
+      "text": "Stay still. Stay calm. Stay in.",
+      "mode": "hard",
+      "cues": [
+        "HARD_HEAT[1] tickSauna rotation (line 787)",
+        "HARD_HEAT[1] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/hard_heat_1.mp3",
+        "harper_32": "harper_32/hard_heat_1.mp3"
+      },
+      "billable_characters": {
+        "george": 31,
+        "harper_32": 31
+      },
+      "duration_sec": {
+        "george": 3.072,
+        "harper_32": 3.696
+      },
+      "bytes": {
+        "george": 31004,
+        "harper_32": 37244
+      }
+    },
+    {
+      "id": "hard_heat_2",
+      "text": "This is where you get harder.",
+      "mode": "hard",
+      "cues": [
+        "HARD_HEAT[2] tickSauna rotation (line 787)",
+        "HARD_HEAT[2] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/hard_heat_2.mp3",
+        "harper_32": "harper_32/hard_heat_2.mp3"
+      },
+      "billable_characters": {
+        "george": 29,
+        "harper_32": 29
+      },
+      "duration_sec": {
+        "george": 1.56,
+        "harper_32": 1.272
+      },
+      "bytes": {
+        "george": 15884,
+        "harper_32": 13004
+      }
+    },
+    {
+      "id": "hard_heat_3",
+      "text": "Quiet the mind. The body follows.",
+      "mode": "hard",
+      "cues": [
+        "HARD_HEAT[3] tickSauna rotation (line 787)",
+        "HARD_HEAT[3] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/hard_heat_3.mp3",
+        "harper_32": "harper_32/hard_heat_3.mp3"
+      },
+      "billable_characters": {
+        "george": 33,
+        "harper_32": 33
+      },
+      "duration_sec": {
+        "george": 2.832,
+        "harper_32": 2.784
+      },
+      "bytes": {
+        "george": 28604,
+        "harper_32": 28124
+      }
+    },
+    {
+      "id": "hard_heat_4",
+      "text": "You are not here to be comfortable.",
+      "mode": "hard",
+      "cues": [
+        "HARD_HEAT[4] tickSauna rotation (line 787)",
+        "HARD_HEAT[4] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/hard_heat_4.mp3",
+        "harper_32": "harper_32/hard_heat_4.mp3"
+      },
+      "billable_characters": {
+        "george": 35,
+        "harper_32": 35
+      },
+      "duration_sec": {
+        "george": 1.824,
+        "harper_32": 1.488
+      },
+      "bytes": {
+        "george": 18524,
+        "harper_32": 15164
+      }
+    },
+    {
+      "id": "hard_heat_5",
+      "text": "Steady breath. Nothing gets to you.",
+      "mode": "hard",
+      "cues": [
+        "HARD_HEAT[5] tickSauna rotation (line 787)",
+        "HARD_HEAT[5] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/hard_heat_5.mp3",
+        "harper_32": "harper_32/hard_heat_5.mp3"
+      },
+      "billable_characters": {
+        "george": 35,
+        "harper_32": 35
+      },
+      "duration_sec": {
+        "george": 2.712,
+        "harper_32": 2.904
+      },
+      "bytes": {
+        "george": 27404,
+        "harper_32": 29324
+      }
+    },
+    {
+      "id": "hard_heat_6",
+      "text": "Lock in. One minute at a time.",
+      "mode": "hard",
+      "cues": [
+        "HARD_HEAT[6] tickSauna rotation (line 787)",
+        "HARD_HEAT[6] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/hard_heat_6.mp3",
+        "harper_32": "harper_32/hard_heat_6.mp3"
+      },
+      "billable_characters": {
+        "george": 30,
+        "harper_32": 30
+      },
+      "duration_sec": {
+        "george": 2.736,
+        "harper_32": 2.304
+      },
+      "bytes": {
+        "george": 27644,
+        "harper_32": 23324
+      }
+    },
+    {
+      "id": "hard_heat_7",
+      "text": "If you feel dizzy, get out. Tough is smart, not reckless.",
+      "mode": "hard",
+      "cues": [
+        "HARD_HEAT[7] tickSauna rotation (line 787)",
+        "HARD_HEAT[7] tickContrast heat rotation (line 988)"
+      ],
+      "files": {
+        "george": "george/hard_heat_7.mp3",
+        "harper_32": "harper_32/hard_heat_7.mp3"
+      },
+      "billable_characters": {
+        "george": 57,
+        "harper_32": 57
+      },
+      "duration_sec": {
+        "george": 3.936,
+        "harper_32": 3.576
+      },
+      "bytes": {
+        "george": 39644,
+        "harper_32": 36044
+      }
+    },
+    {
+      "id": "time_sit_up",
+      "text": "Time. Sit up slowly, and take a moment before you stand. Drink some water.",
+      "mode": "calm",
+      "cues": [
+        "finishSauna, calm coach (line 790)"
+      ],
+      "files": {
+        "george": "george/time_sit_up.mp3",
+        "harper_32": "harper_32/time_sit_up.mp3"
+      },
+      "billable_characters": {
+        "george": 74,
+        "harper_32": 74
+      },
+      "duration_sec": {
+        "george": 5.808,
+        "harper_32": 5.448
+      },
+      "bytes": {
+        "george": 58364,
+        "harper_32": 54764
+      }
+    },
+    {
+      "id": "time_you_earned",
+      "text": "Time. You earned that. Sit up slowly before you stand, and drink some water.",
+      "mode": "hard",
+      "cues": [
+        "finishSauna, hard coach (line 790)"
+      ],
+      "files": {
+        "george": "george/time_you_earned.mp3",
+        "harper_32": "harper_32/time_you_earned.mp3"
+      },
+      "billable_characters": {
+        "george": 76,
+        "harper_32": 76
+      },
+      "duration_sec": {
+        "george": 4.464,
+        "harper_32": 5.352
+      },
+      "bytes": {
+        "george": 44924,
+        "harper_32": 53804
+      }
+    },
+    {
+      "id": "round_1_of_1",
+      "text": "Round one of one.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=1, R=1 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_1_of_1.mp3",
+        "harper_32": "harper_32/round_1_of_1.mp3"
+      },
+      "billable_characters": {
+        "george": 17,
+        "harper_32": 17
+      },
+      "duration_sec": {
+        "george": 2.328,
+        "harper_32": 1.488
+      },
+      "bytes": {
+        "george": 23564,
+        "harper_32": 15164
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_1_of_2",
+      "text": "Round one of two.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=1, R=2 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_1_of_2.mp3",
+        "harper_32": "harper_32/round_1_of_2.mp3"
+      },
+      "billable_characters": {
+        "george": 17,
+        "harper_32": 17
+      },
+      "duration_sec": {
+        "george": 2.04,
+        "harper_32": 1.368
+      },
+      "bytes": {
+        "george": 20684,
+        "harper_32": 13964
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_2_of_2",
+      "text": "Round two of two.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=2, R=2 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_2_of_2.mp3",
+        "harper_32": "harper_32/round_2_of_2.mp3"
+      },
+      "billable_characters": {
+        "george": 17,
+        "harper_32": 17
+      },
+      "duration_sec": {
+        "george": 2.256,
+        "harper_32": 1.416
+      },
+      "bytes": {
+        "george": 22844,
+        "harper_32": 14444
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_1_of_3",
+      "text": "Round one of three.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=1, R=3 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_1_of_3.mp3",
+        "harper_32": "harper_32/round_1_of_3.mp3"
+      },
+      "billable_characters": {
+        "george": 19,
+        "harper_32": 19
+      },
+      "duration_sec": {
+        "george": 2.016,
+        "harper_32": 1.416
+      },
+      "bytes": {
+        "george": 20444,
+        "harper_32": 14444
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_2_of_3",
+      "text": "Round two of three.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=2, R=3 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_2_of_3.mp3",
+        "harper_32": "harper_32/round_2_of_3.mp3"
+      },
+      "billable_characters": {
+        "george": 19,
+        "harper_32": 19
+      },
+      "duration_sec": {
+        "george": 2.016,
+        "harper_32": 1.368
+      },
+      "bytes": {
+        "george": 20444,
+        "harper_32": 13964
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_3_of_3",
+      "text": "Round three of three.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=3, R=3 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_3_of_3.mp3",
+        "harper_32": "harper_32/round_3_of_3.mp3"
+      },
+      "billable_characters": {
+        "george": 21,
+        "harper_32": 21
+      },
+      "duration_sec": {
+        "george": 2.016,
+        "harper_32": 1.176
+      },
+      "bytes": {
+        "george": 20444,
+        "harper_32": 12044
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_1_of_4",
+      "text": "Round one of four.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=1, R=4 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_1_of_4.mp3",
+        "harper_32": "harper_32/round_1_of_4.mp3"
+      },
+      "billable_characters": {
+        "george": 18,
+        "harper_32": 18
+      },
+      "duration_sec": {
+        "george": 1.968,
+        "harper_32": 1.512
+      },
+      "bytes": {
+        "george": 19964,
+        "harper_32": 15404
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_2_of_4",
+      "text": "Round two of four.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=2, R=4 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_2_of_4.mp3",
+        "harper_32": "harper_32/round_2_of_4.mp3"
+      },
+      "billable_characters": {
+        "george": 18,
+        "harper_32": 18
+      },
+      "duration_sec": {
+        "george": 1.944,
+        "harper_32": 1.44
+      },
+      "bytes": {
+        "george": 19724,
+        "harper_32": 14684
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_3_of_4",
+      "text": "Round three of four.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=3, R=4 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_3_of_4.mp3",
+        "harper_32": "harper_32/round_3_of_4.mp3"
+      },
+      "billable_characters": {
+        "george": 20,
+        "harper_32": 20
+      },
+      "duration_sec": {
+        "george": 2.352,
+        "harper_32": 1.176
+      },
+      "bytes": {
+        "george": 23804,
+        "harper_32": 12044
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_4_of_4",
+      "text": "Round four of four.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=4, R=4 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_4_of_4.mp3",
+        "harper_32": "harper_32/round_4_of_4.mp3"
+      },
+      "billable_characters": {
+        "george": 19,
+        "harper_32": 19
+      },
+      "duration_sec": {
+        "george": 2.352,
+        "harper_32": 1.488
+      },
+      "bytes": {
+        "george": 23804,
+        "harper_32": 15164
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_1_of_5",
+      "text": "Round one of five.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=1, R=5 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_1_of_5.mp3",
+        "harper_32": "harper_32/round_1_of_5.mp3"
+      },
+      "billable_characters": {
+        "george": 18,
+        "harper_32": 18
+      },
+      "duration_sec": {
+        "george": 2.112,
+        "harper_32": 1.536
+      },
+      "bytes": {
+        "george": 21404,
+        "harper_32": 15644
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_2_of_5",
+      "text": "Round two of five.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=2, R=5 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_2_of_5.mp3",
+        "harper_32": "harper_32/round_2_of_5.mp3"
+      },
+      "billable_characters": {
+        "george": 18,
+        "harper_32": 18
+      },
+      "duration_sec": {
+        "george": 2.472,
+        "harper_32": 1.392
+      },
+      "bytes": {
+        "george": 25004,
+        "harper_32": 14204
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_3_of_5",
+      "text": "Round three of five.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=3, R=5 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_3_of_5.mp3",
+        "harper_32": "harper_32/round_3_of_5.mp3"
+      },
+      "billable_characters": {
+        "george": 20,
+        "harper_32": 20
+      },
+      "duration_sec": {
+        "george": 2.424,
+        "harper_32": 1.176
+      },
+      "bytes": {
+        "george": 24524,
+        "harper_32": 12044
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_4_of_5",
+      "text": "Round four of five.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=4, R=5 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_4_of_5.mp3",
+        "harper_32": "harper_32/round_4_of_5.mp3"
+      },
+      "billable_characters": {
+        "george": 19,
+        "harper_32": 19
+      },
+      "duration_sec": {
+        "george": 2.448,
+        "harper_32": 1.464
+      },
+      "bytes": {
+        "george": 24764,
+        "harper_32": 14924
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_5_of_5",
+      "text": "Round five of five.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=5, R=5 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_5_of_5.mp3",
+        "harper_32": "harper_32/round_5_of_5.mp3"
+      },
+      "billable_characters": {
+        "george": 19,
+        "harper_32": 19
+      },
+      "duration_sec": {
+        "george": 2.424,
+        "harper_32": 1.44
+      },
+      "bytes": {
+        "george": 24524,
+        "harper_32": 14684
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_1_of_6",
+      "text": "Round one of six.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=1, R=6 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_1_of_6.mp3",
+        "harper_32": "harper_32/round_1_of_6.mp3"
+      },
+      "billable_characters": {
+        "george": 17,
+        "harper_32": 17
+      },
+      "duration_sec": {
+        "george": 2.016,
+        "harper_32": 1.56
+      },
+      "bytes": {
+        "george": 20444,
+        "harper_32": 15884
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_2_of_6",
+      "text": "Round two of six.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=2, R=6 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_2_of_6.mp3",
+        "harper_32": "harper_32/round_2_of_6.mp3"
+      },
+      "billable_characters": {
+        "george": 17,
+        "harper_32": 17
+      },
+      "duration_sec": {
+        "george": 2.448,
+        "harper_32": 1.536
+      },
+      "bytes": {
+        "george": 24764,
+        "harper_32": 15644
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_3_of_6",
+      "text": "Round three of six.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=3, R=6 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_3_of_6.mp3",
+        "harper_32": "harper_32/round_3_of_6.mp3"
+      },
+      "billable_characters": {
+        "george": 19,
+        "harper_32": 19
+      },
+      "duration_sec": {
+        "george": 2.472,
+        "harper_32": 1.344
+      },
+      "bytes": {
+        "george": 25004,
+        "harper_32": 13724
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_4_of_6",
+      "text": "Round four of six.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=4, R=6 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_4_of_6.mp3",
+        "harper_32": "harper_32/round_4_of_6.mp3"
+      },
+      "billable_characters": {
+        "george": 18,
+        "harper_32": 18
+      },
+      "duration_sec": {
+        "george": 2.472,
+        "harper_32": 1.536
+      },
+      "bytes": {
+        "george": 25004,
+        "harper_32": 15644
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_5_of_6",
+      "text": "Round five of six.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=5, R=6 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_5_of_6.mp3",
+        "harper_32": "harper_32/round_5_of_6.mp3"
+      },
+      "billable_characters": {
+        "george": 18,
+        "harper_32": 18
+      },
+      "duration_sec": {
+        "george": 2.28,
+        "harper_32": 1.536
+      },
+      "bytes": {
+        "george": 23084,
+        "harper_32": 15644
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "round_6_of_6",
+      "text": "Round six of six.",
+      "mode": "both",
+      "cues": [
+        "cxEnter prefix, st.r=6, R=6 (lines 978, 980)"
+      ],
+      "files": {
+        "george": "george/round_6_of_6.mp3",
+        "harper_32": "harper_32/round_6_of_6.mp3"
+      },
+      "billable_characters": {
+        "george": 17,
+        "harper_32": 17
+      },
+      "duration_sec": {
+        "george": 2.376,
+        "harper_32": 1.536
+      },
+      "bytes": {
+        "george": 24044,
+        "harper_32": 15644
+      },
+      "restructure": "Split off the `Round ${st.r} of ${R}. ` prefix. Pre-rendered for R=1-6, n=1..R. Play before the heat/cold enter line."
+    },
+    {
+      "id": "into_heat_settle",
+      "text": "Into the heat. Settle in, and let your breathing slow down.",
+      "mode": "calm",
+      "cues": [
+        "cxEnter first heat, calm coach (line 978)"
+      ],
+      "files": {
+        "george": "george/into_heat_settle.mp3",
+        "harper_32": "harper_32/into_heat_settle.mp3"
+      },
+      "billable_characters": {
+        "george": 59,
+        "harper_32": 59
+      },
+      "duration_sec": {
+        "george": 4.464,
+        "harper_32": 4.512
+      },
+      "bytes": {
+        "george": 44924,
+        "harper_32": 45404
+      }
+    },
+    {
+      "id": "back_into_heat",
+      "text": "Back into the heat. Let your body warm up again.",
+      "mode": "calm",
+      "cues": [
+        "cxEnter later heat rounds, calm coach (line 978)"
+      ],
+      "files": {
+        "george": "george/back_into_heat.mp3",
+        "harper_32": "harper_32/back_into_heat.mp3"
+      },
+      "billable_characters": {
+        "george": 48,
+        "harper_32": 48
+      },
+      "duration_sec": {
+        "george": 3.648,
+        "harper_32": 3.456
+      },
+      "bytes": {
+        "george": 36764,
+        "harper_32": 34844
+      }
+    },
+    {
+      "id": "into_heat_own_it",
+      "text": "Into the heat. Sit tall. Slow breath. Own it.",
+      "mode": "hard",
+      "cues": [
+        "cxEnter heat, hard coach (line 978)"
+      ],
+      "files": {
+        "george": "george/into_heat_own_it.mp3",
+        "harper_32": "harper_32/into_heat_own_it.mp3"
+      },
+      "billable_characters": {
+        "george": 45,
+        "harper_32": 45
+      },
+      "duration_sec": {
+        "george": 3.864,
+        "harper_32": 3.36
+      },
+      "bytes": {
+        "george": 38924,
+        "harper_32": 33884
+      }
+    },
+    {
+      "id": "into_the_cold",
+      "text": "Into the cold. Long, slow exhales.",
+      "mode": "calm",
+      "cues": [
+        "cxEnter cold, calm coach (line 980)"
+      ],
+      "files": {
+        "george": "george/into_the_cold.mp3",
+        "harper_32": "harper_32/into_the_cold.mp3"
+      },
+      "billable_characters": {
+        "george": 34,
+        "harper_32": 34
+      },
+      "duration_sec": {
+        "george": 4.2,
+        "harper_32": 3.912
+      },
+      "bytes": {
+        "george": 42284,
+        "harper_32": 39404
+      }
+    },
+    {
+      "id": "get_in_no_hesitating",
+      "text": "Get in. No hesitating. Long, slow exhales.",
+      "mode": "hard",
+      "cues": [
+        "cxEnter cold, hard coach (line 980)"
+      ],
+      "files": {
+        "george": "george/get_in_no_hesitating.mp3",
+        "harper_32": "harper_32/get_in_no_hesitating.mp3"
+      },
+      "billable_characters": {
+        "george": 42,
+        "harper_32": 42
+      },
+      "duration_sec": {
+        "george": 4.032,
+        "harper_32": 3.96
+      },
+      "bytes": {
+        "george": 40604,
+        "harper_32": 39884
+      }
+    },
+    {
+      "id": "switch_to_plunge_calm",
+      "text": "Time to switch. Head to the plunge, and step in slowly when you get there.",
+      "mode": "calm",
+      "cues": [
+        "cxEnter switch-to-cold, calm coach (line 983)"
+      ],
+      "files": {
+        "george": "george/switch_to_plunge_calm.mp3",
+        "harper_32": "harper_32/switch_to_plunge_calm.mp3"
+      },
+      "billable_characters": {
+        "george": 74,
+        "harper_32": 74
+      },
+      "duration_sec": {
+        "george": 4.992,
+        "harper_32": 4.968
+      },
+      "bytes": {
+        "george": 50204,
+        "harper_32": 49964
+      }
+    },
+    {
+      "id": "switch_to_plunge_hard",
+      "text": "Time to switch. Walk to the plunge. Do not think about it. Just go.",
+      "mode": "hard",
+      "cues": [
+        "cxEnter switch-to-cold, hard coach (line 983)"
+      ],
+      "files": {
+        "george": "george/switch_to_plunge_hard.mp3",
+        "harper_32": "harper_32/switch_to_plunge_hard.mp3"
+      },
+      "billable_characters": {
+        "george": 67,
+        "harper_32": 67
+      },
+      "duration_sec": {
+        "george": 5.088,
+        "harper_32": 4.128
+      },
+      "bytes": {
+        "george": 51164,
+        "harper_32": 41564
+      }
+    },
+    {
+      "id": "out_of_cold",
+      "text": "Out of the cold. Dry off, and head back to the heat.",
+      "mode": "both",
+      "cues": [
+        "cxEnter switch-to-heat, both coaches (line 983)"
+      ],
+      "files": {
+        "george": "george/out_of_cold.mp3",
+        "harper_32": "harper_32/out_of_cold.mp3"
+      },
+      "billable_characters": {
+        "george": 52,
+        "harper_32": 52
+      },
+      "duration_sec": {
+        "george": 3.696,
+        "harper_32": 4.104
+      },
+      "bytes": {
+        "george": 37244,
+        "harper_32": 41324
+      }
+    },
+    {
+      "id": "one_minute_left_in_heat",
+      "text": "One minute left in the heat.",
+      "mode": "both",
+      "cues": [
+        "tickContrast heat r60 (line 987)"
+      ],
+      "files": {
+        "george": "george/one_minute_left_in_heat.mp3",
+        "harper_32": "harper_32/one_minute_left_in_heat.mp3"
+      },
+      "billable_characters": {
+        "george": 28,
+        "harper_32": 28
+      },
+      "duration_sec": {
+        "george": 2.064,
+        "harper_32": 1.56
+      },
+      "bytes": {
+        "george": 20924,
+        "harper_32": 15884
+      }
+    },
+    {
+      "id": "ten_seconds_get_ready",
+      "text": "Ten seconds. Get ready to switch.",
+      "mode": "both",
+      "cues": [
+        "tickContrast heat r10 (line 987)"
+      ],
+      "files": {
+        "george": "george/ten_seconds_get_ready.mp3",
+        "harper_32": "harper_32/ten_seconds_get_ready.mp3"
+      },
+      "billable_characters": {
+        "george": 33,
+        "harper_32": 33
+      },
+      "duration_sec": {
+        "george": 3.192,
+        "harper_32": 2.88
+      },
+      "bytes": {
+        "george": 32204,
+        "harper_32": 29084
+      }
+    },
+    {
+      "id": "shoulders_down",
+      "text": "Shoulders down. Hands relaxed.",
+      "mode": "both",
+      "cues": [
+        "tickContrast cold go (line 989)"
+      ],
+      "files": {
+        "george": "george/shoulders_down.mp3",
+        "harper_32": "harper_32/shoulders_down.mp3"
+      },
+      "billable_characters": {
+        "george": 30,
+        "harper_32": 30
+      },
+      "duration_sec": {
+        "george": 3.216,
+        "harper_32": 2.808
+      },
+      "bytes": {
+        "george": 32444,
+        "harper_32": 28364
+      }
+    },
+    {
+      "id": "contrast_end_cold_calm",
+      "text": "That was the last round. Step out slowly, and let your body warm up on its own. Drink some water.",
+      "mode": "calm",
+      "cues": [
+        "finishContrast when last phase was cold, calm coach (line 995)"
+      ],
+      "files": {
+        "george": "george/contrast_end_cold_calm.mp3",
+        "harper_32": "harper_32/contrast_end_cold_calm.mp3"
+      },
+      "billable_characters": {
+        "george": 97,
+        "harper_32": 97
+      },
+      "duration_sec": {
+        "george": 7.848,
+        "harper_32": 7.056
+      },
+      "bytes": {
+        "george": 78764,
+        "harper_32": 70844
+      }
+    },
+    {
+      "id": "contrast_end_heat_calm",
+      "text": "That was the last round. Sit up slowly, cool down gradually, and drink some water.",
+      "mode": "calm",
+      "cues": [
+        "finishContrast when last phase was heat, calm coach (line 995)"
+      ],
+      "files": {
+        "george": "george/contrast_end_heat_calm.mp3",
+        "harper_32": "harper_32/contrast_end_heat_calm.mp3"
+      },
+      "billable_characters": {
+        "george": 82,
+        "harper_32": 82
+      },
+      "duration_sec": {
+        "george": 6.168,
+        "harper_32": 6.288
+      },
+      "bytes": {
+        "george": 61964,
+        "harper_32": 63164
+      }
+    },
+    {
+      "id": "contrast_end_hard",
+      "text": "Done. Every round, hot and cold. That is how you get harder. Now step out slowly and drink some water.",
+      "mode": "hard",
+      "cues": [
+        "finishContrast, hard coach (line 995)"
+      ],
+      "files": {
+        "george": "george/contrast_end_hard.mp3",
+        "harper_32": "harper_32/contrast_end_hard.mp3"
+      },
+      "billable_characters": {
+        "george": 102,
+        "harper_32": 102
+      },
+      "duration_sec": {
+        "george": 7.488,
+        "harper_32": 7.296
+      },
+      "bytes": {
+        "george": 75164,
+        "harper_32": 73244
+      }
+    },
+    {
+      "id": "new_award",
+      "text": "New award.",
+      "mode": "both",
+      "cues": [
+        "announce() prefix (line 844)"
+      ],
+      "files": {
+        "george": "george/new_award.mp3",
+        "harper_32": "harper_32/new_award.mp3"
+      },
+      "billable_characters": {
+        "george": 10,
+        "harper_32": 10
+      },
+      "duration_sec": {
+        "george": 0.84,
+        "harper_32": 0.768
+      },
+      "bytes": {
+        "george": 8684,
+        "harper_32": 7964
+      },
+      "restructure": "Play first, then one award_* clip per newly earned badge (joined with periods in the original template)."
+    },
+    {
+      "id": "award_first_plunge",
+      "text": "First Dip.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'First Dip' id=first_plunge (line 844)"
+      ],
+      "files": {
+        "george": "george/award_first_plunge.mp3",
+        "harper_32": "harper_32/award_first_plunge.mp3"
+      },
+      "billable_characters": {
+        "george": 10,
+        "harper_32": 10
+      },
+      "duration_sec": {
+        "george": 0.888,
+        "harper_32": 0.744
+      },
+      "bytes": {
+        "george": 9164,
+        "harper_32": 7724
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_first_sauna",
+      "text": "First Sweat.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'First Sweat' id=first_sauna (line 844)"
+      ],
+      "files": {
+        "george": "george/award_first_sauna.mp3",
+        "harper_32": "harper_32/award_first_sauna.mp3"
+      },
+      "billable_characters": {
+        "george": 12,
+        "harper_32": 12
+      },
+      "duration_sec": {
+        "george": 0.912,
+        "harper_32": 0.816
+      },
+      "bytes": {
+        "george": 9404,
+        "harper_32": 8444
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_first_breath",
+      "text": "First Breath.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'First Breath' id=first_breath (line 844)"
+      ],
+      "files": {
+        "george": "george/award_first_breath.mp3",
+        "harper_32": "harper_32/award_first_breath.mp3"
+      },
+      "billable_characters": {
+        "george": 13,
+        "harper_32": 13
+      },
+      "duration_sec": {
+        "george": 1.056,
+        "harper_32": 0.672
+      },
+      "bytes": {
+        "george": 10844,
+        "harper_32": 7004
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_contrast",
+      "text": "Contrast.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Contrast' id=contrast (line 844)"
+      ],
+      "files": {
+        "george": "george/award_contrast.mp3",
+        "harper_32": "harper_32/award_contrast.mp3"
+      },
+      "billable_characters": {
+        "george": 9,
+        "harper_32": 9
+      },
+      "duration_sec": {
+        "george": 0.888,
+        "harper_32": 0.792
+      },
+      "bytes": {
+        "george": 9164,
+        "harper_32": 8204
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_contrast10",
+      "text": "Hot and Cold.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Hot & Cold' id=contrast10 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_contrast10.mp3",
+        "harper_32": "harper_32/award_contrast10.mp3"
+      },
+      "billable_characters": {
+        "george": 13,
+        "harper_32": 13
+      },
+      "duration_sec": {
+        "george": 1.248,
+        "harper_32": 1.176
+      },
+      "bytes": {
+        "george": 12764,
+        "harper_32": 12044
+      },
+      "restructure": "Display name is 'Hot & Cold'. Spoken with 'and' if needed, and a trailing period so clips chain."
+    },
+    {
+      "id": "award_cx_session",
+      "text": "Fire and Ice.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Fire & Ice' id=cx_session (line 844)"
+      ],
+      "files": {
+        "george": "george/award_cx_session.mp3",
+        "harper_32": "harper_32/award_cx_session.mp3"
+      },
+      "billable_characters": {
+        "george": 13,
+        "harper_32": 13
+      },
+      "duration_sec": {
+        "george": 1.824,
+        "harper_32": 1.2
+      },
+      "bytes": {
+        "george": 18524,
+        "harper_32": 12284
+      },
+      "restructure": "Display name is 'Fire & Ice'. Spoken with 'and' if needed, and a trailing period so clips chain."
+    },
+    {
+      "id": "award_cx3",
+      "text": "Triple Contrast.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Triple Contrast' id=cx3 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_cx3.mp3",
+        "harper_32": "harper_32/award_cx3.mp3"
+      },
+      "billable_characters": {
+        "george": 16,
+        "harper_32": 16
+      },
+      "duration_sec": {
+        "george": 1.344,
+        "harper_32": 1.2
+      },
+      "bytes": {
+        "george": 13724,
+        "harper_32": 12284
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_hard",
+      "text": "Hard Mode.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Hard Mode' id=hard (line 844)"
+      ],
+      "files": {
+        "george": "george/award_hard.mp3",
+        "harper_32": "harper_32/award_hard.mp3"
+      },
+      "billable_characters": {
+        "george": 10,
+        "harper_32": 10
+      },
+      "duration_sec": {
+        "george": 0.816,
+        "harper_32": 0.744
+      },
+      "bytes": {
+        "george": 8444,
+        "harper_32": 7724
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_streak3",
+      "text": "Three Straight.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Three Straight' id=streak3 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_streak3.mp3",
+        "harper_32": "harper_32/award_streak3.mp3"
+      },
+      "billable_characters": {
+        "george": 15,
+        "harper_32": 15
+      },
+      "duration_sec": {
+        "george": 1.008,
+        "harper_32": 0.744
+      },
+      "bytes": {
+        "george": 10364,
+        "harper_32": 7724
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_streak7",
+      "text": "Full Week.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Full Week' id=streak7 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_streak7.mp3",
+        "harper_32": "harper_32/award_streak7.mp3"
+      },
+      "billable_characters": {
+        "george": 10,
+        "harper_32": 10
+      },
+      "duration_sec": {
+        "george": 0.816,
+        "harper_32": 0.768
+      },
+      "bytes": {
+        "george": 8444,
+        "harper_32": 7964
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_streak30",
+      "text": "Iron Month.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Iron Month' id=streak30 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_streak30.mp3",
+        "harper_32": "harper_32/award_streak30.mp3"
+      },
+      "billable_characters": {
+        "george": 11,
+        "harper_32": 11
+      },
+      "duration_sec": {
+        "george": 0.888,
+        "harper_32": 0.72
+      },
+      "bytes": {
+        "george": 9164,
+        "harper_32": 7484
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_plunge10",
+      "text": "Regular.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Regular' id=plunge10 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_plunge10.mp3",
+        "harper_32": "harper_32/award_plunge10.mp3"
+      },
+      "billable_characters": {
+        "george": 8,
+        "harper_32": 8
+      },
+      "duration_sec": {
+        "george": 0.696,
+        "harper_32": 0.672
+      },
+      "bytes": {
+        "george": 7244,
+        "harper_32": 7004
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_plunge50",
+      "text": "Ice Veteran.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Ice Veteran' id=plunge50 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_plunge50.mp3",
+        "harper_32": "harper_32/award_plunge50.mp3"
+      },
+      "billable_characters": {
+        "george": 12,
+        "harper_32": 12
+      },
+      "duration_sec": {
+        "george": 1.128,
+        "harper_32": 0.912
+      },
+      "bytes": {
+        "george": 11564,
+        "harper_32": 9404
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_polar",
+      "text": "Polar.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Polar' id=polar (line 844)"
+      ],
+      "files": {
+        "george": "george/award_polar.mp3",
+        "harper_32": "harper_32/award_polar.mp3"
+      },
+      "billable_characters": {
+        "george": 6,
+        "harper_32": 6
+      },
+      "duration_sec": {
+        "george": 0.504,
+        "harper_32": 0.504
+      },
+      "bytes": {
+        "george": 5324,
+        "harper_32": 5324
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_ice40",
+      "text": "Ice Water.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Ice Water' id=ice40 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_ice40.mp3",
+        "harper_32": "harper_32/award_ice40.mp3"
+      },
+      "billable_characters": {
+        "george": 10,
+        "harper_32": 10
+      },
+      "duration_sec": {
+        "george": 0.816,
+        "harper_32": 0.768
+      },
+      "bytes": {
+        "george": 8444,
+        "harper_32": 7964
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_cold60",
+      "text": "Cold Hour.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Cold Hour' id=cold60 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_cold60.mp3",
+        "harper_32": "harper_32/award_cold60.mp3"
+      },
+      "billable_characters": {
+        "george": 10,
+        "harper_32": 10
+      },
+      "duration_sec": {
+        "george": 0.816,
+        "harper_32": 0.84
+      },
+      "bytes": {
+        "george": 8444,
+        "harper_32": 8684
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_sauna10",
+      "text": "Bench Warmer.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Bench Warmer' id=sauna10 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_sauna10.mp3",
+        "harper_32": "harper_32/award_sauna10.mp3"
+      },
+      "billable_characters": {
+        "george": 13,
+        "harper_32": 13
+      },
+      "duration_sec": {
+        "george": 1.056,
+        "harper_32": 0.84
+      },
+      "bytes": {
+        "george": 10844,
+        "harper_32": 8684
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_sauna50",
+      "text": "Steam Veteran.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Steam Veteran' id=sauna50 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_sauna50.mp3",
+        "harper_32": "harper_32/award_sauna50.mp3"
+      },
+      "billable_characters": {
+        "george": 14,
+        "harper_32": 14
+      },
+      "duration_sec": {
+        "george": 1.08,
+        "harper_32": 1.176
+      },
+      "bytes": {
+        "george": 11084,
+        "harper_32": 12044
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_hot190",
+      "text": "Hot Box.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Hot Box' id=hot190 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_hot190.mp3",
+        "harper_32": "harper_32/award_hot190.mp3"
+      },
+      "billable_characters": {
+        "george": 8,
+        "harper_32": 8
+      },
+      "duration_sec": {
+        "george": 0.984,
+        "harper_32": 0.912
+      },
+      "bytes": {
+        "george": 10124,
+        "harper_32": 9404
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_long20",
+      "text": "Long Sit.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Long Sit' id=long20 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_long20.mp3",
+        "harper_32": "harper_32/award_long20.mp3"
+      },
+      "billable_characters": {
+        "george": 9,
+        "harper_32": 9
+      },
+      "duration_sec": {
+        "george": 0.936,
+        "harper_32": 0.648
+      },
+      "bytes": {
+        "george": 9644,
+        "harper_32": 6764
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_hold2",
+      "text": "Two-Minute Hold.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Two-Minute Hold' id=hold2 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_hold2.mp3",
+        "harper_32": "harper_32/award_hold2.mp3"
+      },
+      "billable_characters": {
+        "george": 16,
+        "harper_32": 16
+      },
+      "duration_sec": {
+        "george": 1.056,
+        "harper_32": 1.056
+      },
+      "bytes": {
+        "george": 10844,
+        "harper_32": 10844
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_hold3",
+      "text": "Deep Diver.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Deep Diver' id=hold3 (line 844)"
+      ],
+      "files": {
+        "george": "george/award_hold3.mp3",
+        "harper_32": "harper_32/award_hold3.mp3"
+      },
+      "billable_characters": {
+        "george": 11,
+        "harper_32": 11
+      },
+      "duration_sec": {
+        "george": 0.96,
+        "harper_32": 0.984
+      },
+      "bytes": {
+        "george": 9884,
+        "harper_32": 10124
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "award_early",
+      "text": "Early Riser.",
+      "mode": "both",
+      "cues": [
+        "announce() badge 'Early Riser' id=early (line 844)"
+      ],
+      "files": {
+        "george": "george/award_early.mp3",
+        "harper_32": "harper_32/award_early.mp3"
+      },
+      "billable_characters": {
+        "george": 12,
+        "harper_32": 12
+      },
+      "duration_sec": {
+        "george": 1.08,
+        "harper_32": 0.96
+      },
+      "bytes": {
+        "george": 11084,
+        "harper_32": 9884
+      },
+      "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    }
+  ],
+  "usage": {
+    "billable_characters_total": 14576,
+    "requests": 470,
+    "errors": []
+  }
+}

@@ -1,15 +1,15 @@
 {
   "name": "PlungeTX",
   "short_name": "PlungeTX",
-  "description": "Guided breathing, cold plunge, sauna and hot/cold contrast sessions.",
+  "description": "Guided breathing, cold plunge, sauna, and hot/cold contrast sessions.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#06161f",
-  "theme_color": "#06161f",
+  "background_color": "#f4fafb",
+  "theme_color": "#f4fafb",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
   ]
 }
