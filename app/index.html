@@ -172,7 +172,7 @@
       </button>
     </div>
     <p class="fine">No sound on iPhone? Flip the silent switch off and turn the volume up. History stays on this phone under the same PlungeTX keys.</p>
-    <p class="fine">Sauna music is “First Light Particles” by Yoiyami (CC0). Harper is the voice until you choose another.</p>
+    <p class="fine">Harper is the voice until you choose another. Sauna music, also used for the hot half of contrast: “First Light Particles” by Yoiyami; “It’s Pouring” by SpringySpringo; “November Snow” by The Cynic Project. All CC0.</p>
     <p class="fine"><a class="link" href="https://plungetx.com/#pricing" target="_blank" rel="noopener">Rent a cold plunge delivered in the Houston area ›</a></p>
   </div>
 </section>
@@ -237,7 +237,8 @@
   <div class="row col"><div class="between"><label for="sTemp">Sauna temperature</label><span class="val" id="sTempV"></span></div><input type="range" id="sTemp" min="120" max="220" step="1" data-key="s.tempF"><div class="ends"><span>120°F</span><span>220°F</span></div></div>
   <div class="row"><label for="sMusic">Background music</label><input type="checkbox" class="sw" id="sMusic" data-key="s.music"></div>
   <div class="sub" id="sMusicOpts">
-    <div class="row"><label for="sTrack">Track</label><div class="pick"><select id="sTrack" data-key="s.track" class="trk"></select><button class="prev" type="button" data-prev="sTrack" aria-label="Preview"></button></div></div>
+    <div class="row"><label for="sTrack">Track</label><div class="pick"><select id="sTrack" data-key="s.track" class="heat"></select><button class="prev" type="button" data-prev="sTrack" aria-label="Preview"></button></div></div>
+    <p class="hint" id="sTrackLine" style="text-align:left"></p>
   </div>
   <p class="setupnote">Drink water. Step out right away if you feel dizzy.</p>
   <div class="dock"><div class="inner"><button class="go" type="button" id="sStart">Start</button></div></div>
@@ -258,7 +259,8 @@
   <div class="row"><label for="cVoice">Voice guidance</label><input type="checkbox" class="sw" id="cVoice" data-key="c.voice"></div>
   <div class="row"><label for="cMusic">Background music</label><input type="checkbox" class="sw" id="cMusic" data-key="c.music"></div>
   <div class="sub" id="cMusicOpts">
-    <div class="row"><label for="cTrackH">In the heat</label><div class="pick"><select id="cTrackH" data-key="c.trackHot" class="trk"></select><button class="prev" type="button" data-prev="cTrackH" aria-label="Preview"></button></div></div>
+    <div class="row"><label for="cTrackH">In the heat</label><div class="pick"><select id="cTrackH" data-key="s.track" class="heat"></select><button class="prev" type="button" data-prev="cTrackH" aria-label="Preview"></button></div></div>
+    <p class="hint" id="cTrackLine" style="text-align:left;margin-top:0"></p>
     <div class="row"><label for="cTrackC">In the cold</label><div class="pick"><select id="cTrackC" data-key="c.trackCold" class="trk"></select><button class="prev" type="button" data-prev="cTrackC" aria-label="Preview"></button></div></div>
   </div>
   <p class="setupnote">Move carefully between the sauna and the plunge. Stop if you feel unwell.</p>

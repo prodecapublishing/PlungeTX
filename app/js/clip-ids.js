@@ -58,6 +58,7 @@ export const CLIP_IDS = new Set([
   "let_go_round_6",
   "let_go",
   "final_round_notice",
+  "finish_ohyeah",
   "hold_relax",
   "thirty_seconds",
   "hold_stay_soft",

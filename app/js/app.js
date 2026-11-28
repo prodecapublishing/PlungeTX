@@ -11,7 +11,7 @@ const $ = (id) => document.getElementById(id);
 const DEF = {
   b: { pace: 'standard', rounds: 3, breaths: 30, voice: true, whoosh: true, music: true, trackA: 'tidal', trackB: 'still' },
   i: { preset: 'intermediate', custom: 3, prep: 2, voice: true, tempOn: true, tempF: 50, music: true, track: 'drift' },
-  s: { preset: 'classic', custom: 15, voice: true, tempF: 175, music: true, track: 'cedar' },
+  s: { preset: 'classic', custom: 15, voice: true, tempF: 175, music: true, track: 'firstlight' },
   c: { rounds: 3, hot: 12, cold: 2, trans: 1, order: 'hc', hotF: 175, coldF: 50, voice: true, music: true, trackHot: 'cedar', trackCold: 'drift' },
   g: { voice: 'harper_32', musicVol: 0.7, coach: 'calm' }
 };
@@ -20,6 +20,8 @@ const saved = store.get('settings', {});
 const S = {};
 for (const key of Object.keys(DEF)) S[key] = Object.assign({}, DEF[key], saved[key] || {});
 if (S.g.voice !== 'george' && S.g.voice !== 'harper_32') S.g.voice = 'harper_32';
+if (S.s.track === 'cedar') S.s.track = 'firstlight';
+if (!['off', 'firstlight', 'hearth', 'stillness'].includes(S.s.track)) S.s.track = 'firstlight';
 
 const PACE = { slow: 4.6, standard: 3.4, fast: 2.4 };
 const PRESETS = { beginner: 60, intermediate: 120, advanced: 240 };
@@ -99,9 +101,20 @@ function setK(key, value) {
   refresh();
 }
 
+const HEAT_TRACKS = [
+  { id: 'off', name: 'Off', line: 'Quiet. The gong and the voice stay.' },
+  { id: 'firstlight', name: 'First Light', line: 'Soft piano and slow ambient pads.' },
+  { id: 'hearth', name: 'Soft Rain', line: 'Rain over a slow, warm ambient bed.' },
+  { id: 'stillness', name: 'Stillness', line: 'Ethereal, tape-soft meditation.' }
+];
+
 function fillTracks() {
-  const html = Object.entries(audio.tracks).map(([key, track]) => `<option value="${key}">${track.name}</option>`).join('');
+  const html = Object.entries(audio.tracks)
+    .filter(([, track]) => !track.file)
+    .map(([key, track]) => `<option value="${key}">${track.name}</option>`).join('');
   document.querySelectorAll('select.trk').forEach((sel) => { sel.innerHTML = html; });
+  const heat = HEAT_TRACKS.map((track) => `<option value="${track.id}">${track.name}</option>`).join('');
+  document.querySelectorAll('select.heat').forEach((sel) => { sel.innerHTML = heat; });
 }
 
 function bindControls() {
@@ -180,6 +193,10 @@ function refresh() {
   $('sCustomRow').hidden = S.s.preset !== 'custom';
   $('sTempV').textContent = `${S.s.tempF}°F / ${fToC(S.s.tempF)}°C`;
   $('sMusicOpts').hidden = !S.s.music;
+  const heat = HEAT_TRACKS.find((track) => track.id === S.s.track) || HEAT_TRACKS[0];
+  $('sTrackLine').textContent = heat.line;
+  $('cTrackLine').textContent = heat.line;
+  document.querySelectorAll('select.heat').forEach((sel) => { sel.value = heat.id; });
   $('gCoachHint').textContent = hard()
     ? 'Blunter lines. The safety cues stay in.'
     : 'Calm, steady guidance.';
@@ -533,6 +550,7 @@ function finishBreath() {
   audio.gong(50, 0.1);
   speak(C.finalRound);
   const fresh = save({ type: 'breath', holds: s.holds, pace: S.b.pace, breaths: S.b.breaths });
+  speak(C.finishOhYeah);
   voiceOn = true;
   const best = s.holds.length ? Math.max(...s.holds) : 0;
   const avg = s.holds.length ? s.holds.reduce((a, b) => a + b, 0) / s.holds.length : 0;
@@ -683,6 +701,7 @@ function finishBath(early) {
     speak(coachLine(hard(), C.timeStepOut, C.timeYouDid), true);
   } else voice.cancel();
   const fresh = save({ type: 'bath', planned: s.dur, actual, tempF: S.i.tempOn ? S.i.tempF : null });
+  if (!early) speak(C.finishOhYeah);
   voiceOn = true;
   const n = last30().pl.length;
   lastShare = {
@@ -741,7 +760,7 @@ function startSauna() {
   $('baPause').textContent = 'Pause';
   show('bath');
   setPhase('heat');
-  if (S.s.music) audio.playTrack(S.s.track, 6);
+  if (S.s.music && S.s.track !== 'off') audio.playTrack(S.s.track, 6);
   setMedia('Sauna');
   startLoop(tickSauna);
 }
@@ -786,6 +805,7 @@ function finishSauna(early) {
     speak(coachLine(hard(), C.timeSitUp, C.timeYouEarned), true);
   } else voice.cancel();
   const fresh = save({ type: 'sauna', planned: s.dur, actual, tempF: S.s.tempF });
+  if (!early) speak(C.finishOhYeah);
   voiceOn = true;
   const n = last30().sa.length;
   lastShare = {
@@ -834,7 +854,7 @@ function cxEnter() {
     audio.buzz(80);
     const line = coachLine(hard(), s.idx === 0 ? C.intoHeatSettle : C.backIntoHeat, C.intoHeatOwn);
     speak(prefix.concat(line), true);
-    if (S.c.music) audio.playTrack(S.c.trackHot, 5);
+    if (S.c.music && S.s.track !== 'off') audio.playTrack(S.s.track, 5);
   } else if (step.k === 'c') {
     ba.phase.textContent = `Round ${step.r} of ${total} · Cold`;
     chip.textContent = `${S.c.coldF}°F plunge`;
@@ -918,6 +938,7 @@ function finishContrast(early) {
     coldMax: Math.max(0, ...coldParts.map((x) => x.s)),
     steps: s.done
   });
+  if (!early) speak(C.finishOhYeah);
   voiceOn = true;
   lastShare = {
     kind: 'contrast', eyebrow: 'Hot and cold contrast', big: `${rounds}×`,

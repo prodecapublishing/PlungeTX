@@ -5924,6 +5924,30 @@
         "harper_32": 9884
       },
       "restructure": "Trailing period so multiple award clips can chain after 'New award.'"
+    },
+    {
+      "id": "finish_ohyeah",
+      "text": "Ohhhh yeahhhh! You did it!",
+      "mode": "both",
+      "cues": [
+        "successful finish of breath, bath, sauna, and contrast, after the completion line"
+      ],
+      "files": {
+        "george": "george/finish_ohyeah.mp3",
+        "harper_32": "harper_32/finish_ohyeah.mp3"
+      },
+      "billable_characters": {
+        "george": 27,
+        "harper_32": 27
+      },
+      "duration_sec": {
+        "george": 3.96,
+        "harper_32": 3.89
+      },
+      "bytes": {
+        "george": 39884,
+        "harper_32": 39164
+      }
     }
   ],
   "usage": {

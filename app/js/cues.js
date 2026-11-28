@@ -3,6 +3,7 @@
 export const C = {
   preview: 'preview_breathe',
   welcome: 'welcome_plungetx',
+  finishOhYeah: 'finish_ohyeah',
   breathIntro: 'breath_intro',
   breathBegin: 'breath_begin',
   belly: 'belly_chest',

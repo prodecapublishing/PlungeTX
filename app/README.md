@@ -37,9 +37,15 @@ Harper is the voice for a new phone. A saved choice of George or Harper is left 
 
 ## Sauna music
 
-The sauna bed, and the hot half of a contrast session when that track is selected, is a recording rather than the synthesized pads used for breathing and cold. The file is `audio/sauna-bed.mp3` (128 kbps, a little over two minutes). It loops. The last four seconds are crossfaded into the opening so the repeat does not click, and it plays through the same volume control that ducks under the voice.
+Breathing and cold still use the small synthesized beds. Sauna, and the hot half of contrast, use one of three recordings. The Background music switch is Off. Each file is 128 kbps MP3, loudness-matched near −17 LUFS, and the end is crossfaded into the opening so the loop does not click. They play through the same volume control that ducks under the voice.
 
-“First Light Particles” by Yoiyami. Soft piano and slow ambient pads, no percussion. [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). Source: [OpenGameArt](https://opengameart.org/content/first-light-particles-%E2%80%93-cc0-atmospheric-pianoambient-track). Attribution is not required; the credit is kept in Settings.
+| Name | File | What you hear | Source | License |
+| --- | --- | --- | --- | --- |
+| First Light | `audio/music/first-light.mp3` | Soft piano and slow ambient pads, no percussion. About 2:04. | [First Light Particles by Yoiyami](https://opengameart.org/content/first-light-particles-%E2%80%93-cc0-atmospheric-pianoambient-track) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Soft Rain | `audio/music/soft-rain.mp3` | Rain over a slow ambient bed. About 3:14. | [It’s Pouring by SpringySpringo](https://opengameart.org/content/its-pouring) | CC0 1.0 |
+| Stillness | `audio/music/stillness.mp3` | Ethereal, tape-soft meditation. About 5:38. | [November Snow by The Cynic Project](https://opengameart.org/content/november-snow) | CC0 1.0 |
+
+A finished session, not one you end early, closes with “Ohhhh yeahhhh! You did it!” in the selected voice, after the completion line.
 
 Hold-time announcements are recorded through 12:00. A hold longer than that stays on the timer and simply stops adding spoken minute marks.
 

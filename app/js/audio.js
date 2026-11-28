@@ -5,7 +5,9 @@ const TRACKS = {
   drift: { name: 'Gulf Drift', chords: [[50, 57, 66, 73], [47, 54, 62, 69], [43, 50, 59, 66], [45, 52, 61, 64]], len: 9, wave: ['sine', 'triangle'], cut: 1900, water: 0.05, bells: 0.35 },
   freeze: { name: 'Deep Freeze', chords: [[38, 45, 53, 64], [34, 41, 50, 57], [36, 43, 52, 62]], len: 11, wave: ['sawtooth', 'sine'], cut: 650, wind: 0.08, bells: 0.15 },
   aurora: { name: 'Aurora', chords: [[52, 59, 64, 71, 76], [48, 55, 64, 67, 74], [55, 62, 67, 71, 78], [50, 57, 62, 69, 73]], len: 7, wave: ['sine', 'triangle'], cut: 2800, bells: 0.5 },
-  cedar: { name: 'Warm Air', file: 'audio/sauna-bed.mp3' },
+  firstlight: { name: 'First Light', file: 'audio/music/first-light.mp3' },
+  hearth: { name: 'Soft Rain', file: 'audio/music/soft-rain.mp3' },
+  stillness: { name: 'Stillness', file: 'audio/music/stillness.mp3' },
   still: { name: 'Still Water', chords: [[38, 45, 57], [38, 45, 55]], len: 14, wave: ['sine', 'sine'], cut: 900, water: 0.03, bells: 0.12 }
 };
 
@@ -317,6 +319,7 @@ export function createAudio({ musicVol }) {
   }
 
   function startBed(key, fade) {
+    if (key === 'cedar') key = 'firstlight';
     const spec = TRACKS[key] || TRACKS.drift;
     if (spec.file) return new FileBed(spec.file).start(fade);
     return new Ambient(spec.chords ? key : 'drift').start(fade);
@@ -324,12 +327,12 @@ export function createAudio({ musicVol }) {
 
   function playTrack(key, fade = 4) {
     if (amb) { amb.stop(fade); amb = null; }
-    if (key && ensure()) amb = startBed(key, fade);
+    if (key && key !== 'off' && ensure()) amb = startBed(key, fade);
   }
 
   function preview(key) {
     stopPreview();
-    if (!key || !ensure()) return null;
+    if (!key || key === 'off' || !ensure()) return null;
     prevAmb = startBed(key, 1.5);
     return prevAmb;
   }
